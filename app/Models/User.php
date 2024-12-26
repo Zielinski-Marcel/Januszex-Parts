@@ -24,6 +24,14 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'password',
     ];
 
+    private $userOwnedVehicles=[];
+    private $name;
+    public function getName(): string{
+        return $this->name;
+    }
+    public function addOwnedVehicle(Vehicle $vehicle){
+        $this->userOwnedVehicles[] = $vehicle;
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
