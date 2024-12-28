@@ -1,124 +1,95 @@
-import React, { useState } from 'react';
+// CarExpenses.js
+import { useState } from 'react';
+import Sidebar from './Sidebar';  // Zaimportuj Sidebar
 
-const Cars = () => {
-    // Lista aut
+export default function CarExpenses() {
     const cars = [
-        { id: 1, name: 'Toyota Corolla', year: 2015, cost: '50,000 PLN' },
-        { id: 2, name: 'Ford Focus', year: 2018, cost: '60,000 PLN' },
-        { id: 3, name: 'BMW 320i', year: 2020, cost: '120,000 PLN' },
+        { id: 1, name: 'BMW E46' },
+        { id: 2, name: 'Mercedes S Klasa' },
     ];
 
-    // Historia kosztów dla każdego auta
-    const initialCostHistory = {
-        1: [
-            { id: 1, type: 'Tankowanie', amount: '200 PLN', date: '2024-12-01' },
-            { id: 2, type: 'Serwis', amount: '500 PLN', date: '2024-11-15' },
-        ],
-        2: [
-            { id: 1, type: 'Tankowanie', amount: '180 PLN', date: '2024-12-03' },
-        ],
-        3: [],
-    };
+    const expenses = [
+        {
+            id: 1,
+            type: 'Paliwo',
+            amount: '100,24 PLN',
+            date: '20.12.2024',
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
+            image: '/placeholder.svg?height=40&width=40'
+        },
+        {
+            id: 2,
+            type: 'Mechanik',
+            amount: '1000,00 PLN',
+            date: '20.12.2024',
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            image: '/placeholder.svg?height=40&width=40'
+        },
+        {
+            id: 3,
+            type: 'Inne',
+            amount: '10,99 PLN',
+            date: '20.12.2024',
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            image: '/placeholder.svg?height=40&width=40'
+        },
+        {
+            id: 4,
+            type: 'Inne',
+            amount: '50,00 PLN',
+            date: '20.12.2024',
+            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.',
+            image: '/placeholder.svg?height=40&width=40'
+        }
+    ];
 
-    // Stan wybranego auta
-    const [selectedCar, setSelectedCar] = useState(null);
-
-    // Historia kosztów (zainicjowana na podstawie powyższych danych)
-    const [costHistory, setCostHistory] = useState(initialCostHistory);
-
-    // Dodawanie nowego kosztu
-    const addCost = (carId, newCost) => {
-        setCostHistory((prevHistory) => ({
-            ...prevHistory,
-            [carId]: [...prevHistory[carId], newCost],
-        }));
-    };
+    const [selectedCar, setSelectedCar] = useState(cars[0]);
 
     return (
-        <div style={{ display: 'flex', height: '100vh', flexDirection: 'column' }}>
-            {/* Górny panel */}
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#f4f4f4', padding: '10px 20px', borderBottom: '1px solid blue' }}>
-                <h3>Historia kosztów auta</h3>
-                <div style={{ fontWeight: 'bold' }}>Powiadomienia</div>
-            </div>
+        <div className="flex h-screen bg-white">
+            {/* Sidebar */}
+            <Sidebar cars={cars} selectedCar={selectedCar} setSelectedCar={setSelectedCar} />  {/* Użycie Sidebar */}
 
-            <div style={{ display: 'flex', flexGrow: 1 }}>
-                {/* Lewy panel */}
-                <div style={{ width: '250px', background: '#f4f4f4', padding: '20px', borderRight: '1px solid blue', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                    <div>
-                        <h3>Lista Aut</h3>
-                        <ul style={{ listStyle: 'none', padding: 0 }}>
-                            {cars.map((car) => (
-                                <li
-                                    key={car.id}
-                                    style={{
-                                        padding: '10px',
-                                        cursor: 'pointer',
-                                        borderBottom: '1px solid #eee',
-                                        background: selectedCar?.id === car.id ? '#ddd' : 'transparent',
-                                    }}
-                                    onClick={() => setSelectedCar(car)}
-                                >
-                                    {car.name}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                    <button style={{ padding: '10px 20px', background: '#007bff', color: '#fff', border: 'none', cursor: 'pointer', alignSelf: 'center' }}>
-                        Zaloguj
+            {/* Main Content */}
+            <div className="flex-1 p-4">
+                <div className="mb-4">
+                    <button className="w-full bg-[#2ECC71] text-white p-4 rounded-lg flex items-center justify-center">
+                        <span className="mr-2">+</span>
+                        Dodaj nową płatność
                     </button>
                 </div>
-
-                {/* Główna sekcja */}
-                <div style={{ flexGrow: 1, padding: '20px' }}>
-                    {selectedCar ? (
-                        <div>
-                            <div style={{ background: '#fafafa', padding: '20px', border: '1px solid blue', borderRadius: '5px', marginBottom: '20px' }}>
-                                <h2>{selectedCar.name}</h2>
-                                <p><strong>Rok produkcji:</strong> {selectedCar.year}</p>
-                                <p><strong>Koszt:</strong> {selectedCar.cost}</p>
-                            </div>
-
-                            <div style={{ background: '#fff', padding: '20px', border: '1px solid blue', borderRadius: '5px' }}>
-                                <h3>Historia kosztów</h3>
-                                {costHistory[selectedCar.id].length > 0 ? (
-                                    <ul style={{ listStyle: 'none', padding: 0 }}>
-                                        {costHistory[selectedCar.id].map((entry) => (
-                                            <li key={entry.id} style={{ padding: '10px', borderBottom: '1px solid #eee' }}>
-                                                <p><strong>Typ:</strong> {entry.type}</p>
-                                                <p><strong>Kwota:</strong> {entry.amount}</p>
-                                                <p><strong>Data:</strong> {entry.date}</p>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                ) : (
-                                    <p>Brak historii kosztów dla tego auta.</p>
-                                )}
-
-                                {/* Przykładowy przycisk do dodawania kosztów */}
-                                <button
-                                    style={{ marginTop: '10px', padding: '10px 20px', background: '#28a745', color: '#fff', border: 'none', cursor: 'pointer' }}
-                                    onClick={() => {
-                                        const newCost = {
-                                            id: Date.now(),
-                                            type: 'Tankowanie',
-                                            amount: '150 PLN',
-                                            date: new Date().toISOString().split('T')[0],
-                                        };
-                                        addCost(selectedCar.id, newCost);
-                                    }}
-                                >
-                                    Dodaj tankowanie
-                                </button>
+                <div className="space-y-4">
+                    {expenses.map((expense) => (
+                        <div key={expense.id} className="bg-white rounded-lg border border-gray-100">
+                            <div className="p-4">
+                                <div className="flex items-start justify-between mb-2">
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-4 mb-1">
+                                            <span className="font-medium">{expense.type}</span>
+                                            <span className="text-gray-500">{expense.amount}</span>
+                                        </div>
+                                        <p className="text-sm text-gray-500 leading-relaxed">
+                                            {expense.description}
+                                        </p>
+                                    </div>
+                                    <div className="flex gap-4">
+                                        <button className="text-blue-500">Edytuj</button>
+                                        <button className="text-red-500">Usuń</button>
+                                    </div>
+                                </div>
+                                <div className="flex justify-between items-end">
+                                    <span className="text-gray-500 text-sm">{expense.date}</span>
+                                    <img
+                                        src={expense.image}
+                                        alt=""
+                                        className="w-10 h-10 rounded object-cover"
+                                    />
+                                </div>
                             </div>
                         </div>
-                    ) : (
-                        <h2>Wybierz auto, aby zobaczyć szczegóły</h2>
-                    )}
+                    ))}
                 </div>
             </div>
         </div>
     );
-};
-
-export default Cars;
+}
