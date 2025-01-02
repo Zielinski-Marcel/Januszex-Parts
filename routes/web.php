@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/use', [ProfileController::class, 'show']);
+Route::get('/user/{username}', [ProfileController::class, 'show']);
 
 
 Route::get('/', function () {

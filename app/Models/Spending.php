@@ -2,54 +2,37 @@
 
 namespace App\Models;
 
-use DateTime;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class Spending
+class Spending extends Model
 {
-    private int $id;
-    private float $price;
-    private DateTime $date;
-    private string $type;
-    private User $user;
-    private string $place;
-    private string $description;
-    public function __construct(float $price, DateTime $date, string $type, User $user, string $place, string $description){
-        $this->price = $price;
-        $this->date = $date;
-        $this->type = $type;
-        $this->user = $user;
-        $this->place = $place;
-        $this->description = $description;
-    }
-    public function setPrice(float $price): void
+    use HasFactory;
+
+    protected $fillable = [
+        'price',
+        'type',
+        'date',
+        'place',
+        'description',
+        'user_id',
+        'vehicle_id',
+    ];
+
+    protected $casts = [
+        'price' => 'float',
+        'date' => 'datetime',
+    ];
+
+    // Relacja z modelem User
+    public function user()
     {
-        $this->price = $price;
-    }
-    public function getPrice(): float
-    {
-        return $this->price;
-    }
-    public function getDate(): DateTime
-    {
-        return $this->date;
-    }
-    public function setType(string $type): void{
-        $this->type=$type;
-    }
-    public function getType(): string{
-        return $this->type;
-    }
-    public function setPlace(string $place): void{
-        $this->place=$place;
-    }
-    public function getPlace(): string{
-        return $this->place;
-    }
-    public function setDescription(string $description): void{
-        $this->description=$description;
-    }
-    public function getDescription(): string{
-        return $this->description;
+        return $this->belongsTo(User::class);
     }
 
+    // Relacja z modelem Vehicle
+    public function vehicle()
+    {
+        return $this->belongsTo(Vehicle::class);
+    }
 }

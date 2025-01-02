@@ -24,14 +24,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'password',
     ];
 
-    private $userOwnedVehicles=[];
-    private $name;
-    public function getName(): string{
-        return $this->name;
-    }
-    public function addOwnedVehicle(Vehicle $vehicle){
-        $this->userOwnedVehicles[] = $vehicle;
-    }
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -53,5 +45,19 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // Relacja wiele-do-wielu z pojazdami
+    public function vehicles()
+    {
+        return $this->belongsToMany(Vehicle::class, 'user_vehicle')
+            ->withPivot('role', 'status')
+            ->withTimestamps();
+    }
+
+    // Relacja jeden-do-wielu z wydatkami
+    public function spendings()
+    {
+        return $this->hasMany(Spending::class);
     }
 }
