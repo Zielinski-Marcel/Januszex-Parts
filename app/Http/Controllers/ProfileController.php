@@ -17,10 +17,18 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function show()
+    public function show($username)
     {
-     return view('user');
+        $user = User::where('name', $username)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Użytkownik nie został znaleziony.'], 404);
+        }
+
+        return view('user', ['user' => $user]);
     }
+
+
     public function edit(Request $request): Response
     {
         return Inertia::render('Profile/Edit', [
