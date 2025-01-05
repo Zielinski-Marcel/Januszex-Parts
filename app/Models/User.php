@@ -2,9 +2,7 @@
 
 namespace App\Models;
 
-use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword;
@@ -12,7 +10,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
-    /** @use HasFactory<UserFactory> */
+    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
     /**
@@ -57,7 +55,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         ];
     }
 
-
+    // Relacja wiele-do-wielu z pojazdami
     public function vehicles()
     {
         return $this->belongsToMany(Vehicle::class, 'user_vehicle')
@@ -65,12 +63,9 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
             ->withTimestamps();
     }
 
-    public function spendings(): HasMany
+    // Relacja jeden-do-wielu z wydatkami
+    public function spendings()
     {
         return $this->hasMany(Spending::class);
     }
-//    public function vehicles(): HasMany
-//    {
-//        return $this->hasMany(Vehicle::class,'owner_id');
-//    }
 }

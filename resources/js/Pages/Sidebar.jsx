@@ -2,10 +2,11 @@
 import React from 'react';
 
 const Sidebar = ({ cars, selectedCar, setSelectedCar }) => {
+
     return (
         <div className="w-64 p-4 flex flex-col border-r border-gray-200">
             <div className="mb-6 flex justify-center items-center h-24">
-                <h1 className="text-4xl font-bold text-[#2ECC71]">HKS</h1>
+                <h1 className="text-2xl font-bold text-[#2ECC71]">Lista twoich pojazdów:</h1>
             </div>
             <div className="space-y-2">
                 {cars.map((car) => (
