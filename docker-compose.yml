@@ -38,7 +38,7 @@ services:
     database:
         container_name: database-CCH
         working_dir: /app
-        image: postgres:17
+        image: postgres:16.1-alpine3.19
         environment:
             POSTGRES_DB:  ${DB_DATABASE}
             POSTGRES_USER: ${DB_USERNAME}

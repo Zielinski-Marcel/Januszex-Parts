@@ -3,6 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Validator;
+
 class CreateSpendingRequest extends FormRequest
 {
     /**
@@ -21,14 +24,19 @@ class CreateSpendingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'price' => 'required|numeric|min:0', // Wymagane, liczba, minimalna wartość 0
-            'type' => 'required|string|max:255', // Wymagane, ciąg znaków, maksymalnie 255 znaków
-            'date' => 'required|date', // Wymagane, poprawna data
-            'place' => 'nullable|string|max:255', // Opcjonalne, ciąg znaków, maksymalnie 255 znaków
-            'description' => 'nullable|string|max:1000', // Opcjonalne, ciąg znaków, maksymalnie 1000 znaków
-            'user_id' => 'required|integer|exists:users,id', // Wymagane, liczba całkowita, musi istnieć w tabeli users w kolumnie id
-            'vehicle_id' => 'required|integer|exists:vehicles,id', // Wymagane, liczba całkowita, musi istnieć w tabeli vehicles w kolumnie id
+            'price' => 'required|numeric|min:0',
+            'type' => 'required|string|max:255',
+            'date' => 'required|date',
+            'place' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:1000'
         ];
     }
-
+    protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator): void
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'errors' => $validator->errors(),
+            ], 422)
+        );
+    }
 }

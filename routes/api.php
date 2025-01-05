@@ -9,8 +9,11 @@ Route::get('/user/{id}', [UserController::class, 'getUser'])->name('getUser');
 Route::post('/user', [UserController::class, 'createUser'])->name('createUser');
 
 
-Route::get('/get/{id}', [\App\Http\Controllers\Api\SpendingController::class, 'getSpending'])->name('getSpending')->middleware('auth:sanctum');
-Route::post('/create/spending', [\App\Http\Controllers\Api\SpendingController::class, 'createSpending'])->name('createSpending')->middleware('auth:sanctum');
+Route::get('/get/spendings/{vehicle_id}', [\App\Http\Controllers\Api\SpendingController::class, 'getSpendings'])->name('getSpendings')->middleware('auth.basic');
+Route::get('/get/spending/{id}/{vehicle_id}', [\App\Http\Controllers\Api\SpendingController::class, 'getSpending'])->name('getSpending')->middleware('auth.basic');
+Route::post('/create/spending/{vehicle_id}', [\App\Http\Controllers\Api\SpendingController::class, 'createSpending'])->name('createSpending')->middleware('auth.basic');
+Route::post('/edit/spending/{id}/{vehicle_id}', [\App\Http\Controllers\Api\SpendingController::class, 'editSpending'])->name('editSpending')->middleware('auth.basic');
+Route::delete('/deleteuser/spending/{id}/{vehicle_id}', [\App\Http\Controllers\Api\SpendingController::class, 'deleteSpending'])->name('deleteSpending')->middleware('auth.basic');
 
 
 
