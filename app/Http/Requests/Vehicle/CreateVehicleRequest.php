@@ -1,8 +1,11 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Vehicle;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Validator;
 
 class CreateVehicleRequest extends FormRequest
 {
@@ -17,7 +20,7 @@ class CreateVehicleRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array|string>
      */
     public function rules(): array
     {
@@ -29,5 +32,13 @@ class CreateVehicleRequest extends FormRequest
             'purchase_date' => 'required|integer|min:1886|max:' . date('Y'),
             'color' => 'required|string|max:255',
         ];
+    }
+    protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator): void
+    {
+        throw new HttpResponseException(
+            response()->json([
+                'errors' => $validator->errors(),
+            ], 422)
+        );
     }
 }

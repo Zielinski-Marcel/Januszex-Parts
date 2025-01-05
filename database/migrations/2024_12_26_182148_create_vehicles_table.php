@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('fuel_type');
             $table->integer('purchase_date');
             $table->string('color');
+            $table->unsignedBigInteger('owner_id');
             $table->timestamps();
         });
     }

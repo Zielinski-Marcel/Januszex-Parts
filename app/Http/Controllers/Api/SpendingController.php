@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 
 class SpendingController extends Controller
 {
-    public function getSpending($id): JsonResponse{
+    public function getSpendings($id): JsonResponse{
         $spending = Spending::where('id', $id)->first();
         return response()->json(['spending'=>$spending]);
     }

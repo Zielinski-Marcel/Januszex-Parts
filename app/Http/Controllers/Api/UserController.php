@@ -16,9 +16,5 @@ class UserController extends Controller
     public function createUser(): JsonResponse{
         return response()->json([]);
     }
-    public function changeUserName(User $user): JsonResponse{
-        $user->name='jd';
-        $user->save();
-        return response()->json(['username'=>$user->name])->setStatusCode(200);
-    }
+
 }
