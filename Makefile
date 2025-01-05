@@ -1,19 +1,19 @@
 init: check-if-env-file-exist
-	@docker compose build
+	@docker-compose build
 
 dev:
-	@docker compose up -d
-	@docker compose exec app /dev.sh
+	@docker-compose up -d
+	@docker-compose exec app /dev.sh
 
 stop:
-	@docker compose stop
+	@docker-compose stop
 
 shell:
-	@docker compose exec -it app bash
+	@docker-compose exec -it app bash
 
 
 migrate:
-	@docker compose exec app php artisan migrate:fresh --seed
+	@docker-compose exec app php artisan migrate:fresh --seed
 
 check-if-env-file-exist:
 	@if [ ! -f ".env" ]; then \
