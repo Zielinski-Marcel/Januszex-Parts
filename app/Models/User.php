@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword;
@@ -10,7 +12,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
+    /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
     /**
@@ -46,4 +48,21 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
             'password' => 'hashed',
         ];
     }
+
+
+    public function vehicles()
+    {
+        return $this->belongsToMany(Vehicle::class, 'user_vehicle')
+            ->withPivot('role', 'status')
+            ->withTimestamps();
+    }
+
+    public function spendings(): HasMany
+    {
+        return $this->hasMany(Spending::class);
+    }
+//    public function vehicles(): HasMany
+//    {
+//        return $this->hasMany(Vehicle::class,'owner_id');
+//    }
 }

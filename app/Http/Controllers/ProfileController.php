@@ -10,12 +10,25 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
     /**
      * Display the user's profile form.
      */
+    public function show($username)
+    {
+        $user = User::where('name', $username)->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Użytkownik nie został znaleziony.'], 404);
+        }
+
+        return view('user', ['user' => $user]);
+    }
+
+
     public function edit(Request $request): Response
     {
         return Inertia::render('Profile/Edit', [
