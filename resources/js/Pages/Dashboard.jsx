@@ -1,13 +1,10 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import Sidebar from './Sidebar';
 
-export default function Dashboard() {
-    const cars = [
-        { id: 1, name: 'BMW E46' },
-        { id: 2, name: 'Mercedes S Klasa' },
-    ];
+export default function Dashboard({vehicles, userid}){
+
 
     const expenses = [
         {
@@ -44,7 +41,7 @@ export default function Dashboard() {
         }
     ];
 
-    const [selectedCar, setSelectedCar] = useState(cars[0]);
+    const [selectedCar, setSelectedCar] = useState(vehicles[0]);
 
     return (
         <AuthenticatedLayout
@@ -58,7 +55,7 @@ export default function Dashboard() {
                         <div className="p-6 text-gray-900">
                             <div className="flex h-screen bg-white">
                                 {/* Sidebar */}
-                                <Sidebar cars={cars} selectedCar={selectedCar} setSelectedCar={setSelectedCar} />
+                                <Sidebar cars={vehicles} selectedCar={selectedCar} setSelectedCar={setSelectedCar} userid={userid} />
 
                                 {/* Main Content */}
                                 <div className="flex-1 p-4">

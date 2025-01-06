@@ -17,5 +17,3 @@ Route::get('/spending/{id}', [\App\Http\Controllers\Api\SpendingController::clas
 Route::post('/create/spending', [\App\Http\Controllers\Api\SpendingController::class, 'createSpending']);
 
 
-Route::get('/vehicle/{id}', [\App\Http\Controllers\Api\VehicleController::class, 'getVehicle']);
-Route::post('/create/vehicle', [\App\Http\Controllers\Api\VehicleController::class, 'createVehicle']);
