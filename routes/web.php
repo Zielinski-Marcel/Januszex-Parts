@@ -9,14 +9,7 @@ use App\Http\Controllers\UserController;
 Route::get('/user/{username}', [ProfileController::class, 'show']);
 
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::redirect('/', '/dashboard');
 
 Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, "show"])->middleware(['auth', 'verified'])->name('dashboard');
 
