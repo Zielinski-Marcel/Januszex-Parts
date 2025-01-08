@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('type');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('vehicle_id');
-            $table->string('place');
+            $table->string('place')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();
 
