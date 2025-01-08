@@ -1,13 +1,12 @@
 import {useForm} from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
-import Sidebar from "@/Pages/Sidebar.jsx";
 
 export default function addVehicle({userid}){
     const form = useForm();
 
     function submit(e){
         e.preventDefault();
-        form.post(`/user/${userid}/vehicle`);
+        form.post(`/create/vehicle`);
     }
 
     return(

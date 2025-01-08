@@ -26,7 +26,7 @@ const Sidebar = ({ cars, selectedCar, setSelectedCar, userid }) => {
                         {car.brand}
                     </button>
                 ))}
-                <Link href={`/user/${userid}/vehicle/create`} className="w-full flex items-center p-3 text-gray-500 rounded-lg">
+                <Link href={`/create/vehicle`} className="w-full flex items-center p-3 text-gray-500 rounded-lg">
                     <div className="w-6 h-6 mr-2 flex items-center justify-center bg-[#2ECC71] text-white rounded-full text-sm">
                         +
                     </div>

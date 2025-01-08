@@ -30,7 +30,9 @@ class Vehicle extends Model
             ->withPivot('role', 'status')
             ->withTimestamps();
     }
-    public function user(){
+
+    public function user()
+    {
         return $this->belongsTo(User::class, 'owner_id');
     }
 
@@ -38,9 +40,5 @@ class Vehicle extends Model
     public function spendings()
     {
         return $this->hasMany(Spending::class);
-    }
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'owner_id');
     }
 }
