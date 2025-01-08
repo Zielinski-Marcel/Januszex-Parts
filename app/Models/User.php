@@ -61,8 +61,8 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     {
         return $this->hasMany(Spending::class);
     }
-//    public function vehicles(): HasMany
-//    {
-//        return $this->hasMany(Vehicle::class,'owner_id');
-//    }
+    public function vehicle(): HasMany
+    {
+        return $this->hasMany(Vehicle::class,'owner_id');
+    }
 }
