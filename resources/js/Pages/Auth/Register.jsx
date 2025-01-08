@@ -1,5 +1,5 @@
+import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
@@ -25,96 +25,97 @@ export default function Register() {
         <GuestLayout>
             <Head title="Register" />
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="name" value="Name" />
+            <div className="w-full max-w-lg mx-auto p-8 bg-white rounded-lg">
+                <form onSubmit={submit} className="space-y-6">
+                    <div>
+                        <TextInput
+                            id="name"
+                            name="name"
+                            value={data.name}
+                            className="mt-1 block w-full rounded-md border-gray-200 focus:border-emerald-500 focus:ring-emerald-500"                            autoComplete="name"
+                            isFocused={true}
+                            onChange={(e) => setData('name', e.target.value)}
+                            required
+                            placeholder="Name"
+                        />
+                        <InputError message={errors.name} className="mt-2" />
+                    </div>
 
-                    <TextInput
-                        id="name"
-                        name="name"
-                        value={data.name}
-                        className="mt-1 block w-full"
-                        autoComplete="name"
-                        isFocused={true}
-                        onChange={(e) => setData('name', e.target.value)}
-                        required
-                    />
+                    <div>
+                        <TextInput
+                            id="email"
+                            type="email"
+                            name="email"
+                            value={data.email}
+                            className="mt-1 block w-full rounded-md border-gray-200 focus:border-emerald-500 focus:ring-emerald-500"                            autoComplete="username"
+                            onChange={(e) => setData('email', e.target.value)}
+                            required
+                            placeholder="Email"
+                        />
+                        <InputError message={errors.email} className="mt-2" />
+                    </div>
 
-                    <InputError message={errors.name} className="mt-2" />
-                </div>
+                    <div>
+                        <TextInput
+                            id="password"
+                            type="password"
+                            name="password"
+                            value={data.password}
+                            className="mt-1 block w-full rounded-md border-gray-200 focus:border-emerald-500 focus:ring-emerald-500"                            autoComplete="new-password"
+                            onChange={(e) => setData('password', e.target.value)}
+                            required
+                            placeholder="Password"
+                        />
+                        <InputError message={errors.password} className="mt-2" />
+                    </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                    <div>
+                        <TextInput
+                            id="password_confirmation"
+                            type="password"
+                            name="password_confirmation"
+                            value={data.password_confirmation}
+                            className="mt-1 block w-full rounded-md border-gray-200 focus:border-emerald-500 focus:ring-emerald-500"                            autoComplete="new-password"
+                            onChange={(e) =>
+                                setData('password_confirmation', e.target.value)
+                            }
+                            required
+                            placeholder="Confirm Password"
+                        />
+                        <InputError
+                            message={errors.password_confirmation}
+                            className="mt-2"
+                        />
+                    </div>
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={(e) => setData('email', e.target.value)}
-                        required
-                    />
+                    <div className="space-y-3">
+                        <PrimaryButton
+                            className="w-full justify-center bg-emerald-400 hover:bg-emerald-500 focus:bg-emerald-500"
+                            disabled={processing}
+                        >
+                            Register
+                        </PrimaryButton>
 
-                    <InputError message={errors.email} className="mt-2" />
-                </div>
+                        <button
+                            type="button"
+                            className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors duration-200"
+                        >
+                            Sign up with Facebook
+                        </button>
+                    </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) => setData('password', e.target.value)}
-                        required
-                    />
-
-                    <InputError message={errors.password} className="mt-2" />
-                </div>
-
-                <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
-
-                    <TextInput
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) =>
-                            setData('password_confirmation', e.target.value)
-                        }
-                        required
-                    />
-
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
-                </div>
-
-                <div className="mt-4 flex items-center justify-end">
-                    <Link
-                        href={route('login')}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                        Already registered?
-                    </Link>
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
-                    </PrimaryButton>
-                </div>
-            </form>
+                    <div className="text-center text-sm">
+                        <span className="text-gray-600">Already have an account? </span>
+                        <Link
+                            href={route('login')}
+                            className="text-emerald-500 hover:text-emerald-600 font-medium"
+                        >
+                            Log in here
+                        </Link>
+                    </div>
+                </form>
+            </div>
         </GuestLayout>
     );
 }
+

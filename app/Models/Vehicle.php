@@ -16,7 +16,6 @@ class Vehicle extends Model
         'fuel_type',
         'purchase_date',
         'color',
-        'owner_id',
     ];
 
     protected $casts = [
@@ -40,7 +39,4 @@ class Vehicle extends Model
     {
         return $this->hasMany(Spending::class);
     }
-
-
 }
-
