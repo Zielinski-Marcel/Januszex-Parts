@@ -23,15 +23,18 @@ class Vehicle extends Model
         'purchase_date' => 'integer',
     ];
 
-    // Relacja wiele-do-wielu z użytkownikami
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'user_vehicle')
             ->withPivot('role', 'status')
             ->withTimestamps();
     }
+    public function user(){
+        return $this->belongsTo(User::class, 'owner_id');
+    }
 
-    // Relacja jeden-do-wielu z wydatkami
+
     public function spendings()
     {
         return $this->hasMany(Spending::class);
