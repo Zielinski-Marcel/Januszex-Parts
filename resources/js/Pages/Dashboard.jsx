@@ -44,9 +44,7 @@ export default function Dashboard({vehicles, userid}){
     const [selectedCar, setSelectedCar] = useState(vehicles[0]);
 
     return (
-        <AuthenticatedLayout
-
-        >
+        <AuthenticatedLayout>
             <Head title="Car Expenses" />
 
             <div className="py-12">

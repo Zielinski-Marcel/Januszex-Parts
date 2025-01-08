@@ -34,37 +34,8 @@ const Sidebar = ({ cars, selectedCar, setSelectedCar, userid }) => {
                 </Link>
             </div>
             <div className="mt-auto">
-                <div className="flex items-center mb-4">
-                    <img
-                        src="/placeholder.svg?height=32&width=32"
-                        alt=""
-                        className="w-8 h-8 rounded-full"
-                    />
-                    <div className="ml-auto flex gap-2">
-                        <button className="p-2">
-                            <img
-                                src="/placeholder.svg?height=20&width=20"
-                                alt=""
-                                className="w-5 h-5"
-                            />
-                        </button>
-                        <button className="p-2">
-                            <img
-                                src="/placeholder.svg?height=20&width=20"
-                                alt=""
-                                className="w-5 h-5"
-                            />
-                        </button>
-                    </div>
-                </div>
-                <div className="flex gap-2">
-                    <button className="flex-1 p-2 text-center text-gray-700 hover:bg-gray-100 rounded">
-                        Profil
-                    </button>
-                    <button className="flex-1 p-2 text-center text-gray-700 hover:bg-gray-100 rounded">
-                        Wyloguj się
-                    </button>
-                </div>
+
+
             </div>
         </div>
     );
