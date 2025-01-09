@@ -40,11 +40,11 @@ export default function DeleteVehicleForm({ className = '', vehicles = [] }) {
                 Lista pojazdów
                 {vehicles.map(vehicle=> (
                     <div className="flex">
-                        {vehicle.brand}, &nbsp;
-                        {vehicle.model}
-                        <div className="flex flex-1">
-
+                        <div className="content-center">
+                            {vehicle.brand}, &nbsp;
+                            {vehicle.model}
                         </div>
+                        <div className="flex flex-1"/>
                     <DangerButton onClick={confirmVehicleDeletion(vehicle.id)}>
                         Delete Vehicle
                     </DangerButton>
