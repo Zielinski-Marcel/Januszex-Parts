@@ -76,7 +76,7 @@ export default function Login({ status, canResetPassword }) {
 
                     <div className="space-y-3">
                         <PrimaryButton
-                            className="w-full justify-center bg-emerald-400 hover:bg-emerald-500 focus:bg-emerald-500"
+                            className="w-full justify-center bg-emerald-400 hover:bg-secondary focus:bg-primary "
                             disabled={processing}
                         >
                             Log in
@@ -91,7 +91,7 @@ export default function Login({ status, canResetPassword }) {
                     </div>
 
                     <div className="text-center text-sm">
-                        <span className="text-gray-600">Not your account yet? </span>
+                        <span className="text-gray-600">Not your account yet?&nbsp;&nbsp;</span>
                         <Link
                             href={route('register')}
                             className="text-emerald-500 hover:text-emerald-600 font-medium"
