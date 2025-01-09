@@ -93,7 +93,8 @@ services:
 
 networks:
     projekt-pipssii_app-net:
-        external: true
+        #external: true
+        driver: bridge
 
 volumes:
     db_data:
