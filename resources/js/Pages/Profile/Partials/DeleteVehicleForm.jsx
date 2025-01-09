@@ -43,7 +43,6 @@ export default function DeleteVehicleForm({ className = '', vehicles = [] }) {
                         {vehicle.brand}, &nbsp;
                         {vehicle.model}
                         <div className="flex flex-1">
-
                         </div>
                     <DangerButton onClick={confirmVehicleDeletion(vehicle.id)}>
                         Delete Vehicle

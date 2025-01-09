@@ -3,7 +3,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 
 export default function addVehicle({userid}){
     const form = useForm();
-
     function submit(e){
         e.preventDefault();
         form.post(`/create/vehicle`);
@@ -11,13 +10,14 @@ export default function addVehicle({userid}){
 
     return(
         <AuthenticatedLayout>
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div className="py-16">
+                <div className="mx-auto max-w-2xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <div className="flex h-screen bg-white justify-center">
-                                <div className="flex w-full ml-1 mr-1 justify-center">
-                                    <form onSubmit={submit} className="space-y-5 max-w-lg w-full mt-1 justify-center">
+                            <div className="flex bg-white justify-center">
+                                <div className="flex w-full mx-1 my-3 justify-center">
+                                    <form onSubmit={submit} className="space-y-6 max-w-lg w-full justify-center">
+                                        <header className="text-lg font-semibold mb-4 text-center">Wpisz dane pojazdu</header>
                                         <input
                                             type="text"
                                             name="brand"
