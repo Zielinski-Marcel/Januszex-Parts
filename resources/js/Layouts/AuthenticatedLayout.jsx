@@ -15,7 +15,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 items-center justify-between">
                         <div className="flex shrink-0 items-center">
-                            <Link href="/" className="text-[#2ECC71] text-4xl font-bold">
+                            <Link href="/" className="text-primary text-4xl font-bold">
                                 HKS
                             </Link>
                         </div>
