@@ -37,12 +37,12 @@ export default function Login({ status, canResetPassword }) {
                         <TextInput
                             id="email"
                             type="email"
+                            required="true"
                             name="email"
                             value={data.email}
                             className="mt-1 block w-full rounded-md border-gray-200 focus:border-emerald-500 focus:ring-emerald-500"
                             placeholder="Email"
                             autoComplete="username"
-                            isFocused={true}
                             onChange={(e) => setData('email', e.target.value)}
                         />
                         <InputError message={errors.email} className="mt-2" />

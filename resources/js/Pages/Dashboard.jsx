@@ -58,7 +58,7 @@ export default function Dashboard({vehicles, userid}){
                                 {/* Main Content */}
                                 <div className="flex-1 p-4">
                                     <div className="mb-4">
-                                        <button className="w-full bg-[#2ECC71] text-white p-4 rounded-lg flex items-center justify-center">
+                                        <button className="w-full bg-primary text-white p-4 rounded-lg flex items-center justify-center">
                                             <span className="mr-2">+</span>
                                             Dodaj nową płatność
                                         </button>
