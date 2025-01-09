@@ -15,7 +15,7 @@ export default function addVehicle({userid}){
                     <div className="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
                             <div className="flex bg-white justify-center">
-                                <div className="flex w-full mx-1 my-3 justify-center">
+                                <div className="flex w-full mx-1 mb-3 mt-1 justify-center">
                                     <form onSubmit={submit} className="space-y-6 max-w-lg w-full justify-center">
                                         <header className="text-lg font-semibold mb-4 text-center">Wpisz dane pojazdu</header>
                                         <input
