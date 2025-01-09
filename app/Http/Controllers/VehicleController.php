@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Vehicle\CreateVehicleRequest;
 use App\Http\Requests\Vehicle\EditVehicleRequest;
+use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Http\JsonResponse;
+use Inertia\Inertia;
 
 
 class VehicleController extends Controller
@@ -28,17 +30,19 @@ class VehicleController extends Controller
             'vehicles' => $vehicles
         ], 200);
     }
-    public function createVehicle(CreateVehicleRequest $request): JsonResponse
+    public function createVehicle(CreateVehicleRequest $request): \Illuminate\Http\RedirectResponse
     {
         $user = auth()->user();
         $validated = $request->validated();
-        $validated['owner_id'] = auth()->id();
-        $vehicle=Vehicle::create($validated);
+        $vehicle = new Vehicle();
+        $vehicle -> fill($validated);
+        $vehicle -> user() -> associate($user);
+        $vehicle -> save();
         $user->vehicles()->attach($vehicle->id, [
             'role' => 'owner',
             'status' => 'active'
         ]);
-        return response()->json(['message' => 'Vehicle created successfully.'], 201);
+        return redirect()->to("/dashboard");
     }
     public function editVehicle(EditVehicleRequest $request, $id): JsonResponse
     {
@@ -72,4 +76,7 @@ class VehicleController extends Controller
         return redirect()->back()->with('status', 'Vehicle deleted successfully.');
     }
 
+    public function create(User $user){
+        return Inertia::render('Vehicle/addVehicle', ['userid' => $user -> id]);
+    }
 }

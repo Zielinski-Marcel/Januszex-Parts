@@ -9,18 +9,9 @@ use App\Http\Controllers\UserController;
 Route::get('/user/{username}', [ProfileController::class, 'show']);
 
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::redirect('/', '/dashboard');
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, "show"])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -41,6 +32,7 @@ Route::delete('/deleteuser/spending/{id}/{vehicle_id}', [\App\Http\Controllers\S
 
 Route::get('/getuser/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'getVehicle'])->name('getVehicle')->middleware('auth.basic');
 Route::get('/getuser/vehicles', [\App\Http\Controllers\VehicleController::class, 'getVehicles'])->name('getVehicles')->middleware('auth.basic');
+Route::get('/create/vehicle', [\App\Http\Controllers\VehicleController::class, 'create'])->middleware('auth.basic');
 Route::post('/create/vehicle', [\App\Http\Controllers\VehicleController::class, 'createVehicle'])->name('createVehicle')->middleware('auth.basic');
 Route::post('/edit/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'editVehicle'])->name('editVehicle')->middleware('auth.basic');
 Route::delete('/deleteuser/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'deleteVehicle'])->name('deleteVehicle')->middleware('auth.basic');
