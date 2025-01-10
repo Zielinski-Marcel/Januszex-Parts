@@ -21,6 +21,7 @@ class DashboardController extends Controller
         return Inertia::render("Dashboard",[
             'spendings' => $spendings,
             'vehicles' => $user->vehicles,
+            'vehicle' => $vehicle,
             'userid' => $user->id,
         ]);
 

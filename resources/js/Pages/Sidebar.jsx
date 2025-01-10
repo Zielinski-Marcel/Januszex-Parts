@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from "@inertiajs/react";
 
-const Sidebar = ({ cars, selectedCar, setSelectedCar, userid }) => {
+const Sidebar = ({ cars, selectedCarId, userid }) => {
     const [showingSidebar, setShowingSidebar] = useState(false);
 
     return (
@@ -47,11 +47,11 @@ const Sidebar = ({ cars, selectedCar, setSelectedCar, userid }) => {
                 </div>
                 <div className="space-y-2">
                     {cars.map((car) => (
+                        <Link href={`/dashboard/${car.id}`}>
                         <button
                             key={car.id}
-                            onClick={() => setSelectedCar(car)}
                             className={`w-full flex items-center p-3 rounded-lg text-left ${
-                                selectedCar.id === car.id ? 'bg-gray-100 shadow-sm' : ''
+                                selectedCarId === car.id ? 'bg-gray-100 shadow-sm' : ''
                             }`}
                         >
                             <img
@@ -61,6 +61,7 @@ const Sidebar = ({ cars, selectedCar, setSelectedCar, userid }) => {
                             />
                             {car.brand}
                         </button>
+                        </Link>
                     ))}
                     <Link href={`/create/vehicle`} className="w-full flex items-center p-3 text-gray-500 rounded-lg">
                         <div className="w-6 h-6 mr-2 flex items-center justify-center bg-[#2ECC71] text-white rounded-full text-sm">

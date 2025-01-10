@@ -3,11 +3,8 @@ import { Head } from '@inertiajs/react';
 import {useEffect, useState} from 'react';
 import Sidebar from './Sidebar';
 
-export default function Dashboard({vehicles, userid, spendings}){
+export default function Dashboard({vehicles, vehicle, userid, spendings}){
 
-
-    const [selectedCar, setSelectedCar] = useState(vehicles[0]);
-console.log(spendings);
     return (
         <AuthenticatedLayout>
             <Head title="Car Expenses" />
@@ -19,7 +16,7 @@ console.log(spendings);
                             <div className="flex h-full bg-white">
                                 {/* Sidebar */}
                                 <div>
-                                <Sidebar cars={vehicles} selectedCar={selectedCar} setSelectedCar={setSelectedCar} userid={userid} />
+                                <Sidebar cars={vehicles} selectedCarId={vehicle?.id} userid={userid} />
                                 </div>
                                 {/* Main Content */}
                                 <div className="p-4">
