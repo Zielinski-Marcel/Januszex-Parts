@@ -1,7 +1,7 @@
 import {useForm} from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 
-export default function addVehicle({userid}){
+export default function AddVehicle({userid}){
     const form = useForm();
     function submit(e){
         e.preventDefault();
