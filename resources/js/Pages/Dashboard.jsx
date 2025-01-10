@@ -51,12 +51,13 @@ export default function Dashboard({vehicles, userid}){
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className=" bg-white shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">
-                            <div className="flex h-fit bg-white">
+                            <div className="flex h-full bg-white">
                                 {/* Sidebar */}
+                                <div>
                                 <Sidebar cars={vehicles} selectedCar={selectedCar} setSelectedCar={setSelectedCar} userid={userid} />
-
+                                </div>
                                 {/* Main Content */}
-                                <div className="flex-1 p-4">
+                                <div className="p-4">
                                     <div className="mb-4">
                                         <button className="w-full bg-primary text-white p-4 rounded-lg flex items-center justify-center">
                                             <span className="mr-2">+</span>
