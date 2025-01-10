@@ -1,13 +1,10 @@
 import DangerButton from '@/Components/DangerButton';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
-import TextInput from '@/Components/TextInput';
 import { useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
 
-export default function DeleteVehicleForm({ className = '', vehicles = [] }) {
+export default function DeleteVehicleForm({ vehicles = [] }) {
     const [confirmingVehicleDeletion, setConfirmingVehicleDeletion] = useState(false);
     const [vehicleId, setVehicleId] = useState();
 
@@ -40,10 +37,11 @@ export default function DeleteVehicleForm({ className = '', vehicles = [] }) {
                 Lista pojazdów
                 {vehicles.map(vehicle=> (
                     <div className="flex">
-                        {vehicle.brand}, &nbsp;
-                        {vehicle.model}
-                        <div className="flex flex-1">
+                        <div className="content-center">
+                            {vehicle.brand}, &nbsp;
+                            {vehicle.model}
                         </div>
+                        <div className="flex flex-1"/>
                     <DangerButton onClick={confirmVehicleDeletion(vehicle.id)}>
                         Delete Vehicle
                     </DangerButton>

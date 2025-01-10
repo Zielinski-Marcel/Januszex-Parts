@@ -38,7 +38,7 @@ export default function UpdateProfileInformation({
 
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="name" value="Name" />
+                    <InputLabel htmlFor="name" value="Name" className="pl-1"/>
 
                     <TextInput
                         id="name"
@@ -54,7 +54,7 @@ export default function UpdateProfileInformation({
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="email" value="Email" />
+                    <InputLabel htmlFor="email" value="Email" className="pl-1"/>
 
                     <TextInput
                         id="email"
@@ -93,7 +93,7 @@ export default function UpdateProfileInformation({
                 )}
 
                 <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                    <PrimaryButton disabled={processing} className="bg-primary hover:bg-secondary">Save</PrimaryButton>
 
                     <Transition
                         show={recentlySuccessful}
