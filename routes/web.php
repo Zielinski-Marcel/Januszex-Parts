@@ -11,7 +11,7 @@ Route::get('/user/{username}', [ProfileController::class, 'show']);
 
 Route::redirect('/', '/dashboard');
 
-Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, "show"])->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard/{vehicle?}', [\App\Http\Controllers\DashboardController::class, "show"])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

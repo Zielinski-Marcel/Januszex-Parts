@@ -5,7 +5,7 @@ const Sidebar = ({ cars, selectedCar, setSelectedCar, userid }) => {
     const [showingSidebar, setShowingSidebar] = useState(false);
 
     return (
-        <div>
+        <div className={showingSidebar ? "border-r border-gray-200 h-full" : "sm:border-r sm:border-gray-200 h-full"}>
             {/*LOGIKA ZNIKANIA*/}
             <div className="sm:hidden pt-5">
                 <button
@@ -39,7 +39,7 @@ const Sidebar = ({ cars, selectedCar, setSelectedCar, userid }) => {
             <div
                 className={`${
                     showingSidebar ? 'block' : 'hidden'
-                } sm:flex sm:flex-col w-64 p-4 border-r border-gray-200`}
+                } sm:flex sm:flex-col w-64 p-4`}
             >
                 {/*Reszta kodu*/}
                 <div className="mb-6 flex justify-center items-center h-full flex-col">
