@@ -3,46 +3,11 @@ import { Head } from '@inertiajs/react';
 import {useEffect, useState} from 'react';
 import Sidebar from './Sidebar';
 
-export default function Dashboard({vehicles, userid}){
+export default function Dashboard({vehicles, userid, spendings}){
 
-
-    const expenses = [
-        {
-            id: 1,
-            type: 'Paliwo',
-            amount: '100,24 PLN',
-            date: '20.12.2024',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.',
-            image: '/placeholder.svg?height=40&width=40'
-        },
-        {
-            id: 2,
-            type: 'Mechanik',
-            amount: '1000,00 PLN',
-            date: '20.12.2024',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            image: '/placeholder.svg?height=40&width=40'
-        },
-        {
-            id: 3,
-            type: 'Inne',
-            amount: '10,99 PLN',
-            date: '20.12.2024',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            image: '/placeholder.svg?height=40&width=40'
-        },
-        {
-            id: 4,
-            type: 'Inne',
-            amount: '50,00 PLN',
-            date: '20.12.2024',
-            description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.',
-            image: '/placeholder.svg?height=40&width=40'
-        }
-    ];
 
     const [selectedCar, setSelectedCar] = useState(vehicles[0]);
-
+console.log(spendings);
     return (
         <AuthenticatedLayout>
             <Head title="Car Expenses" />
@@ -65,14 +30,15 @@ export default function Dashboard({vehicles, userid}){
                                         </button>
                                     </div>
                                     <div className="space-y-4">
-                                        {expenses.map((expense) => (
+
+                                        {spendings.map((expense) => (
                                             <div key={expense.id} className="bg-white rounded-lg border border-gray-100">
                                                 <div className="p-4">
                                                     <div className="flex items-start justify-between mb-2">
                                                         <div className="flex-1">
                                                             <div className="flex items-center gap-4 mb-1">
                                                                 <span className="font-medium">{expense.type}</span>
-                                                                <span className="text-gray-500">{expense.amount}</span>
+                                                                <span className="text-gray-500">{expense.price}</span>
                                                             </div>
                                                             <p className="text-sm text-gray-500 leading-relaxed">
                                                                 {expense.description}
@@ -84,12 +50,12 @@ export default function Dashboard({vehicles, userid}){
                                                         </div>
                                                     </div>
                                                     <div className="flex justify-between items-end">
-                                                        <span className="text-gray-500 text-sm">{expense.date}</span>
-                                                        <img
-                                                            src={expense.image}
-                                                            alt=""
-                                                            className="w-10 h-10 rounded object-cover"
-                                                        />
+                                                        <span className="text-gray-500 text-sm">{new Date(expense.date).toLocaleDateString()}</span>
+                                                        {/*<img*/}
+                                                        {/*    src={spendings.image}*/}
+                                                        {/*    alt=""*/}
+                                                        {/*    className="w-10 h-10 rounded object-cover"*/}
+                                                        {/*/>*/}
                                                     </div>
                                                 </div>
                                             </div>
