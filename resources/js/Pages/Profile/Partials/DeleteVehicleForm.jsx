@@ -35,7 +35,7 @@ export default function DeleteVehicleForm({ vehicles = [] }) {
             <div className="flex flex-col gap-4">
                 Lista pojazdów
                 {vehicles.map(vehicle=> (
-                    <div className="flex">
+                    <div key={vehicle.id} className="flex">
                         <div className="content-center">
                             {vehicle.brand}, &nbsp;
                             {vehicle.model}
