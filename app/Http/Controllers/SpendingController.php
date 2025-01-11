@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateSpendingRequest;
 use App\Models\Spending;
+use App\Models\User;
+use App\Models\Vehicle;
 use Illuminate\Http\JsonResponse;
+use Inertia\Inertia;
 
 class SpendingController extends Controller
 {
@@ -33,14 +36,18 @@ class SpendingController extends Controller
         return response()->json(['spending'=>$spending]);
     }
 
-    public function createSpending(CreateSpendingRequest $request,$vehicle_id): JsonResponse
+    public function create(Vehicle $vehicle){
+        return Inertia::render('Vehicle/AddSpending', ['vehicle' => $vehicle]);
+    }
+
+    public function createSpending(CreateSpendingRequest $request,$vehicle_id): \Illuminate\Http\RedirectResponse
     {
         $user = auth()->user();
 
         $vehicles = $user->vehicles;
         $vehicle = $vehicles->firstWhere('id', $vehicle_id);
         if (!$vehicle) {
-            return response()->json(['message' => 'Vehicle not found or does not belong to the authenticated user.'], 404);
+            abort(404, 'Vehicle not found or does not belong to the authenticated user.');
         }
         $validated = $request->validated();
         $validated['user_id'] = auth()->id();
@@ -48,10 +55,7 @@ class SpendingController extends Controller
         $spending = Spending::create($validated);
 
         // Return a JSON response
-        return response()->json([
-            'message' => 'Spending created successfully.',
-            'spending' => $spending,
-        ], 201); // 201 status code for resource creation
+        return redirect()->to("/dashboard/" . $vehicle_id);
     }
     public function editSpending($id,CreateSpendingRequest $request,$vehicle_id): JsonResponse
     {

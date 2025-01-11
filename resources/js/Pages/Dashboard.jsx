@@ -1,5 +1,5 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import {Head, Link} from '@inertiajs/react';
 import {useEffect, useState} from 'react';
 import Sidebar from './Sidebar';
 
@@ -21,10 +21,12 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
                                 {/* Main Content */}
                                 <div className="p-4">
                                     <div className="mb-4">
+                                        <Link href={`/create/spending/${vehicle.id}`}>
                                         <button className="w-full bg-primary text-white p-4 rounded-lg flex items-center justify-center">
                                             <span className="mr-2">+</span>
                                             Dodaj nową płatność
                                         </button>
+                                        </Link>
                                     </div>
                                     <div className="space-y-4">
 
