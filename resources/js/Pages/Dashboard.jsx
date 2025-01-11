@@ -44,7 +44,9 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
                                                             </p>
                                                         </div>
                                                         <div className="flex gap-4">
-                                                            <button className="text-blue-500">Edytuj</button>
+                                                            <Link href={`/edit/spending/${expense.id}`}>
+                                                             <button className="text-blue-500">Edytuj</button>
+                                                            </Link>
                                                             <button className="text-red-500">Usuń</button>
                                                         </div>
                                                     </div>

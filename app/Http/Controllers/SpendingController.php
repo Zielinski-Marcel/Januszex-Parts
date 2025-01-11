@@ -57,25 +57,22 @@ class SpendingController extends Controller
         // Return a JSON response
         return redirect()->to("/dashboard/" . $vehicle_id);
     }
-    public function editSpending($id,CreateSpendingRequest $request,$vehicle_id): JsonResponse
+
+    public function edit(Spending $spending){
+        return Inertia::render('Vehicle/EditSpending', ['spending' => $spending]);
+    }
+
+    public function editSpending(CreateSpendingRequest $request, Spending $spending): \Illuminate\Http\RedirectResponse
     {
         $user = auth()->user();
-        $vehicles = $user->vehicles;
-        $vehicle = $vehicles->firstWhere('id', $vehicle_id);
-        if (!$vehicle) {
-            return response()->json(['message' => 'Vehicle not found or does not belong to the authenticated user.'], 404);
-        }
-        $spending = $vehicle->spendings->firstWhere('id', $id);
-        if (!$spending) {
-            return response()->json(['message' => 'Spending not found or does not belong to the authenticated user.'], 404);
+        if ($spending->user_id!==$user->id) {
+            abort(403, 'Spending not found or does not belong to the authenticated user.');
         }
 
         $validated = $request->validated();
-
         $spending->update($validated);
 
-
-        return response()->json(['message' => 'Vehicle edited successfully.'], 200);
+        return redirect()->to("/dashboard/" . $spending->vehicle_id);
     }
     public function deleteSpending($id,$vehicle_id): JsonResponse{
         $user = auth()->user();
