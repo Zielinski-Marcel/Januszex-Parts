@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateSpendingRequest;
 use App\Models\Spending;
+use App\Models\User;
+use App\Models\Vehicle;
 use Illuminate\Http\JsonResponse;
+use Inertia\Inertia;
 
 class SpendingController extends Controller
 {
@@ -33,14 +36,18 @@ class SpendingController extends Controller
         return response()->json(['spending'=>$spending]);
     }
 
-    public function createSpending(CreateSpendingRequest $request,$vehicle_id): JsonResponse
+    public function create(Vehicle $vehicle){
+        return Inertia::render('Vehicle/AddSpending', ['vehicle' => $vehicle]);
+    }
+
+    public function createSpending(CreateSpendingRequest $request,$vehicle_id): \Illuminate\Http\RedirectResponse
     {
         $user = auth()->user();
 
         $vehicles = $user->vehicles;
         $vehicle = $vehicles->firstWhere('id', $vehicle_id);
         if (!$vehicle) {
-            return response()->json(['message' => 'Vehicle not found or does not belong to the authenticated user.'], 404);
+            abort(404, 'Vehicle not found or does not belong to the authenticated user.');
         }
         $validated = $request->validated();
         $validated['user_id'] = auth()->id();
@@ -48,44 +55,33 @@ class SpendingController extends Controller
         $spending = Spending::create($validated);
 
         // Return a JSON response
-        return response()->json([
-            'message' => 'Spending created successfully.',
-            'spending' => $spending,
-        ], 201); // 201 status code for resource creation
+        return redirect()->to("/dashboard/" . $vehicle_id);
     }
-    public function editSpending($id,CreateSpendingRequest $request,$vehicle_id): JsonResponse
+
+    public function edit(Spending $spending){
+        return Inertia::render('Vehicle/EditSpending', ['spending' => $spending]);
+    }
+
+    public function editSpending(CreateSpendingRequest $request, Spending $spending): \Illuminate\Http\RedirectResponse
     {
         $user = auth()->user();
-        $vehicles = $user->vehicles;
-        $vehicle = $vehicles->firstWhere('id', $vehicle_id);
-        if (!$vehicle) {
-            return response()->json(['message' => 'Vehicle not found or does not belong to the authenticated user.'], 404);
-        }
-        $spending = $vehicle->spendings->firstWhere('id', $id);
-        if (!$spending) {
-            return response()->json(['message' => 'Spending not found or does not belong to the authenticated user.'], 404);
+        if ($spending->user_id!==$user->id) {
+            abort(403, 'Spending not found or does not belong to the authenticated user.');
         }
 
         $validated = $request->validated();
-
         $spending->update($validated);
 
-
-        return response()->json(['message' => 'Vehicle edited successfully.'], 200);
+        return redirect()->to("/dashboard/" . $spending->vehicle_id);
     }
-    public function deleteSpending($id,$vehicle_id): JsonResponse{
+    public function deleteSpending(Spending $spending): \Illuminate\Http\RedirectResponse
+    {
         $user = auth()->user();
-        $vehicles = $user->vehicles;
-        $vehicle = $vehicles->firstWhere('id', $vehicle_id);
-        if (!$vehicle) {
-            return response()->json(['message' => 'Vehicle not found or does not belong to the authenticated user.'], 404);
-        }
-        $spending = $vehicle->spendings->firstWhere('id', $id);
-        if (!$spending || $spending(['user_id'])==auth()->id()) {
-            return response()->json(['message' => 'Spending not found or does not belong to the authenticated user.'], 404);
+        if ($spending->user_id!==$user->id) {
+            abort(403, 'Spending not found or does not belong to the authenticated user.');
         }
 
         $spending->delete();
-        return response()->json(['message' => 'Spending deleted successfully.'], 200);
+        return redirect()->back()->with("status", 'Spending deleted successfully.');
     }
 }

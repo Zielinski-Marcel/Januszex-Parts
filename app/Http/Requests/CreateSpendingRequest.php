@@ -31,12 +31,4 @@ class CreateSpendingRequest extends FormRequest
             'description' => 'nullable|string|max:1000'
         ];
     }
-    protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator): void
-    {
-        throw new HttpResponseException(
-            response()->json([
-                'errors' => $validator->errors(),
-            ], 422)
-        );
-    }
 }

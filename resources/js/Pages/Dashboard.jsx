@@ -1,13 +1,31 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
+import {Head, Link, useForm} from '@inertiajs/react';
 import {useEffect, useState} from 'react';
 import Sidebar from './Sidebar';
+import MessageBox from "@/Components/MessageBox.jsx";
 
-export default function Dashboard({vehicles, userid, spendings}){
+export default function Dashboard({vehicles, vehicle, userid, spendings}){
+    const [confirmingSpendingDeletion, setConfirmingSpendingDeletion] = useState(false);
+    const [spendingId, setSpendingId] = useState();
 
+    const deleteForm = useForm();
 
-    const [selectedCar, setSelectedCar] = useState(vehicles[0]);
-console.log(spendings);
+    const confirmSpendingDeletion = (id) => () => {
+        setConfirmingSpendingDeletion(true);
+        setSpendingId(id)
+    };
+
+    const deleteSpending = () => {
+        deleteForm.delete(`/deleteuser/spending/${spendingId}`, {
+            preserveScroll: true,
+            onSuccess: () => closeModal(),
+        });
+    };
+
+    const closeModal = () => {
+        setConfirmingSpendingDeletion(false);
+    };
+
     return (
         <AuthenticatedLayout>
             <Head title="Car Expenses" />
@@ -19,15 +37,17 @@ console.log(spendings);
                             <div className="flex h-full bg-white">
                                 {/* Sidebar */}
                                 <div>
-                                <Sidebar cars={vehicles} selectedCar={selectedCar} setSelectedCar={setSelectedCar} userid={userid} />
+                                <Sidebar cars={vehicles} selectedCarId={vehicle?.id} userid={userid} />
                                 </div>
                                 {/* Main Content */}
                                 <div className="p-4">
                                     <div className="mb-4">
+                                        <Link href={`/create/spending/${vehicle.id}`}>
                                         <button className="w-full bg-primary text-white p-4 rounded-lg flex items-center justify-center">
                                             <span className="mr-2">+</span>
                                             Dodaj nową płatność
                                         </button>
+                                        </Link>
                                     </div>
                                     <div className="space-y-4">
 
@@ -45,8 +65,10 @@ console.log(spendings);
                                                             </p>
                                                         </div>
                                                         <div className="flex gap-4">
-                                                            <button className="text-blue-500">Edytuj</button>
-                                                            <button className="text-red-500">Usuń</button>
+                                                            <Link href={`/edit/spending/${expense.id}`}>
+                                                             <button className="text-blue-500">Edytuj</button>
+                                                            </Link>
+                                                            <button className="text-red-500" onClick={confirmSpendingDeletion(expense.id)}>Usuń</button>
                                                         </div>
                                                     </div>
                                                     <div className="flex justify-between items-end">
@@ -67,6 +89,10 @@ console.log(spendings);
                     </div>
                 </div>
             </div>
+            <MessageBox show={confirmingSpendingDeletion} onAccept={deleteSpending} onClose={closeModal} isProcessing={deleteForm.processing} acceptButtonText="Delete Spending" title={`Are you sure you want to delete your spending?`}>
+                Once your spending is deleted, all of its resources and
+                data will be permanently deleted.
+            </MessageBox>
         </AuthenticatedLayout>
     );
 }

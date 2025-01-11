@@ -3,6 +3,7 @@ import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
 import { useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
+import MessageBox from "@/Components/MessageBox.jsx";
 
 export default function DeleteVehicleForm({ vehicles = [] }) {
     const [confirmingVehicleDeletion, setConfirmingVehicleDeletion] = useState(false);
@@ -18,9 +19,7 @@ export default function DeleteVehicleForm({ vehicles = [] }) {
         setVehicleId(id)
     };
 
-    const deleteVehicle = (e) => {
-        e.preventDefault();
-
+    const deleteVehicle = () => {
         destroy(`/deleteuser/vehicle/${vehicleId}`, {
             preserveScroll: true,
             onSuccess: () => closeModal(),
@@ -36,7 +35,7 @@ export default function DeleteVehicleForm({ vehicles = [] }) {
             <div className="flex flex-col gap-4">
                 Lista pojazdów
                 {vehicles.map(vehicle=> (
-                    <div className="flex">
+                    <div key={vehicle.id} className="flex">
                         <div className="content-center">
                             {vehicle.brand}, &nbsp;
                             {vehicle.model}
@@ -48,31 +47,10 @@ export default function DeleteVehicleForm({ vehicles = [] }) {
                     </div>
                 ))}
             </div>
-            <Modal show={confirmingVehicleDeletion} onClose={closeModal}>
-                <form onSubmit={deleteVehicle} className="p-6">
-                    <h2 className="text-lg font-medium text-gray-900">
-                        Are you sure you want to delete your vehicle {vehicles.find(vehicle => vehicle.id === vehicleId)?.brand}?
-                    </h2>
-
-                    <p className="mt-1 text-sm text-gray-600">
-                        Once your vehicle is deleted, all of its resources and
-                        data will be permanently deleted. Please enter your
-                        password to confirm you would like to permanently delete
-                        your account.
-                    </p>
-
-                    <div className="mt-6 flex justify-end">
-                        <SecondaryButton onClick={closeModal}>
-                            Cancel
-                        </SecondaryButton>
-
-                        <DangerButton className="ms-3" disabled={processing}>
-                            Delete Vehicle
-                        </DangerButton>
-                    </div>
-                </form>
-            </Modal>
-
+            <MessageBox show={confirmingVehicleDeletion} onAccept={deleteVehicle} onClose={closeModal} isProcessing={processing} acceptButtonText="Delete Vehicle" title={`Are you sure you want to delete your vehicle ${vehicles.find(vehicle => vehicle.id === vehicleId)?.brand}?`}>
+                Once your vehicle is deleted, all of its resources and
+                data will be permanently deleted.
+            </MessageBox>
         </div>
     );
 }

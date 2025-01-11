@@ -77,6 +77,6 @@ class VehicleController extends Controller
     }
 
     public function create(User $user){
-        return Inertia::render('Vehicle/addVehicle', ['userid' => $user -> id]);
+        return Inertia::render('Vehicle/AddVehicle', ['userid' => $user -> id]);
     }
 }
