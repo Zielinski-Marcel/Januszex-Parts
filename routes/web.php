@@ -29,7 +29,7 @@ Route::get('/create/spending/{vehicle}', [\App\Http\Controllers\SpendingControll
 Route::post('/create/spending/{vehicle_id}', [\App\Http\Controllers\SpendingController::class, 'createSpending'])->name('createSpending')->middleware('auth.basic');
 Route::get('/edit/spending/{spending}/', [\App\Http\Controllers\SpendingController::class, 'edit'])->middleware('auth.basic');
 Route::put('/edit/spending/{spending}', [\App\Http\Controllers\SpendingController::class, 'editSpending'])->name('editSpending')->middleware('auth.basic');
-Route::delete('/deleteuser/spending/{id}/{vehicle_id}', [\App\Http\Controllers\SpendingController::class, 'deleteSpending'])->name('deleteSpending')->middleware('auth.basic');
+Route::delete('/deleteuser/spending/{spending}', [\App\Http\Controllers\SpendingController::class, 'deleteSpending'])->name('deleteSpending')->middleware('auth.basic');
 
 
 Route::get('/getuser/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'getVehicle'])->name('getVehicle')->middleware('auth.basic');

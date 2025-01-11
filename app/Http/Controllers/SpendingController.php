@@ -74,19 +74,14 @@ class SpendingController extends Controller
 
         return redirect()->to("/dashboard/" . $spending->vehicle_id);
     }
-    public function deleteSpending($id,$vehicle_id): JsonResponse{
+    public function deleteSpending(Spending $spending): \Illuminate\Http\RedirectResponse
+    {
         $user = auth()->user();
-        $vehicles = $user->vehicles;
-        $vehicle = $vehicles->firstWhere('id', $vehicle_id);
-        if (!$vehicle) {
-            return response()->json(['message' => 'Vehicle not found or does not belong to the authenticated user.'], 404);
-        }
-        $spending = $vehicle->spendings->firstWhere('id', $id);
-        if (!$spending || $spending(['user_id'])==auth()->id()) {
-            return response()->json(['message' => 'Spending not found or does not belong to the authenticated user.'], 404);
+        if ($spending->user_id!==$user->id) {
+            abort(403, 'Spending not found or does not belong to the authenticated user.');
         }
 
         $spending->delete();
-        return response()->json(['message' => 'Spending deleted successfully.'], 200);
+        return redirect()->back()->with("status", 'Spending deleted successfully.');
     }
 }

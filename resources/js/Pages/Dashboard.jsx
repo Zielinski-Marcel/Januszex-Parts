@@ -1,9 +1,30 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import {Head, Link} from '@inertiajs/react';
+import {Head, Link, useForm} from '@inertiajs/react';
 import {useEffect, useState} from 'react';
 import Sidebar from './Sidebar';
+import MessageBox from "@/Components/MessageBox.jsx";
 
 export default function Dashboard({vehicles, vehicle, userid, spendings}){
+    const [confirmingSpendingDeletion, setConfirmingSpendingDeletion] = useState(false);
+    const [spendingId, setSpendingId] = useState();
+
+    const deleteForm = useForm();
+
+    const confirmSpendingDeletion = (id) => () => {
+        setConfirmingSpendingDeletion(true);
+        setSpendingId(id)
+    };
+
+    const deleteSpending = () => {
+        deleteForm.delete(`/deleteuser/spending/${spendingId}`, {
+            preserveScroll: true,
+            onSuccess: () => closeModal(),
+        });
+    };
+
+    const closeModal = () => {
+        setConfirmingSpendingDeletion(false);
+    };
 
     return (
         <AuthenticatedLayout>
@@ -47,7 +68,7 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
                                                             <Link href={`/edit/spending/${expense.id}`}>
                                                              <button className="text-blue-500">Edytuj</button>
                                                             </Link>
-                                                            <button className="text-red-500">Usuń</button>
+                                                            <button className="text-red-500" onClick={confirmSpendingDeletion(expense.id)}>Usuń</button>
                                                         </div>
                                                     </div>
                                                     <div className="flex justify-between items-end">
@@ -68,6 +89,10 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
                     </div>
                 </div>
             </div>
+            <MessageBox show={confirmingSpendingDeletion} onAccept={deleteSpending} onClose={closeModal} isProcessing={deleteForm.processing} acceptButtonText="Delete Spending" title={`Are you sure you want to delete your spending?`}>
+                Once your spending is deleted, all of its resources and
+                data will be permanently deleted.
+            </MessageBox>
         </AuthenticatedLayout>
     );
 }
