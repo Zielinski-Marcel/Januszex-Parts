@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class ProfileControllerTest extends TestCase
 {
-    use RefreshDatabase; // Używamy RefreshDatabase, by zresetować bazę danych po każdym teście
+    use RefreshDatabase;
 
     /**
      * Test sprawdzający poprawność wyświetlania profilu użytkownika.
