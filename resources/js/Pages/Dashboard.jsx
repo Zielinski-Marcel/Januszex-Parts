@@ -40,7 +40,7 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
                                 <Sidebar cars={vehicles} selectedCarId={vehicle?.id} userid={userid} />
                                 </div>
                                 {/* Main Content */}
-                                <div className="p-4">
+                                <div className="p-4 w-full">
                                     <div className="mb-4">
                                         <Link href={`/create/spending/${vehicle.id}`}>
                                         <button className="w-full bg-primary text-white p-4 rounded-lg flex items-center justify-center">
@@ -52,7 +52,7 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
                                     <div className="space-y-4">
 
                                         {spendings.map((expense) => (
-                                            <div key={expense.id} className="bg-white rounded-lg border border-gray-100">
+                                            <div key={expense.id} className="bg-white rounded-lg border border-gray-100 min-w-full">
                                                 <div className="p-4">
                                                     <div className="flex items-start justify-between mb-2">
                                                         <div className="flex-1">
