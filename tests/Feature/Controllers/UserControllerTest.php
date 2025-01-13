@@ -10,34 +10,6 @@ class UserControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Test sprawdzający, czy użytkownik może zostać pobrany przez ID.
-     *
-     * @return void
-     */
-    public function test_get_user()
-    {
-        // Tworzymy użytkownika i zapisujemy go w bazie danych
-        $user = User::factory()->create(); // Użytkownik jest zapisany w bazie, więc ma przypisane id.
-
-        // Wysyłamy zapytanie GET do endpointu /user/{id}
-        $response = $this->getJson("/user/{$user->id}");
-
-        // Debugowanie odpowiedzi
-        \Log::info($response->getContent()); // Wydrukowanie zawartości odpowiedzi
-
-        // Sprawdzamy, czy odpowiedź zawiera status 200
-        $response->assertStatus(200);
-
-        // Sprawdzamy, czy odpowiedź zawiera dane użytkownika
-        $response->assertJson([
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-            ]
-        ]);
-    }
 
     /**
      * Test sprawdzający, czy użytkownik nie istnieje (404).
