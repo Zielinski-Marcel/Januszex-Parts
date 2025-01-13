@@ -11,7 +11,7 @@ use App\Models\User;
 class DashboardController extends Controller
 {
 
-    public  function show(Request $request ,?Vehicle $vehicle)
+    public  function show(Request $request ,?Vehicle $vehicle=null)
     {
         $spendings = [];
         if($vehicle !== null){
