@@ -11,20 +11,18 @@ use App\Models\User;
 class DashboardController extends Controller
 {
 
-    public  function show(Request $request ,?Vehicle $vehicle)
+    public  function show(Request $request ,?Vehicle $vehicle=null)
     {
-        $spendings = [];
+        $user = $request -> user();
+        $spendings = $user->lastSpendings();
         if($vehicle !== null){
             $spendings = $vehicle->spendings;
         }
-        $user = $request -> user();
         return Inertia::render("Dashboard",[
             'spendings' => $spendings,
             'vehicles' => $user->vehicles,
             'vehicle' => $vehicle,
             'userid' => $user->id,
         ]);
-
     }
-
 }

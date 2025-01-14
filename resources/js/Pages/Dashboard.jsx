@@ -3,6 +3,7 @@ import {Head, Link, useForm} from '@inertiajs/react';
 import {useEffect, useState} from 'react';
 import Sidebar from './Sidebar';
 import MessageBox from "@/Components/MessageBox.jsx";
+import Show from "@/Components/Show.jsx";
 
 export default function Dashboard({vehicles, vehicle, userid, spendings}){
     const [confirmingSpendingDeletion, setConfirmingSpendingDeletion] = useState(false);
@@ -26,6 +27,8 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
         setConfirmingSpendingDeletion(false);
     };
 
+    console.log(vehicle);
+
     return (
         <AuthenticatedLayout>
             <Head title="Car Expenses" />
@@ -41,14 +44,16 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
                                 </div>
                                 {/* Main Content */}
                                 <div className="p-4 w-full">
-                                    <div className="mb-4">
-                                        <Link href={`/create/spending/${vehicle.id}`}>
-                                        <button className="w-full bg-primary text-white p-4 rounded-lg flex items-center justify-center">
-                                            <span className="mr-2">+</span>
-                                            Dodaj nową płatność
-                                        </button>
-                                        </Link>
-                                    </div>
+                                    <Show when={vehicle!==null}>
+                                        <div className="mb-4">
+                                            <Link href={`/create/spending/${vehicle?.id}`}>
+                                            <button className="w-full bg-primary text-white p-4 rounded-lg flex items-center justify-center">
+                                                <span className="mr-2">+</span>
+                                                Dodaj nową płatność
+                                            </button>
+                                            </Link>
+                                        </div>
+                                    </Show>
                                     <div className="space-y-4">
 
                                         {spendings.map((expense) => (
