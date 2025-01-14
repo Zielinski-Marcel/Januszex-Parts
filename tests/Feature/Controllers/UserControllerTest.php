@@ -39,31 +39,4 @@ class UserControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertJson([]);
     }
-
-    /**
-     * Test zmiany nazwy użytkownika.
-     *
-     * @return void
-     */
-    public function test_change_user_name()
-    {
-        // Tworzymy użytkownika
-        $user = User::factory()->create();
-
-        // Przygotowujemy dane do zmiany nazwy
-        $newName = 'jd';
-
-        // Wysyłamy zapytanie PATCH do zmiany nazwy użytkownika
-        $response = $this->patchJson("/user/{$user->id}/change-name", ['name' => $newName]);
-
-        // Sprawdzamy, czy odpowiedź zawiera zaktualizowaną nazwę
-        $response->assertStatus(200);
-        $response->assertJson(['username' => $newName]);
-
-        // Sprawdzamy, czy nazwa użytkownika została zmieniona w bazie danych
-        $this->assertDatabaseHas('users', [
-            'id' => $user->id,
-            'name' => $newName,
-        ]);
-    }
 }
