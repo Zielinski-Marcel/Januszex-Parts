@@ -23,7 +23,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('invites', function (Blueprint $table) {
-            //
+            $table->dropColumn('verification_token');
+
         });
     }
 };

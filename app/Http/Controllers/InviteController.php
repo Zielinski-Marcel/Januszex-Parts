@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Invite\StoreInviteRequest;
 use App\Http\Requests\Invite\UpdateInviteRequest;
+use App\Mail\InviteIfNoAccount;
 use App\Models\Invite;
 use App\Models\Vehicle;
 use App\Models\User;
@@ -33,26 +34,19 @@ class InviteController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreInviteRequest $request): JsonResponse
+    public function store(StoreInviteRequest $request)
     {
         $validated = $request->validated();
-
         $invitor = auth()->user();
-        $user = User::where('email', $validated['email'])->first();
-        if (!$user) {
-            return response()->json(['message' => 'User not found.'], 404);
-        }
-
 
         $vehicle = Vehicle::find($validated['vehicle_id']);
         if (!$vehicle || $vehicle->owner_id !== $invitor->id) {
-            return response()->json(['message' => 'Vehicle not found or unauthorized.'], 404);
+           abort(404, 'Vehicle not found or unauthorized.');
         }
 
         $token = (string) Str::uuid();
 
         Invite::create([
-            'invitee_id' => $user->id,
             'vehicle_id' => $vehicle->id,
             'email' => $validated['email'],
             'invitor_id' => $invitor->id,
@@ -60,8 +54,14 @@ class InviteController extends Controller
             'verification_token' => $token,
 
         ]);
-        Mail::to($validated['email'])->send(new \App\Mail\Invite($user, $invitor, $vehicle, $token));
-        return response()->json(['message' => 'Invitation sent successfully.' ]);
+
+        $user = User::where('email', $validated['email'])->first();
+        if ($user) {
+            Mail::to($validated['email'])->send(new \App\Mail\Invite($user, $invitor, $vehicle, $token));
+        }else{
+            Mail::to($validated['email'])->send(new InviteIfNoAccount($validated['email'], $invitor, $vehicle));
+        }
+        return redirect()->back()->with('status', 'Invitation sent successfully.');
     }
 
 
@@ -89,13 +89,13 @@ class InviteController extends Controller
         $validated = $request->validated();
         $invite=Invite::where('verification_token', $token)->first();
         if(!$invite){
-            return response()->json(['message' => 'Invitation not found.'], 404);
+            abort(404, 'Invitation not found.');
         }
         $invite->update([
             'status' => $validated['status']
         ]);
 
-        $user = $invite->user;
+        $user = User::query()->where('email', $invite->email)->firstOrFail();
         $vehicle = $invite->vehicle;
 
         if ($validated['status'] === 'accepted') {
@@ -106,11 +106,8 @@ class InviteController extends Controller
                 ],
             ]);
         }
-
-        return response()->json([
-            'message' => 'Invite updated successfully.',
-            'invite' => $invite,
-        ]);
+        $invite->delete();
+        return redirect('/dashboard')->with('status', 'Invite updated successfully.');
     }
 
     /**
@@ -119,10 +116,10 @@ class InviteController extends Controller
     public function destroy(Invite $invite)
     {
         if ($invite->invitor_id !== auth()->id()) {
-            return response()->json(['message' => 'Unauthorized.'], 403);
+            abort(403);
         }
 
         $invite->delete();
-        return response()->json(['message' => 'Invitation deleted successfully.']);
+        return redirect()->back()->with('status', 'Invitation deleted successfully.');
     }
 }

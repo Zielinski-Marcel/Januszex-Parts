@@ -11,7 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::table('invites', function (Blueprint $table) {
+            $table->dropColumn('invitee_id');
+        });
+
     }
 
     /**
@@ -19,6 +22,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('invites', function (Blueprint $table) {
+            $table->unsignedBigInteger('invitee_id')->nullable();
+        });
     }
 };
