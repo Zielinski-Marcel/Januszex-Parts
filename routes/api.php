@@ -22,3 +22,6 @@ Route::get('/getuser/vehicles', [\App\Http\Controllers\Api\VehicleController::cl
 Route::post('/create/vehicle', [\App\Http\Controllers\Api\VehicleController::class, 'createVehicle'])->name('createVehicle')->middleware('auth.basic');
 Route::post('/edit/vehicle/{id}', [\App\Http\Controllers\Api\VehicleController::class, 'editVehicle'])->name('editVehicle')->middleware('auth.basic');
 Route::delete('/deleteuser/vehicle/{id}', [\App\Http\Controllers\Api\VehicleController::class, 'deleteVehicle'])->name('deleteVehicle')->middleware('auth.basic');
+
+Route::post('/invite', [\App\Http\Controllers\Api\InviteController::class, 'store'])->name('store')->middleware('auth.basic');
+Route::post('/invite/{verification_token}', [\App\Http\Controllers\Api\InviteController::class, 'update'])->name('update')->middleware('auth.basic');
