@@ -14,9 +14,10 @@ class VehicleController extends Controller
 {
     public function getVehicle($id): JsonResponse{
         $user = auth()->user();
-
-        $vehicles = $user->vehicles;
-        $vehicle = $vehicles->firstWhere('id', $id);
+        $vehicle = $user->vehicles()
+            ->where('vehicles.id', $id)
+            ->wherePivot('status', 'active')
+            ->first();
         if (!$vehicle) {
             return response()->json(['message' => 'Vehicle not found or does not belong to the authenticated user.'], 404);
         }
@@ -74,6 +75,27 @@ class VehicleController extends Controller
         }
         $vehicle->delete();
         return redirect()->back()->with('status', 'Vehicle deleted successfully.');
+    }
+    public function removeUserFromVehicle($vehicle_id, $user_id)
+    {
+        $vehicle = Vehicle::where('id', $vehicle_id)
+            ->where('owner_id', auth()->id())
+            ->first();
+        if (!$vehicle) {
+            abort(404);
+        }
+
+        $user=$vehicle->users->where('id', $user_id)->first();
+        if (!$user) {
+            abort(404);
+        }
+        $vehicle->users()->syncWithoutDetaching([
+            $user->id => [
+                'role' => 'shared',
+                'status' => 'inactive',
+            ],
+        ]);
+        return redirect()->back()->with('status', 'User deleted successfully.');
     }
 
     public function create(User $user){
