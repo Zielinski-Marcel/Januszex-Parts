@@ -20,7 +20,7 @@ class DashboardController extends Controller
         }
         return Inertia::render("Dashboard",[
             'spendings' => $spendings,
-            'vehicles' => $user->vehicles,
+            'vehicles' => $user->vehicles()->wherePivot('status', 'active')->get(),
             'vehicle' => $vehicle,
             'userid' => $user->id,
         ]);

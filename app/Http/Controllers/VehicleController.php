@@ -26,7 +26,7 @@ class VehicleController extends Controller
     public function getVehicles(): JsonResponse{
         $user = auth()->user();
 
-        $vehicles = $user->vehicles;
+        $vehicles = $user->vehicles()->wherePivot('status', 'active');
         return response()->json([
             'vehicles' => $vehicles
         ], 200);
