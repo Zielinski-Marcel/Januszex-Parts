@@ -15,7 +15,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 items-center justify-between">
                         <div className="flex shrink-0 items-center">
-                            <Link href="/" className="text-[#2ECC71] text-4xl font-bold">
+                            <Link href="/" className="text-primary text-4xl font-bold">
                                 HKS
                             </Link>
                         </div>
@@ -73,7 +73,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                             (previousState) => !previousState,
                                         )
                                     }
-                                    className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:bg-gray-100 focus:text-gray-500 focus:outline-none"
+                                    className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 transition duration-150 ease-in-out hover:bg-gray-100 hover:text-gray-500 focus:outline-none"
                                 >
                                     <svg
                                         className="h-6 w-6"

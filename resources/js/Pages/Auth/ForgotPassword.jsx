@@ -58,7 +58,7 @@ export default function ForgotPassword({ status }) {
                     </div>
 
                     <div className="text-center text-sm">
-                        <span className="text-gray-600">Remember your password? </span>
+                        <span className="text-gray-600">Remember your password?&nbsp;&nbsp;</span>
                         <Link
                             href={route('login')}
                             className="text-emerald-500 hover:text-emerald-600 font-medium"

@@ -6,17 +6,13 @@ export default function GuestLayout({ children }) {
             <div>
                 <Link
                     href="/"
-                    className="text-4xl font-serif text-emerald-600 tracking-wider"
-                    style={{
-                        textShadow: '1px 1px 0 black, -1px -1px 0 black, 1px -1px 0 black, -1px 1px 0 black',
-                        letterSpacing: '0.1em'
-                    }}
+                    className="text-primary text-6xl font-bold"
                 >
                     HKS
                 </Link>
             </div>
 
-            <div className="mt-6 w-full overflow-hidden bg-emerald-500 px-1 py-1 shadow-md sm:max-w-md sm:rounded-lg">
+            <div className="mt-6 w-full overflow-hidden bg-primary px-1 py-1 shadow-md sm:max-w-md sm:rounded-lg">
                 {children}
             </div>
         </div>
