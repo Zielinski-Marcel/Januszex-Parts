@@ -39,6 +39,7 @@ Route::post('/create/vehicle', [\App\Http\Controllers\VehicleController::class, 
 Route::post('/edit/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'editVehicle'])->name('editVehicle')->middleware('auth.basic');
 Route::delete('/deleteuser/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'deleteVehicle'])->name('deleteVehicle')->middleware('auth.basic');
 Route::delete('/vehicle/{vehicle_id}/{user_id}', [\App\Http\Controllers\VehicleController::class, 'removeUserFromVehicle'])->name('removeUserFromVehicle')->middleware('auth.basic');
+Route::delete('/leave/vehicle/{vehicle}', [\App\Http\Controllers\VehicleController::class, 'leaveVehicle'])->name('leaveVehicle')->middleware('auth.basic');
 
 
 require __DIR__.'/auth.php';
