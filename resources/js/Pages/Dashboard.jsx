@@ -69,12 +69,14 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
                                                                 {expense.description}
                                                             </p>
                                                         </div>
-                                                        <div className="flex gap-4">
-                                                            <Link href={`/edit/spending/${expense.id}`}>
-                                                             <button className="text-blue-500">Edytuj</button>
-                                                            </Link>
-                                                            <button className="text-red-500" onClick={confirmSpendingDeletion(expense.id)}>Usuń</button>
-                                                        </div>
+                                                        <Show when={expense.user_id===userid}>
+                                                            <div className="flex gap-4">
+                                                                <Link href={`/edit/spending/${expense.id}`}>
+                                                                 <button className="text-blue-500">Edytuj</button>
+                                                                </Link>
+                                                                <button className="text-red-500" onClick={confirmSpendingDeletion(expense.id)}>Usuń</button>
+                                                            </div>
+                                                        </Show>
                                                     </div>
                                                     <div className="flex justify-between items-end">
                                                         <span className="text-gray-500 text-sm">{new Date(expense.date).toLocaleDateString()}</span>
