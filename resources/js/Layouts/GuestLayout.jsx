@@ -12,7 +12,7 @@ export default function GuestLayout({ children }) {
                 </Link>
             </div>
 
-            <div className="mt-6 w-full overflow-hidden bg-primary px-1 py-1 shadow-md sm:max-w-md sm:rounded-lg">
+            <div className="mt-6 w-full overflow-hidden border border-primary px-1 py-1 shadow-md sm:max-w-md sm:rounded-lg">
                 {children}
             </div>
         </div>

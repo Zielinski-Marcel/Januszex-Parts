@@ -32,16 +32,12 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
     return (
         <AuthenticatedLayout>
             <Head title="Car Expenses" />
-
-            <div className="py-12">
-                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <div className=" bg-white shadow-sm sm:rounded-lg">
-                        <div className="p-6 text-gray-900">
-                            <div className="flex h-full bg-white">
+                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8   min-h-[calc(100vh-65px)] flex flex-col justify-center">
+                    <div className=" bg-white shadow-sm sm:rounded-lg box-border  my-12 h-full p-6 text-gray-900 flex-row flex flex-1">
                                 {/* Sidebar */}
-                                <div>
+
                                 <Sidebar cars={vehicles} selectedCarId={vehicle?.id} userid={userid} />
-                                </div>
+
                                 {/* Main Content */}
                                 <div className="p-4 w-full">
                                     <Show when={vehicle!==null}>
@@ -92,10 +88,9 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
-                </div>
-            </div>
+
+
             <MessageBox show={confirmingSpendingDeletion} onAccept={deleteSpending} onClose={closeModal} isProcessing={deleteForm.processing} acceptButtonText="Delete Spending" title={`Are you sure you want to delete your spending?`}>
                 Once your spending is deleted, all of its resources and
                 data will be permanently deleted.
