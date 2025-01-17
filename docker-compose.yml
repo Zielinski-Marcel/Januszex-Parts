@@ -54,7 +54,6 @@ services:
             timeout: 5s
             retries: 5
 
-
     redis:
         image: redis:7.2.3-alpine
         container_name: redis-CCH
@@ -91,9 +90,21 @@ services:
             - ${MAILPIT_PORT}:8025
         restart: unless-stopped
 
+    selenium:
+        image: selenium/standalone-chrome:latest
+        container_name: selenium-chrome
+        ports:
+            - "4444:4444"
+        networks:
+            - projekt-pipssii_app-net
+        environment:
+            - SCREEN_WIDTH=1920
+            - SCREEN_HEIGHT=1080
+            - SCREEN_DEPTH=24
+        restart: always
+
 networks:
     projekt-pipssii_app-net:
-        #external: true
         driver: bridge
 
 volumes:
