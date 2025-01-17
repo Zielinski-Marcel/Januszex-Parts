@@ -13,8 +13,10 @@ class SpendingController extends Controller
 {
     public function getSpendings($vehicle_id): JsonResponse{
         $user = auth()->user();
-        $vehicles = $user->vehicles;
-        $vehicle = $vehicles->firstWhere('id', $vehicle_id);
+        $vehicle = $user->vehicles()
+            ->where('vehicles.id', $vehicle_id)
+            ->wherePivot('status', 'active')
+            ->first();
         if (!$vehicle) {
             return response()->json(['message' => 'Vehicle not found or does not belong to the authenticated user.'], 404);
         }
@@ -24,8 +26,10 @@ class SpendingController extends Controller
     }
     public function getSpending($id,$vehicle_id): JsonResponse{
         $user = auth()->user();
-        $vehicles = $user->vehicles;
-        $vehicle = $vehicles->firstWhere('id', $vehicle_id);
+        $vehicle = $user->vehicles()
+            ->where('vehicles.id', $vehicle_id)
+            ->wherePivot('status', 'active')
+            ->first();
         if (!$vehicle) {
             return response()->json(['message' => 'Vehicle not found or does not belong to the authenticated user.'], 404);
         }
@@ -44,15 +48,17 @@ class SpendingController extends Controller
     {
         $user = auth()->user();
 
-        $vehicles = $user->vehicles;
-        $vehicle = $vehicles->firstWhere('id', $vehicle_id);
+        $vehicle = $user->vehicles()
+            ->where('vehicles.id', $vehicle_id)
+            ->wherePivot('status', 'active')
+            ->first();
         if (!$vehicle) {
             abort(404, 'Vehicle not found or does not belong to the authenticated user.');
         }
         $validated = $request->validated();
         $validated['user_id'] = auth()->id();
         $validated['vehicle_id'] = $vehicle['id'];
-        $spending = Spending::create($validated);
+        Spending::create($validated);
 
         // Return a JSON response
         return redirect()->to("/dashboard/" . $vehicle_id);
@@ -65,7 +71,11 @@ class SpendingController extends Controller
     public function editSpending(CreateSpendingRequest $request, Spending $spending): \Illuminate\Http\RedirectResponse
     {
         $user = auth()->user();
-        if ($spending->user_id!==$user->id) {
+        $vehicle = $user->vehicles()
+            ->where('vehicles.id', $spending->vehicle_id)
+            ->wherePivot('status', 'active')
+            ->first();
+        if ($spending->user_id!==$user->id || !$vehicle) {
             abort(403, 'Spending not found or does not belong to the authenticated user.');
         }
 
@@ -77,7 +87,11 @@ class SpendingController extends Controller
     public function deleteSpending(Spending $spending): \Illuminate\Http\RedirectResponse
     {
         $user = auth()->user();
-        if ($spending->user_id!==$user->id) {
+        $vehicle = $user->vehicles()
+            ->where('vehicles.id', $spending->vehicle_id)
+            ->wherePivot('status', 'active')
+            ->first();
+        if ($spending->user_id!==$user->id || !$vehicle) {
             abort(403, 'Spending not found or does not belong to the authenticated user.');
         }
 

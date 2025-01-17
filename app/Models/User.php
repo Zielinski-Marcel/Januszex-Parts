@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -61,8 +62,20 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     {
         return $this->hasMany(Spending::class);
     }
+
     public function vehicle(): HasMany
     {
         return $this->hasMany(Vehicle::class,'owner_id');
+    }
+
+    public function lastSpendings()
+    {
+        $vehicles = $this->vehicles()->select('vehicles.id')->get()->pluck('id');
+        $spendings = Spending::query()->whereIn('vehicle_id', $vehicles)->orderBy('updated_at')->limit(10)->get();
+        $spendings = $spendings->sortBy(function (Spending $spending) {
+            return $spending->updated_at->timestamp;
+        });
+
+        return $spendings;
     }
 }

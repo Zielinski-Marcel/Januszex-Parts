@@ -11,7 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::table('invites', function (Blueprint $table) {
+            $table->string('verification_token')->unique()->nullable()->after('status');
+
+        });
     }
 
     /**
@@ -19,6 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('invites', function (Blueprint $table) {
+            $table->dropColumn('verification_token');
+
+        });
     }
 };

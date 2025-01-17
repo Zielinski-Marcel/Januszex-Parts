@@ -33,12 +33,4 @@ class CreateVehicleRequest extends FormRequest
             'color' => 'required|string|max:255',
         ];
     }
-    protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator): void
-    {
-        throw new HttpResponseException(
-            response()->json([
-                'errors' => $validator->errors(),
-            ], 422)
-        );
-    }
 }

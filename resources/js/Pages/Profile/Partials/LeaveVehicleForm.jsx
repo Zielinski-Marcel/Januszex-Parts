@@ -5,7 +5,7 @@ import { useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
 import MessageBox from "@/Components/MessageBox.jsx";
 
-export default function DeleteVehicleForm({ vehicles = [] }) {
+export default function LeaveVehicleForm({ vehicles = [] }) {
     const [confirmingVehicleDeletion, setConfirmingVehicleDeletion] = useState(false);
     const [vehicleId, setVehicleId] = useState();
 
@@ -20,7 +20,7 @@ export default function DeleteVehicleForm({ vehicles = [] }) {
     };
 
     const deleteVehicle = () => {
-        destroy(`/deleteuser/vehicle/${vehicleId}`, {
+        destroy(`/leave/vehicle/${vehicleId}`, {
             preserveScroll: true,
             onSuccess: () => closeModal(),
         });
@@ -33,7 +33,7 @@ export default function DeleteVehicleForm({ vehicles = [] }) {
     return (
         <div>
             <div className="flex flex-col gap-4">
-                <h2 className="text-lg font-medium text-gray-900">Lista Twoich Pojazdów</h2>
+                <h2 className="text-lg font-medium text-gray-900">Lista Współdzielonych Pojazdów</h2>
                 {vehicles.map(vehicle => (
                     <div key={vehicle.id} className="flex">
                         <div className="content-center">
@@ -42,14 +42,14 @@ export default function DeleteVehicleForm({ vehicles = [] }) {
                         </div>
                         <div className="flex flex-1"/>
                     <DangerButton onClick={confirmVehicleDeletion(vehicle.id)}>
-                        Delete Vehicle
+                        Leave Vehicle
                     </DangerButton>
                     </div>
                 ))}
             </div>
-            <MessageBox show={confirmingVehicleDeletion} onAccept={deleteVehicle} onClose={closeModal} isProcessing={processing} acceptButtonText="Delete Vehicle" title={`Are you sure you want to delete your vehicle ${vehicles.find(vehicle => vehicle.id === vehicleId)?.brand}?`}>
-                Once your vehicle is deleted, all of its resources and
-                data will be permanently deleted.
+            <MessageBox show={confirmingVehicleDeletion} onAccept={deleteVehicle} onClose={closeModal} isProcessing={processing} acceptButtonText="Leave Vehicle" title={`Are you sure you want to leave this vehicle ${vehicles.find(vehicle => vehicle.id === vehicleId)?.brand}?`}>
+                Once you leave this vehicle, you will lose access to all of its resources and
+                data.
             </MessageBox>
         </div>
     );
