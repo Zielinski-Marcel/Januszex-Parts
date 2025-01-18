@@ -44,6 +44,8 @@ Route::delete('/leave/vehicle/{vehicle_id}/{user_id}', [\App\Http\Controllers\Ve
 Route::delete('/leave/vehicle/{vehicle}', [\App\Http\Controllers\VehicleController::class, 'leaveVehicle'])->name('leaveVehicle')->middleware('auth.basic');
 
 Route::post('/invite', [InviteController::class, 'store'])->name('store')->middleware('auth.basic');
-Route::post('/invite/{verification_token}', [InviteController::class, 'update'])->name('update')->middleware('auth.basic');
+Route::post('/invite/{verification_token}', [InviteController::class, 'update'])->middleware('auth.basic');
+Route::get('/invites', [InviteController::class, 'index'])->middleware('auth.basic');
+Route::delete('/invite/{invite}', [InviteController::class, 'destroy'])->middleware('auth.basic');
 
 require __DIR__.'/auth.php';
