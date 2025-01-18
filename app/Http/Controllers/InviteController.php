@@ -12,17 +12,11 @@ use App\Models\User;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
+use Inertia\Response;
 
 class InviteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Show the form for creating a new resource.
      */
@@ -86,30 +80,25 @@ class InviteController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateInviteRequest $request, String $token)
+    public function update(String $token)
     {
-        $validated = $request->validated();
         $invite=Invite::where('verification_token', $token)->first();
         if(!$invite){
             abort(404, 'Invitation not found.');
         }
-        $invite->update([
-            'status' => $validated['status']
-        ]);
 
         $user = User::query()->where('email', $invite->email)->firstOrFail();
         $vehicle = $invite->vehicle;
 
-        if ($validated['status'] === 'accepted') {
+
             $vehicle->users()->syncWithoutDetaching([
                 $user->id => [
                     'role' => 'shared',
                     'status' => 'active',
                 ],
-            ]);
-        }
+        ]);
         $invite->delete();
-        return redirect('/dashboard')->with('status', 'Invite updated successfully.');
+        return redirect()->back()->with('status', 'Invite updated successfully.');
     }
 
     /**
@@ -117,11 +106,17 @@ class InviteController extends Controller
      */
     public function destroy(Invite $invite)
     {
-        if ($invite->invitor_id !== auth()->id()) {
+        if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
             abort(403);
         }
 
         $invite->delete();
         return redirect()->back()->with('status', 'Invitation deleted successfully.');
+    }
+    public function index(): Response
+    {
+        $user = auth()->user();
+        $invites = Invite::query()->where("invitor_id", $user->id)->with(["invitor", "vehicle"])->get();
+        return Inertia::render('Invites', ["sentInvites" => $invites]);
     }
 }

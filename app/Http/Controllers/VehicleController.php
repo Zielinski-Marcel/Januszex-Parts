@@ -6,8 +6,11 @@ use App\Http\Requests\Vehicle\CreateVehicleRequest;
 use App\Http\Requests\Vehicle\EditVehicleRequest;
 use App\Models\User;
 use App\Models\Vehicle;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 
 class VehicleController extends Controller
@@ -102,7 +105,37 @@ class VehicleController extends Controller
         return redirect()->back()->with('status', 'User deleted successfully.');
     }
 
+    public function leaveVehicle(Vehicle $vehicle)
+    {
+        $user = auth()->user();
+        if (!$vehicle->users()->where('user_id', $user->id)->exists()) {
+            abort(403);
+        }
+
+        $vehicle->users()->syncWithoutDetaching([
+            $user->id => [
+                'role' => 'shared',
+                'status' => 'inactive',
+            ],
+        ]);
+        return redirect()->back()->with('status', 'User deleted successfully.');
+    }
+
     public function create(User $user){
         return Inertia::render('Vehicle/AddVehicle', ['userid' => $user -> id]);
+    }
+    public function edit(Request $request, Vehicle $vehicle): Response
+    {
+        $user = $request->user();
+        if ($vehicle->owner_id!==$user->id) {
+            abort(403);
+        }
+            $userList = $vehicle->users()->wherePivot('status', 'active')->get();
+        return Inertia::render('Profile/EditVehicle', [
+            'vehicle' => $vehicle,
+            'user' => $user,
+            'userList' => $userList
+
+        ]);
     }
 }

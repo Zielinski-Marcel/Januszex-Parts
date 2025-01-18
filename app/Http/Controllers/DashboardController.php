@@ -16,7 +16,7 @@ class DashboardController extends Controller
         $user = $request -> user();
         $spendings = $user->lastSpendings();
         if($vehicle !== null){
-            $spendings = $vehicle->spendings;
+            $spendings = $vehicle->spendings()->with(["user", "vehicle"])->get();
         }
         return Inertia::render("Dashboard",[
             'spendings' => $spendings,

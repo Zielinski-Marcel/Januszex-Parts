@@ -39,6 +39,8 @@ export default function AddVehicle({userid}){
                                         <InputError message={form.errors.model} className="mt-1" />
                                         <input
                                             type="number"
+                                            min="1886"
+                                            max={new Date().getFullYear()}
                                             name="year_of_manufacture"
                                             placeholder="Year of Manufacture"
                                             value={form.data.year_of_manufacture}
@@ -57,6 +59,8 @@ export default function AddVehicle({userid}){
                                         <InputError message={form.errors.fuel_type} className="mt-1" />
                                         <input
                                             type="number"
+                                            min="0"
+                                            max={new Date().getFullYear()}
                                             name="purchase_date"
                                             placeholder="Purchase Date"
                                             value={form.data.purchase_date}
