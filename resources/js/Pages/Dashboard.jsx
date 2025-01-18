@@ -34,18 +34,16 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
             <Head title="Car Expenses" />
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8   min-h-[calc(100vh-65px)] flex flex-col justify-center">
                     <div className=" bg-white shadow-sm sm:rounded-lg box-border  my-12 h-full p-6 text-gray-900 flex-row flex flex-1">
-                                {/* Sidebar */}
 
                                 <Sidebar cars={vehicles} selectedCarId={vehicle?.id} userid={userid} />
 
-                                {/* Main Content */}
                                 <div className="p-4 w-full">
                                     <Show when={vehicle!==null}>
                                         <div className="mb-4">
                                             <Link href={`/create/spending/${vehicle?.id}`}>
                                             <button className="w-full bg-primary text-white p-4 rounded-lg flex items-center justify-center">
                                                 <span className="mr-2">+</span>
-                                                Dodaj nową płatność
+                                                Add new payment
                                             </button>
                                             </Link>
                                         </div>
@@ -72,19 +70,14 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
                                                         <Show when={expense.user_id === userid}>
                                                             <div className="flex gap-4">
                                                                 <Link href={`/edit/spending/${expense.id}`}>
-                                                                <button className="text-blue-500">Edytuj</button>
+                                                                <button className="text-blue-500">Edit</button>
                                                                 </Link>
-                                                                <button className="text-red-500" onClick={confirmSpendingDeletion(expense.id)}>Usuń</button>
+                                                                <button className="text-red-500" onClick={confirmSpendingDeletion(expense.id)}>Delete</button>
                                                             </div>
                                                         </Show>
                                                     </div>
                                                     <div className="flex justify-between items-end">
                                                         <span className="text-gray-500 text-sm">{new Date(expense.date).toLocaleDateString()}</span>
-                                                        {/*<img*/}
-                                                        {/*    src={spendings.image}*/}
-                                                        {/*    alt=""*/}
-                                                        {/*    className="w-10 h-10 rounded object-cover"*/}
-                                                        {/*/>*/}
                                                     </div>
                                                 </div>
                                             </div>

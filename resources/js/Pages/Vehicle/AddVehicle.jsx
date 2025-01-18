@@ -18,7 +18,7 @@ export default function AddVehicle({userid}){
                             <div className="flex bg-white justify-center">
                                 <div className="flex w-full mx-1 mb-3 mt-1 justify-center">
                                     <form onSubmit={submit} className="space-y-6 max-w-lg w-full justify-center">
-                                        <header className="text-lg font-semibold mb-4 text-center">Wpisz dane pojazdu</header>
+                                        <header className="text-lg font-semibold mb-4 text-center">Enter vehicle details</header>
                                         <input
                                             type="text"
                                             name="brand"
@@ -81,7 +81,7 @@ export default function AddVehicle({userid}){
                                             type="submit"
                                             className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
                                         >
-                                            Dodaj nowy pojazd
+                                            Add vehicle
                                         </button>
                                     </form>
                                 </div>

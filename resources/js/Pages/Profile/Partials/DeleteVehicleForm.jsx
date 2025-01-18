@@ -34,7 +34,7 @@ export default function DeleteVehicleForm({ vehicles = [] }) {
     return (
         <div>
             <div className="flex flex-col gap-4">
-                <h2 className="text-lg font-medium text-gray-900">Lista Twoich Pojazdów</h2>
+                <h2 className="text-lg font-medium text-gray-900">List of Your Vehicles</h2>
                 {vehicles.map(vehicle => (
                     <div key={vehicle.id} className="flex gap-2">
                         <div className="content-center">
@@ -44,7 +44,7 @@ export default function DeleteVehicleForm({ vehicles = [] }) {
                         <div className="flex flex-1"/>
                         <Link href={`/edit/vehicle/${vehicle.id}`}>
                         <PrimaryButton className="bg-primary hover:bg-secondary active:bg-white focus:bg-white">
-                            Zarządzaj pojazdem
+                            Manage your vehicle
                         </PrimaryButton>
                         </Link>
                     <DangerButton onClick={confirmVehicleDeletion(vehicle.id)}>

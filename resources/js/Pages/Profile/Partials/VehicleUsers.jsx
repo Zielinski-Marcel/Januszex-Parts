@@ -47,7 +47,7 @@ export default function VehicleUsers({ users = [], vehicleId, ownerId }) {
     return (
         <div>
             <div className="flex flex-col gap-4">
-                <h2 className="text-lg font-medium text-gray-900">List of users sharing the car</h2>
+                <h2 className="text-lg font-medium text-gray-900">List of Users Sharing The Car</h2>
                 {users.map(user => (
                     <div key={user.id} className="flex gap-2">
                         <div className="content-center">
