@@ -58,7 +58,7 @@ const Sidebar = ({ cars, selectedCarId, userid }) => {
                                     alt=""
                                     className="w-6 h-6 mr-2"
                                 />
-                                {car.brand}
+                                {car.brand} {car.model}
                             </button>
                         </Link>
                     ))}

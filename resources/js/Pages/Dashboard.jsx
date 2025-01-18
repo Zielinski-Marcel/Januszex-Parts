@@ -58,7 +58,7 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
                                                     <div className="flex items-start justify-between mb-2">
                                                         <div className="flex-1">
                                                             <div className="flex items-center gap-4 mb-1">
-                                                                <span className="font-medium">{expense.user.name}</span>
+                                                                <span className="font-medium">{expense.user.name}&nbsp;({expense.vehicle.brand}&nbsp;{expense.vehicle.model})</span>
                                                                 <span className="text-gray-500">{expense.price} PLN</span>
                                                             </div>
                                                             <p className="text-sm leading-relaxed">
