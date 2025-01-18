@@ -6,8 +6,11 @@ use App\Http\Requests\Vehicle\CreateVehicleRequest;
 use App\Http\Requests\Vehicle\EditVehicleRequest;
 use App\Models\User;
 use App\Models\Vehicle;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 
 class VehicleController extends Controller
@@ -82,11 +85,12 @@ class VehicleController extends Controller
             ->where('owner_id', auth()->id())
             ->first();
         if (!$vehicle) {
+            dd($vehicle_id);
             abort(404);
         }
-
         $user=$vehicle->users->where('id', $user_id)->first();
         if (!$user) {
+            dd("XDDXDAle drugie");
             abort(404);
         }
         $vehicle->users()->syncWithoutDetaching([
@@ -116,5 +120,19 @@ class VehicleController extends Controller
 
     public function create(User $user){
         return Inertia::render('Vehicle/AddVehicle', ['userid' => $user -> id]);
+    }
+    public function edit(Request $request, Vehicle $vehicle): Response
+    {
+        $user = $request->user();
+        if ($vehicle->owner_id!==$user->id) {
+            abort(403);
+        }
+            $userList = $vehicle->users()->wherePivot('status', 'active')->get();
+        return Inertia::render('Profile/EditVehicle', [
+            'vehicle' => $vehicle,
+            'user' => $user,
+            'userList' => $userList
+
+        ]);
     }
 }
