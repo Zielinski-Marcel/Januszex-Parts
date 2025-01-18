@@ -14,7 +14,7 @@
     @component('mail::button', ['url' => url('/invites')])
         Zobacz zaproszenie
     @endcomponent
-
     Dziękujemy,<br>
+
     {{ config('app.name') }}
 @endcomponent

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InviteController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -42,5 +43,9 @@ Route::delete('/deleteuser/vehicle/{id}', [\App\Http\Controllers\VehicleControll
 Route::delete('/leave/vehicle/{vehicle_id}/{user_id}', [\App\Http\Controllers\VehicleController::class, 'removeUserFromVehicle'])->name('removeUserFromVehicle')->middleware('auth.basic');
 Route::delete('/leave/vehicle/{vehicle}', [\App\Http\Controllers\VehicleController::class, 'leaveVehicle'])->name('leaveVehicle')->middleware('auth.basic');
 
+Route::post('/invite', [InviteController::class, 'store'])->name('store')->middleware('auth.basic');
+Route::post('/invite/{verification_token}', [InviteController::class, 'update'])->middleware('auth.basic');
+Route::get('/invites', [InviteController::class, 'index'])->middleware('auth.basic');
+Route::delete('/invite/{invite}', [InviteController::class, 'destroy'])->middleware('auth.basic');
 
 require __DIR__.'/auth.php';

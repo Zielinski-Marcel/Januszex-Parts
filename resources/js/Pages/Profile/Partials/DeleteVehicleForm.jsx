@@ -43,7 +43,7 @@ export default function DeleteVehicleForm({ vehicles = [] }) {
                         </div>
                         <div className="flex flex-1"/>
                         <Link href={`/edit/vehicle/${vehicle.id}`}>
-                        <PrimaryButton className="bg-primary hover:bg-secondary">
+                        <PrimaryButton className="bg-primary hover:bg-secondary active:bg-white focus:bg-white">
                             Zarządzaj pojazdem
                         </PrimaryButton>
                         </Link>

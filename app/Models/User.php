@@ -73,7 +73,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function lastSpendings()
     {
         $vehicles = $this->vehicles()->select('vehicles.id')->get()->pluck('id');
-        $spendings = Spending::query()->whereIn('vehicle_id', $vehicles)->orderBy('updated_at')->limit(10)->with("user")->get();
+        $spendings = Spending::query()->whereIn('vehicle_id', $vehicles)->orderBy('updated_at')->limit(10)->with(["user", "vehicle"])->get();
         $spendings = $spendings->sortBy(function (Spending $spending) {
             return $spending->updated_at->timestamp;
         });
@@ -82,6 +82,9 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     }
     public function sendEmailVerificationNotification(){
         $this->notify(new VerifyAccountNotification());
+    }
+    public function getInvites(){
+        return Invite::query()->where("email", $this->email)->with(["invitor","vehicle"])->get();
     }
 
 
