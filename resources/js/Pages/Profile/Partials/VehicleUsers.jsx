@@ -6,8 +6,9 @@ import React, { useRef, useState } from 'react';
 import MessageBox from "@/Components/MessageBox.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import InviteMessageBox from "@/Components/InviteMessageBox.jsx";
+import Show from "@/Components/Show.jsx";
 
-export default function VehicleUsers({ users = [], vehicleId }) {
+export default function VehicleUsers({ users = [], vehicleId, ownerId }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
     const [showInviteInput, setShowInviteInput] = useState(false);
     const [userId, setUserId] = useState();
@@ -53,9 +54,11 @@ export default function VehicleUsers({ users = [], vehicleId }) {
                             {user.name}
                         </div>
                         <div className="flex flex-1"/>
-                    <DangerButton onClick={confirmUserDeletion(user.id)}>
-                        Remove
-                    </DangerButton>
+                        <Show when={ownerId!==user.id}>
+                            <DangerButton onClick={confirmUserDeletion(user.id)}>
+                                Remove
+                            </DangerButton>
+                        </Show>
                     </div>
                 ))}
                     <p onClick={()=>setShowInviteInput(true)} className="w-full flex items-center pr-3 text-gray-500 rounded-lg cursor-pointer">

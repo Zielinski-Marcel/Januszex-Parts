@@ -17,7 +17,7 @@ export default function EditVehicle({ vehicle, user, userList }) {
                 <div className="mx-auto max-w-3xl space-y-6 sm:px-6 lg:px-8">
                     <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 space-y-4">
                             <div className="bg-white rounded-lg border border-gray-100 p-4">
-                                <VehicleUsers vehicleId={vehicle.id} users={userList}>
+                                <VehicleUsers vehicleId={vehicle.id} users={userList} ownerId={vehicle.owner_id}>
                                 </VehicleUsers>
                             </div>
                     </div>
