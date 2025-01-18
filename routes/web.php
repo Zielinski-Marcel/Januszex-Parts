@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SocialAuthController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -39,6 +40,9 @@ Route::post('/create/vehicle', [\App\Http\Controllers\VehicleController::class, 
 Route::post('/edit/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'editVehicle'])->name('editVehicle')->middleware('auth.basic');
 Route::delete('/deleteuser/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'deleteVehicle'])->name('deleteVehicle')->middleware('auth.basic');
 Route::delete('/vehicle/{vehicle_id}/{user_id}', [\App\Http\Controllers\VehicleController::class, 'removeUserFromVehicle'])->name('removeUserFromVehicle')->middleware('auth.basic');
+
+Route::get('/login/redirect',[SocialAuthController::class, 'redirectToFacebook'])->name('auth.facebook');
+Route::get('/login/facebook/callback', [SocialAuthController::class, 'handleFacebookCallback']);
 
 
 require __DIR__.'/auth.php';
