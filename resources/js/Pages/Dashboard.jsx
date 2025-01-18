@@ -58,17 +58,21 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
                                                     <div className="flex items-start justify-between mb-2">
                                                         <div className="flex-1">
                                                             <div className="flex items-center gap-4 mb-1">
-                                                                <span className="font-medium">{expense.type}</span>
-                                                                <span className="text-gray-500">{expense.price}</span>
+                                                                <span className="font-medium">{expense.user.name}</span>
+                                                                <span className="text-gray-500">{expense.price} PLN</span>
                                                             </div>
+                                                            <p className="text-sm leading-relaxed">
+                                                                {expense.type}
+                                                            </p>
                                                             <p className="text-sm text-gray-500 leading-relaxed">
                                                                 {expense.description}
                                                             </p>
+
                                                         </div>
-                                                        <Show when={expense.user_id===userid}>
+                                                        <Show when={expense.user_id === userid}>
                                                             <div className="flex gap-4">
                                                                 <Link href={`/edit/spending/${expense.id}`}>
-                                                                 <button className="text-blue-500">Edytuj</button>
+                                                                <button className="text-blue-500">Edytuj</button>
                                                                 </Link>
                                                                 <button className="text-red-500" onClick={confirmSpendingDeletion(expense.id)}>Usuń</button>
                                                             </div>
