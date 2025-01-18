@@ -1,6 +1,7 @@
 import {Head, useForm} from "@inertiajs/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.jsx";
 import InputError from "@/Components/InputError.jsx";
+import {getCurrentDate} from "@/Helpers/DateHelper.js";
 
 export default function AddSpending({vehicle}){
     const form = useForm();
@@ -24,6 +25,7 @@ export default function AddSpending({vehicle}){
                                             type="number"
                                             name="price"
                                             placeholder="Price"
+                                            min="0"
                                             value={form.data.price}
                                             onChange={(e) => form.setData("price", e.target.value)}
                                             className="mt-1 w-full block rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary"
@@ -42,6 +44,8 @@ export default function AddSpending({vehicle}){
                                         <input
                                             type="date"
                                             name="date"
+                                            min="2000-01-01"
+                                            max={getCurrentDate()}
                                             placeholder="Date"
                                             value={form.data.date}
                                             onChange={(e) => form.setData("date", e.target.value)}
