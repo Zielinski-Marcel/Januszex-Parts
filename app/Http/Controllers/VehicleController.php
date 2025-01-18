@@ -81,17 +81,20 @@ class VehicleController extends Controller
     }
     public function removeUserFromVehicle($vehicle_id, $user_id)
     {
+        $owner_id=auth()->id();
         $vehicle = Vehicle::where('id', $vehicle_id)
-            ->where('owner_id', auth()->id())
+            ->where('owner_id', $owner_id)
             ->first();
         if (!$vehicle) {
-            dd($vehicle_id);
-            abort(404);
+            abort(404, 'Vehicle not found.');
         }
+
         $user=$vehicle->users->where('id', $user_id)->first();
         if (!$user) {
-            dd("XDDXDAle drugie");
-            abort(404);
+            abort(404, 'User not found.');
+        }
+        if($user_id==$owner_id){
+            abort(404, 'Cannot delete owner of vehicle.');
         }
         $vehicle->users()->syncWithoutDetaching([
             $user->id => [

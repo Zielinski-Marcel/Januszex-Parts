@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\InviteController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SocialAuthController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -42,6 +43,9 @@ Route::post('/edit/vehicle/{id}', [\App\Http\Controllers\VehicleController::clas
 Route::delete('/deleteuser/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'deleteVehicle'])->name('deleteVehicle')->middleware('auth.basic');
 Route::delete('/leave/vehicle/{vehicle_id}/{user_id}', [\App\Http\Controllers\VehicleController::class, 'removeUserFromVehicle'])->name('removeUserFromVehicle')->middleware('auth.basic');
 Route::delete('/leave/vehicle/{vehicle}', [\App\Http\Controllers\VehicleController::class, 'leaveVehicle'])->name('leaveVehicle')->middleware('auth.basic');
+
+Route::get('/login/redirect',[SocialAuthController::class, 'redirectToFacebook'])->name('auth.facebook');
+Route::get('/login/facebook/callback', [SocialAuthController::class, 'handleFacebookCallback']);
 
 Route::post('/invite', [InviteController::class, 'store'])->name('store')->middleware('auth.basic');
 Route::post('/invite/{verification_token}', [InviteController::class, 'update'])->middleware('auth.basic');
