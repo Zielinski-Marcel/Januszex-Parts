@@ -16,7 +16,7 @@ class LoginTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             // Odwiedzamy stronę logowania
-            $browser->visit('/login')
+            $browser->visit('http://web-CCH/login')
                 ->pause(2000)  // Czekamy na załadowanie strony
                 ->screenshot('login_page_before_load');  // Zrzut ekranu przed załadowaniem zasobów
 
