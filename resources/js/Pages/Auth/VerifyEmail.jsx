@@ -1,6 +1,7 @@
 import PrimaryButton from '@/Components/PrimaryButton';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import SecondaryButton from "@/Components/SecondaryButton.jsx";
 
 export default function VerifyEmail({ status }) {
     const { post, processing } = useForm({});
@@ -10,11 +11,14 @@ export default function VerifyEmail({ status }) {
 
         post(route('verification.send'));
     };
+    const handleLogout = () => {
+        post(route('logout'));
+    };
 
     return (
         <GuestLayout>
             <Head title="Email Verification" />
-
+            <div className="p-3">
             <div className="mb-4 text-sm text-gray-600 bg-white rounded">
                 Thanks for signing up! Before getting started, could you verify
                 your email address by clicking on the link we just emailed to
@@ -29,21 +33,23 @@ export default function VerifyEmail({ status }) {
                 </div>
             )}
 
-            <form onSubmit={submit}>
+            <form onSubmit={submit} className="bg-white">
                 <div className="mt-4 flex items-center justify-between">
-                    <PrimaryButton disabled={processing}>
+                    <PrimaryButton disabled={processing} className="bg-primary hover:bg-secondary">
                         Resend Verification Email
                     </PrimaryButton>
-                    <Link
+                    <SecondaryButton
+                        onClick={handleLogout}
                         href={route('logout')}
                         method="post"
                         as="button"
-                        className="rounded-md text-sm text-blue-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="rounded-md text-sm text-blue-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                     >
                         Log Out
-                    </Link>
+                    </SecondaryButton>
                 </div>
             </form>
+            </div>
         </GuestLayout>
     );
 }

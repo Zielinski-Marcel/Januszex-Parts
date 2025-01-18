@@ -5,7 +5,7 @@ const Sidebar = ({ cars, selectedCarId, userid }) => {
     const [showingSidebar, setShowingSidebar] = useState(false);
 
     return (
-        <div className={showingSidebar ? "border-r border-gray-200 h-full" : "sm:border-r sm:border-gray-200 h-full"}>
+        <div className={showingSidebar ? "border-r border-gray-200 self-stretch" : "sm:border-r sm:border-gray-200 self-stretch"}>
             {/*LOGIKA ZNIKANIA*/}
             <div className="sm:hidden pt-5">
                 <button

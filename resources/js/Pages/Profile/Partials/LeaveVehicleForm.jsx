@@ -41,6 +41,7 @@ export default function LeaveVehicleForm({ vehicles = [] }) {
                             {vehicle.model}
                         </div>
                         <div className="flex flex-1"/>
+
                     <DangerButton onClick={confirmVehicleDeletion(vehicle.id)}>
                         Leave Vehicle
                     </DangerButton>

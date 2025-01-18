@@ -35,10 +35,11 @@ Route::delete('/deleteuser/spending/{spending}', [\App\Http\Controllers\Spending
 Route::get('/getuser/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'getVehicle'])->name('getVehicle')->middleware('auth.basic');
 Route::get('/getuser/vehicles', [\App\Http\Controllers\VehicleController::class, 'getVehicles'])->name('getVehicles')->middleware('auth.basic');
 Route::get('/create/vehicle', [\App\Http\Controllers\VehicleController::class, 'create'])->middleware('auth.basic');
+Route::get('/edit/vehicle/{vehicle}', [\App\Http\Controllers\VehicleController::class, 'edit'])->middleware('auth.basic');
 Route::post('/create/vehicle', [\App\Http\Controllers\VehicleController::class, 'createVehicle'])->name('createVehicle')->middleware('auth.basic');
 Route::post('/edit/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'editVehicle'])->name('editVehicle')->middleware('auth.basic');
 Route::delete('/deleteuser/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'deleteVehicle'])->name('deleteVehicle')->middleware('auth.basic');
-Route::delete('/vehicle/{vehicle_id}/{user_id}', [\App\Http\Controllers\VehicleController::class, 'removeUserFromVehicle'])->name('removeUserFromVehicle')->middleware('auth.basic');
+Route::delete('/leave/vehicle/{vehicle_id}/{user_id}', [\App\Http\Controllers\VehicleController::class, 'removeUserFromVehicle'])->name('removeUserFromVehicle')->middleware('auth.basic');
 Route::delete('/leave/vehicle/{vehicle}', [\App\Http\Controllers\VehicleController::class, 'leaveVehicle'])->name('leaveVehicle')->middleware('auth.basic');
 
 

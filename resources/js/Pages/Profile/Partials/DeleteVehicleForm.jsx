@@ -1,9 +1,10 @@
 import DangerButton from '@/Components/DangerButton';
 import Modal from '@/Components/Modal';
 import SecondaryButton from '@/Components/SecondaryButton';
-import { useForm } from '@inertiajs/react';
+import {Link, useForm} from '@inertiajs/react';
 import { useRef, useState } from 'react';
 import MessageBox from "@/Components/MessageBox.jsx";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function DeleteVehicleForm({ vehicles = [] }) {
     const [confirmingVehicleDeletion, setConfirmingVehicleDeletion] = useState(false);
@@ -35,12 +36,17 @@ export default function DeleteVehicleForm({ vehicles = [] }) {
             <div className="flex flex-col gap-4">
                 <h2 className="text-lg font-medium text-gray-900">Lista Twoich Pojazdów</h2>
                 {vehicles.map(vehicle => (
-                    <div key={vehicle.id} className="flex">
+                    <div key={vehicle.id} className="flex gap-2">
                         <div className="content-center">
                             {vehicle.brand}, &nbsp;
                             {vehicle.model}
                         </div>
                         <div className="flex flex-1"/>
+                        <Link href={`/edit/vehicle/${vehicle.id}`}>
+                        <PrimaryButton className="bg-primary hover:bg-secondary">
+                            Zarządzaj pojazdem
+                        </PrimaryButton>
+                        </Link>
                     <DangerButton onClick={confirmVehicleDeletion(vehicle.id)}>
                         Delete Vehicle
                     </DangerButton>

@@ -76,7 +76,7 @@ export default function Login({ status, canResetPassword }) {
 
                     <div className="space-y-3">
                         <PrimaryButton
-                            className="w-full justify-center bg-emerald-400 hover:bg-secondary focus:bg-primary "
+                            className="w-full justify-center bg-primary hover:bg-secondary focus:bg-primary "
                             disabled={processing}
                         >
                             Log in

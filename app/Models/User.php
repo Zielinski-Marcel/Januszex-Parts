@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use App\Notifications\VerifyAccountNotification;
 use Carbon\Carbon;
 use Database\Factories\UserFactory;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -71,11 +73,17 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function lastSpendings()
     {
         $vehicles = $this->vehicles()->select('vehicles.id')->get()->pluck('id');
-        $spendings = Spending::query()->whereIn('vehicle_id', $vehicles)->orderBy('updated_at')->limit(10)->get();
+        $spendings = Spending::query()->whereIn('vehicle_id', $vehicles)->orderBy('updated_at')->limit(10)->with("user")->get();
         $spendings = $spendings->sortBy(function (Spending $spending) {
             return $spending->updated_at->timestamp;
         });
 
         return $spendings;
     }
+    public function sendEmailVerificationNotification(){
+        $this->notify(new VerifyAccountNotification());
+    }
+
+
+
 }
