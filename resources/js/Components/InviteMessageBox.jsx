@@ -13,8 +13,10 @@ export default function InviteMessageBox({show, onClose, onAccept, onChange, isP
                     Enter your friends E-mail address
                 </h2>
 
-                <p className="mt-1 text-sm text-gray-600">
-                    <TextInput type="email" placeholder="E-mail" onChange={onChange}></TextInput>
+                <p className="mt-1 text-sm text-gray-600 w-full pt-3">
+                    <TextInput type="email" placeholder="E-mail" onChange={onChange}
+                               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-emerald-500 focus:ring-primary"
+                    ></TextInput>
                     <InputError message={error} className="mt-1" />
                 </p>
 
