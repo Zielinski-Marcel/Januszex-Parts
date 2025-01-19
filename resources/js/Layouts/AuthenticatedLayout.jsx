@@ -16,7 +16,7 @@ export default function AuthenticatedLayout({ header, children }) {
     const[alertText, setAlertText] = useState();
 
     useEffect(() => {
-        setTimeout(()=>setAlertText(status), 500)
+        setTimeout(()=>setAlertText(status), 250)
     }, [status]);
 
     return (
@@ -188,7 +188,8 @@ export default function AuthenticatedLayout({ header, children }) {
 
             <main>{children}</main>
             <Alert text={alertText} closeAlert={()=>setAlertText(null)}></Alert>
-        </div>
+
+            </div>
     );
 }
 
