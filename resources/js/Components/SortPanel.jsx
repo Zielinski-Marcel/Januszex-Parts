@@ -1,10 +1,6 @@
 import IconButton from "@/Components/IconButton.jsx";
 import React, {useState} from "react";
 import Show from "@/Components/Show.jsx";
-import {Link} from "@inertiajs/react";
-import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import DangerButton from "@/Components/DangerButton.jsx";
-import Checkbox from "@/Components/Checkbox.jsx";
 import {useDetectClickOutside} from "react-detect-click-outside";
 
 export default function SortPanel({sortBy, setSortBy}) {

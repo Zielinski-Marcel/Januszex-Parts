@@ -2,9 +2,7 @@ import Dropdown from '@/Components/Dropdown';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
-import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import Badge from "@/Components/Badge.jsx";
-import IconButton from "@/Components/IconButton.jsx";
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
     const invites = usePage().props.auth.invites;

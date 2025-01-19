@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from "@inertiajs/react";
 
-const Sidebar = ({ cars, selectedCarId, userid }) => {
+const Sidebar = ({ cars, selectedCarId}) => {
     const [showingSidebar, setShowingSidebar] = useState(false);
 
     return (

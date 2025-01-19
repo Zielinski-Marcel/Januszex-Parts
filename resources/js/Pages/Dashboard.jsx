@@ -1,10 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {Head, Link, useForm} from '@inertiajs/react';
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import Sidebar from './Sidebar';
 import MessageBox from "@/Components/MessageBox.jsx";
 import Show from "@/Components/Show.jsx";
-import IconButton from "@/Components/IconButton.jsx";
 import FilterPanel from "@/Components/FilterPanel.jsx";
 import SortPanel from "@/Components/SortPanel.jsx";
 

@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateVehicleRequest;
 use App\Models\Vehicle;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use App\Models\User;
 class DashboardController extends Controller
 {
 

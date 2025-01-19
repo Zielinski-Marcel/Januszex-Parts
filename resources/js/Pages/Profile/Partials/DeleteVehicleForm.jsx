@@ -1,8 +1,6 @@
 import DangerButton from '@/Components/DangerButton';
-import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
 import {Link, useForm} from '@inertiajs/react';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import MessageBox from "@/Components/MessageBox.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 

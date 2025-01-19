@@ -1,8 +1,6 @@
 import DangerButton from '@/Components/DangerButton';
-import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
 import { useForm } from '@inertiajs/react';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import MessageBox from "@/Components/MessageBox.jsx";
 
 export default function LeaveVehicleForm({ vehicles = [] }) {
