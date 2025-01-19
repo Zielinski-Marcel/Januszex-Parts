@@ -55,7 +55,7 @@ class LoginTest extends DuskTestCase
         // Wykonaj test logowania
         $this->browse(function (Browser $browser) use ($screenshotsDir) {
             $browser->visit('http://web-CCH/login') // Odwiedź stronę logowania
-            ->pause(20000) // Wstrzymaj ładowanie
+            ->pause(2000) // Wstrzymaj ładowanie
             ->screenshot($screenshotsDir . '/login_page') // Zrzut ekranu strony logowania
             ->assertPathIs('/login')
             ->type('email', 'test@example.com') // Wypełnij email
