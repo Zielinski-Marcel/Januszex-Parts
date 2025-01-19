@@ -52,22 +52,21 @@ class VehicleController extends Controller
             ->log('Created a new vehicle.');
         return redirect()->to("/dashboard");
     }
-    public function editVehicle(EditVehicleRequest $request, $id): JsonResponse
+    public function editVehicle(EditVehicleRequest $request, $id): \Illuminate\Http\RedirectResponse
     {
         $vehicle = Vehicle::where('id', $id)
             ->where('owner_id', auth()->id())
             ->first();
 
         if (!$vehicle) {
-            return response()->json(['message' => 'Vehicle not found or unauthorized'], 404);
+            abort(404, 'Vehicle not found or unauthorized');
         }
 
         $validated = $request->validated();
 
         $vehicle->update($validated);
 
-
-        return response()->json(['message' => 'Vehicle edited successfully.'], 200);
+        return redirect()->back()->with('status', 'Vehicle edited successfully.');
     }
 
     public function deleteVehicle($id): \Illuminate\Http\RedirectResponse
