@@ -20,7 +20,7 @@ class ForgotPasswordTest extends DuskTestCase
     public function testForgotPassword()
     {
         // Katalog na zrzuty ekranu
-        $screenshotsDir = base_path('/ForgotPasswordTestScreenShots');
+        $screenshotsDir = base_path('tests/Browser/screenshots/ForgotPasswordTestScreenShots');
 
         // Upewnij się, że katalog istnieje
         if (!File::exists($screenshotsDir)) {

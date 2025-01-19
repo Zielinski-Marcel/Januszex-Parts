@@ -41,7 +41,7 @@ class LoginTest extends DuskTestCase
     public function testLogin()
     {
         // Katalog na zrzuty ekranu
-        $screenshotsDir = base_path('/LoginTestScreenShots');
+        $screenshotsDir = base_path('tests/Browser/screenshots/LoginTestScreenShots');
 
         // Upewnij się, że katalog istnieje
         if (!File::exists($screenshotsDir)) {

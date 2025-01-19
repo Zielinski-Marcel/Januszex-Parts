@@ -18,7 +18,7 @@ class RegisterTest extends DuskTestCase
     public function testRegister()
     {
         // Katalog na zrzuty ekranu
-        $screenshotsDir = base_path('/RegisterTestScreenShots');
+        $screenshotsDir = base_path('tests/Browser/screenshots/RegisterTestScreenShots');
 
         // Upewnij się, że katalog istnieje
         if (!File::exists($screenshotsDir)) {

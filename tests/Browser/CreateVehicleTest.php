@@ -20,7 +20,7 @@ class CreateVehicleTest extends DuskTestCase
     public function testAddVehicleAndNavigate()
     {
         // Katalog na zrzuty ekranu
-        $screenshotsDir = base_path('/CreateVehicleTestScreenShots');
+        $screenshotsDir = base_path('tests/Browser/screenshots/CreateVehicleTestScreenShots');
 
         // Upewnij się, że katalog istnieje
         if (!File::exists($screenshotsDir)) {

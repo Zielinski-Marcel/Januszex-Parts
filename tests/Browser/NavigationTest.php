@@ -20,7 +20,7 @@ class NavigationTest extends DuskTestCase
     public function testNavigation()
     {
         // Katalog na zrzuty ekranu
-        $screenshotsDir = base_path('/NavigationTestScreenShots');
+        $screenshotsDir = base_path('tests/Browser/screenshots/NavigationTestScreenshot');
 
         // Upewnij się, że katalog istnieje
         if (!File::exists($screenshotsDir)) {
