@@ -22,7 +22,7 @@ export default function EditSpending({spending}){
                             <div className="flex bg-white justify-center">
                                 <div className="flex w-full mx-1 mb-3 mt-1 justify-center">
                                     <form onSubmit={submit} className="space-y-6 max-w-lg w-full justify-center">
-                                        <header className="text-lg font-semibold mb-4 text-center">Edit your payment details</header>
+                                        <header className="text-lg font-medium text-gray-900 text-center">Edit Your Payment Details</header>
                                         <input
                                             type="number"
                                             name="price"
