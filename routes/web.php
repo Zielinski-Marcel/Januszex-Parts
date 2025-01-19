@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\InviteController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SocialAuthController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,6 +20,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+
+Route::middleware('IsUserAdmin')->group(function () {
+    Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin');
+
+    Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users');
+    Route::get('/admin/users/create', [UserController::class, 'create'])->name('admin.users.create');
+    Route::post('/admin/users', [UserController::class, 'store'])->name('admin.users.store');
+    Route::get('/admin/users/{user}/edit', [UserController::class, 'edit'])->name('admin.users.edit');
+    Route::patch('/admin/users/{user}', [UserController::class, 'update'])->name('admin.users.update');
+    Route::delete('/admin/users/{user}', [UserController::class, 'destroy'])->name('admin.users.destroy');
 });
 
 Route::get('/user/{id}', [UserController::class, 'getUser'])->name('getUser');
@@ -42,6 +56,9 @@ Route::post('/edit/vehicle/{id}', [\App\Http\Controllers\VehicleController::clas
 Route::delete('/deleteuser/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'deleteVehicle'])->name('deleteVehicle')->middleware('auth.basic');
 Route::delete('/leave/vehicle/{vehicle_id}/{user_id}', [\App\Http\Controllers\VehicleController::class, 'removeUserFromVehicle'])->name('removeUserFromVehicle')->middleware('auth.basic');
 Route::delete('/leave/vehicle/{vehicle}', [\App\Http\Controllers\VehicleController::class, 'leaveVehicle'])->name('leaveVehicle')->middleware('auth.basic');
+
+Route::get('/login/redirect',[SocialAuthController::class, 'redirectToFacebook'])->name('auth.facebook');
+Route::get('/login/facebook/callback', [SocialAuthController::class, 'handleFacebookCallback']);
 
 Route::post('/invite', [InviteController::class, 'store'])->name('store')->middleware('auth.basic');
 Route::post('/invite/{verification_token}', [InviteController::class, 'update'])->middleware('auth.basic');

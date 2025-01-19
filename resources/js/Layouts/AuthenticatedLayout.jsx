@@ -2,9 +2,7 @@ import Dropdown from '@/Components/Dropdown';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
-import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import Badge from "@/Components/Badge.jsx";
-import IconButton from "@/Components/IconButton.jsx";
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
     const invites = usePage().props.auth.invites;
@@ -26,13 +24,11 @@ export default function AuthenticatedLayout({ header, children }) {
                             <div className="hidden sm:flex sm:items-center">
                                     <Badge content={invites.length}>
                                         <Link href="/invites">
-                                        <IconButton>
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                 strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                                 strokeWidth={2} stroke="currentColor" className="size-6 text-primary">
                                                 <path strokeLinecap="round" strokeLinejoin="round"
                                                       d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/>
                                             </svg>
-                                        </IconButton>
                                         </Link>
                                     </Badge>
 
@@ -44,7 +40,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                                     type="button"
                                                     className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-500 transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none"
                                                 >
-                                                    Witaj, {user.name}
+                                                    Hello, {user.name}
 
                                                     <svg
                                                         className="-me-0.5 ms-2 h-4 w-4"
@@ -66,14 +62,14 @@ export default function AuthenticatedLayout({ header, children }) {
                                             <Dropdown.Link
                                                 href={route('profile.edit')}
                                             >
-                                                Profil
+                                                Profile
                                             </Dropdown.Link>
                                             <Dropdown.Link
                                                 href={route('logout')}
                                                 method="post"
                                                 as="button"
                                             >
-                                                Wyloguj się
+                                                Log out
                                             </Dropdown.Link>
                                         </Dropdown.Content>
                                     </Dropdown>

@@ -1,15 +1,45 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {Head, Link, useForm} from '@inertiajs/react';
-import {useEffect, useState} from 'react';
+import React, {useMemo, useState} from 'react';
 import Sidebar from './Sidebar';
 import MessageBox from "@/Components/MessageBox.jsx";
 import Show from "@/Components/Show.jsx";
+import FilterPanel from "@/Components/FilterPanel.jsx";
+import SortPanel from "@/Components/SortPanel.jsx";
 
-export default function Dashboard({vehicles, vehicle, userid, spendings}){
+export default function Dashboard({vehicles, vehicle, userid, spendings, coowners, spendingsTypes}){
     const [confirmingSpendingDeletion, setConfirmingSpendingDeletion] = useState(false);
     const [spendingId, setSpendingId] = useState();
+    const [spendingSelectedCoowner, setSpendingSelectedCoowner] = useState(Object.fromEntries(Object.keys(coowners).map(key=>[key, true])));
+    const [spendingSelectedType, setSpendingSelectedType] = useState(Object.fromEntries(Object.keys(spendingsTypes).map(key=>[key, true])));
+    const [sortBy, setSortBy] = useState("newDate");
 
     const deleteForm = useForm();
+
+    function sort(a, b){
+        switch (sortBy){
+            case "newDate":
+                return new Date(a.date).getTime() - new Date(b.date).getTime();
+            case "oldDate":
+                return new Date(b.date).getTime() - new Date(a.date).getTime();
+            case "priceLow":
+                return a.price - b.price;
+            case "priceHigh":
+                return b.price - a.price;
+            case "type":
+                return a.type.localeCompare(b.type);
+        }
+    }
+
+    function filterByCoowner(spending){
+        return spendingSelectedCoowner[spending.user.name];
+    }
+
+    function filterByTypes(spending){
+        return spendingSelectedType[spending.type];
+    }
+
+    const sortedSpendings = useMemo(()=>spendings.filter(filterByCoowner).filter(filterByTypes).toSorted(sort),[spendingSelectedCoowner, spendings, coowners, spendingSelectedType, spendingsTypes, sort]);
 
     const confirmSpendingDeletion = (id) => () => {
         setConfirmingSpendingDeletion(true);
@@ -27,35 +57,46 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
         setConfirmingSpendingDeletion(false);
     };
 
-    console.log(vehicle);
-
     return (
         <AuthenticatedLayout>
             <Head title="Car Expenses" />
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8   min-h-[calc(100vh-65px)] flex flex-col justify-center">
                     <div className=" bg-white shadow-sm sm:rounded-lg box-border  my-12 h-full p-6 text-gray-900 flex-row flex flex-1">
-                                {/* Sidebar */}
 
                                 <Sidebar cars={vehicles} selectedCarId={vehicle?.id} userid={userid} />
 
-                                {/* Main Content */}
                                 <div className="p-4 w-full">
                                     <Show when={vehicle!==null}>
-                                        <div className="mb-4">
+                                        <div className="flex mb-4 gap-2">
                                             <Link href={`/create/spending/${vehicle?.id}`}>
-                                            <button className="w-full bg-primary text-white p-4 rounded-lg flex items-center justify-center">
-                                                <span className="mr-2">+</span>
-                                                Dodaj nową płatność
-                                            </button>
+                                                <button
+                                                    className="w-full bg-primary text-white py-2 px-6 rounded-lg flex items-center justify-center">
+                                                    <span className="mr-2">+</span>
+                                                    Add new payment
+                                                </button>
                                             </Link>
+                                            <div className="flex flex-1"/>
+                                            <SortPanel
+                                                sortBy={sortBy}
+                                                setSortBy={setSortBy}
+                                            />
+                                            <FilterPanel
+                                                coowners={Object.keys(coowners)}
+                                                spendingsTypes={Object.keys(spendingsTypes)}
+                                                setSpendingSelectedCoowner={setSpendingSelectedCoowner}
+                                                spendingSelectedCoowner={spendingSelectedCoowner}
+                                                spendingSelectedType={spendingSelectedType}
+                                                setSpendingSelectedType={setSpendingSelectedType}
+                                            />
                                         </div>
                                     </Show>
                                     <div className="space-y-4">
 
-                                        {spendings.map((expense) => (
-                                            <div key={expense.id} className="bg-white rounded-lg border border-gray-100 min-w-full">
-                                                <div className="p-4">
-                                                    <div className="flex items-start justify-between mb-2">
+                                        {sortedSpendings.map((expense) => (
+                                            <div key={expense.id}
+                                                 className="bg-white rounded-lg border border-gray-100 min-w-full">
+                                            <div className="p-4">
+                                                <div className="flex items-start justify-between mb-2">
                                                         <div className="flex-1">
                                                             <div className="flex items-center gap-4 mb-1">
                                                                 <span className="font-medium">{expense.user.name}&nbsp;({expense.vehicle.brand}&nbsp;{expense.vehicle.model})</span>
@@ -72,19 +113,14 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
                                                         <Show when={expense.user_id === userid}>
                                                             <div className="flex gap-4">
                                                                 <Link href={`/edit/spending/${expense.id}`}>
-                                                                <button className="text-blue-500">Edytuj</button>
+                                                                <button className="text-blue-500">Edit</button>
                                                                 </Link>
-                                                                <button className="text-red-500" onClick={confirmSpendingDeletion(expense.id)}>Usuń</button>
+                                                                <button className="text-red-500" onClick={confirmSpendingDeletion(expense.id)}>Delete</button>
                                                             </div>
                                                         </Show>
                                                     </div>
                                                     <div className="flex justify-between items-end">
                                                         <span className="text-gray-500 text-sm">{new Date(expense.date).toLocaleDateString()}</span>
-                                                        {/*<img*/}
-                                                        {/*    src={spendings.image}*/}
-                                                        {/*    alt=""*/}
-                                                        {/*    className="w-10 h-10 rounded object-cover"*/}
-                                                        {/*/>*/}
                                                     </div>
                                                 </div>
                                             </div>
