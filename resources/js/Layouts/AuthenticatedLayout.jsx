@@ -1,13 +1,21 @@
 import Dropdown from '@/Components/Dropdown';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import Badge from "@/Components/Badge.jsx";
+import Alert from "@/Components/Alert.jsx";
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
     const invites = usePage().props.auth.invites;
+    const status = usePage().props.flash.status;
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+
+    const[alertText, setAlertText] = useState();
+
+    useEffect(() => {
+        setTimeout(()=>setAlertText(status), 500)
+    }, [status]);
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -165,6 +173,7 @@ export default function AuthenticatedLayout({ header, children }) {
             )}
 
             <main>{children}</main>
+            <Alert text={alertText} closeAlert={()=>setAlertText(null)}></Alert>
         </div>
     );
 }
