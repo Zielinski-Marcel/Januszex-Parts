@@ -39,7 +39,7 @@ export default function FilterPanel({coowners, spendingsTypes, spendingSelectedC
                             </span>
                         </div>
                     ))}
-                    <h2 className="text-base font-medium text-gray-900 mb-2">Filter Types</h2>
+                    <h2 className="text-base font-medium text-gray-900 mb-2 border-t border-gray-200 mt-4 pt-2">Filter Types</h2>
                     {spendingsTypes.map(type => (
                         <div key={type} className="flex gap-0 ml-1 p-0.5">
                             <Checkbox
