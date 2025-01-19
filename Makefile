@@ -12,7 +12,9 @@ shell:
 	@docker-compose exec -it app bash
 
 dusk:
+	@echo waiting for close docker
 	@docker-compose down
+	@echo waiting for open docker
 	@docker-compose up -d
 	@docker-compose exec -it app npm run build
 	@echo waiting for dusk
