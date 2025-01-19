@@ -19,7 +19,10 @@ class DashboardController extends Controller
 
         $coowners = $spendings->pluck("user.name", "user.name")->unique()->toArray();
         $spendingsTypes = $spendings->pluck("type", "type")->unique()->toArray();
-
+        activity()
+            ->causedBy($user)
+            ->withProperties(['action' => 'Viewed dashboard'])
+            ->log('User accessed '. ($vehicle ? $vehicle->brand : '') .' dashboard');
         return Inertia::render("Dashboard",[
             'spendings' => $spendings,
             'vehicles' => $user->vehicles()->wherePivot('status', 'active')->get(),

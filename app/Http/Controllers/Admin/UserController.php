@@ -10,12 +10,18 @@ class UserController
 {
     public function index()
     {
+        activity()
+            ->causedBy(auth()->user())
+            ->log('Accessed the user list.');
         $users = User::paginate(10);
         return view('admin.users.index', compact('users'));
     }
 
     public function create()
     {
+        activity()
+            ->causedBy(auth()->user())
+            ->log('Accessed the create user page.');
         return view('admin.users.create');
     }
 
@@ -28,18 +34,30 @@ class UserController
             'role' => 'required|string|in:user,admin',
         ]);
 
-        User::create([
+        $user=User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
         ]);
-
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($user)
+            ->withProperties([
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'role' => $user->role,
+            ])
+            ->log('Created a new user.');
         return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
     }
 
     public function edit(User $user)
     {
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($user)
+            ->log('Accessed the edit user page.');
         return Inertia::render(
             'Admin/EditUser',
             ["user" => $user]
@@ -58,12 +76,29 @@ class UserController
             'name' => $request->name,
             'email' => $request->email,
         ]);
-
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($user)
+            ->withProperties([
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'role' => $user->role,
+            ])
+            ->log('Updated user information.');
         return redirect("/admin")->with('success', 'User updated successfully.');
     }
 
     public function destroy(User $user)
     {
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($user)
+            ->withProperties([
+                'user_id' => $user->id,
+                'email' => $user->email,
+                'role' => $user->role,
+            ])
+            ->log('Deleted a user.');
         $user->delete();
         return redirect("/admin")->with('success', 'User deleted successfully.');
     }
