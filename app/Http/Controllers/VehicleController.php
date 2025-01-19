@@ -46,6 +46,10 @@ class VehicleController extends Controller
             'role' => 'owner',
             'status' => 'active'
         ]);
+        activity()
+            ->causedBy($user)
+            ->withProperties(['vehicle_id' => $vehicle->id])
+            ->log('Created a new vehicle.');
         return redirect()->to("/dashboard");
     }
     public function editVehicle(EditVehicleRequest $request, $id): JsonResponse
@@ -77,6 +81,10 @@ class VehicleController extends Controller
             abort(404);
         }
         $vehicle->delete();
+        activity()
+            ->causedBy($user)
+            ->withProperties(['vehicle_id' => $vehicle->id])
+            ->log('Deleted vehicle.');
         return redirect()->back()->with('status', 'Vehicle deleted successfully.');
     }
     public function removeUserFromVehicle($vehicle_id, $user_id)
@@ -102,6 +110,10 @@ class VehicleController extends Controller
                 'status' => 'inactive',
             ],
         ]);
+        activity()
+            ->causedBy(auth()->user())
+            ->withProperties(['vehicle_id' => $vehicle->id, 'user_id' => $user_id])
+            ->log('Removed user from vehicle.');
         return redirect()->back()->with('status', 'User deleted successfully.');
     }
 
@@ -118,6 +130,10 @@ class VehicleController extends Controller
                 'status' => 'inactive',
             ],
         ]);
+        activity()
+            ->causedBy($user)
+            ->withProperties(['vehicle_id' => $vehicle->id])
+            ->log('User left the vehicle.');
         return redirect()->back()->with('status', 'User deleted successfully.');
     }
 
@@ -131,6 +147,12 @@ class VehicleController extends Controller
             abort(403);
         }
             $userList = $vehicle->users()->wherePivot('status', 'active')->get();
+
+        activity()
+            ->causedBy($user)
+            ->withProperties(['vehicle_id' => $vehicle->id])
+            ->log('Accessed vehicle edit page.');
+
         return Inertia::render('Profile/EditVehicle', [
             'vehicle' => $vehicle,
             'user' => $user,
