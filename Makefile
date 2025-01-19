@@ -11,6 +11,10 @@ stop:
 shell:
 	@docker-compose exec -it app bash
 
+dusk:
+	@docker-compose exec -it app npm run build
+	@echo waiting for dusk
+	@docker-compose exec -it app php artisan dusk
 
 migrate:
 	@docker-compose exec app php artisan migrate:fresh --seed
