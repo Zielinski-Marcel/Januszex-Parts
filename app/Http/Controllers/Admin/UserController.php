@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Admin;
 
-class UserControler
+use App\Models\User;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+
+class UserController
 {
     public function index()
     {
@@ -54,8 +58,11 @@ class UserControler
             ->causedBy(auth()->user())
             ->performedOn($user)
             ->log('Accessed the edit user page.');
+        return Inertia::render(
+            'Admin/EditUser',
+            ["user" => $user]
 
-        return view('admin.users.edit', compact('user'));
+        );
     }
 
     public function update(Request $request, User $user)
@@ -63,13 +70,11 @@ class UserControler
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
-            'role' => 'required|string|in:user,admin',
         ]);
 
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role,
         ]);
         activity()
             ->causedBy(auth()->user())
@@ -80,7 +85,7 @@ class UserControler
                 'role' => $user->role,
             ])
             ->log('Updated user information.');
-        return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
+        return redirect("/admin")->with('success', 'User updated successfully.');
     }
 
     public function destroy(User $user)
@@ -95,6 +100,6 @@ class UserControler
             ])
             ->log('Deleted a user.');
         $user->delete();
-        return redirect()->route('admin.users.index')->with('success', 'User deleted successfully.');
+        return redirect("/admin")->with('success', 'User deleted successfully.');
     }
 }
