@@ -1,8 +1,6 @@
 import DangerButton from '@/Components/DangerButton';
-import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
 import { useForm } from '@inertiajs/react';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import MessageBox from "@/Components/MessageBox.jsx";
 
 export default function LeaveVehicleForm({ vehicles = [] }) {
@@ -33,7 +31,7 @@ export default function LeaveVehicleForm({ vehicles = [] }) {
     return (
         <div>
             <div className="flex flex-col gap-4">
-                <h2 className="text-lg font-medium text-gray-900">Lista Współdzielonych Pojazdów</h2>
+                <h2 className="text-lg font-medium text-gray-900">List of Shared Vehicles</h2>
                 {vehicles.map(vehicle => (
                     <div key={vehicle.id} className="flex">
                         <div className="content-center">

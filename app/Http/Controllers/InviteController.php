@@ -37,7 +37,9 @@ class InviteController extends Controller
         if (!$vehicle || $vehicle->owner_id !== $invitor->id) {
            abort(404, 'Vehicle not found or unauthorized.');
         }
-
+        if($validated['email']==$invitor->email){
+            abort(404, 'You cannot invite yourself.');
+        }
         $token = (string) Str::uuid();
 
         Invite::create([
