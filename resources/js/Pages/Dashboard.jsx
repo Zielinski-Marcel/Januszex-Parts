@@ -10,8 +10,8 @@ import SortPanel from "@/Components/SortPanel.jsx";
 export default function Dashboard({vehicles, vehicle, userid, spendings, coowners, spendingsTypes}){
     const [confirmingSpendingDeletion, setConfirmingSpendingDeletion] = useState(false);
     const [spendingId, setSpendingId] = useState();
-    const [spendingSelectedCoowner, setSpendingSelectedCoowner] = useState(coowners.reduce((all, type) => ({ ...all, [type]: true}), {}));
-    const [spendingSelectedType, setSpendingSelectedType] = useState(spendingsTypes.reduce((all, type) => ({ ...all, [type]: true}), {}));
+    const [spendingSelectedCoowner, setSpendingSelectedCoowner] = useState(Object.fromEntries(Object.keys(coowners).map(key=>[key, true])));
+    const [spendingSelectedType, setSpendingSelectedType] = useState(Object.fromEntries(Object.keys(spendingsTypes).map(key=>[key, true])));
     const [sortBy, setSortBy] = useState("newDate");
 
     const deleteForm = useForm();
@@ -81,8 +81,8 @@ export default function Dashboard({vehicles, vehicle, userid, spendings, coowner
                                                 setSortBy={setSortBy}
                                             />
                                             <FilterPanel
-                                                coowners={coowners}
-                                                spendingsTypes={spendingsTypes}
+                                                coowners={Object.keys(coowners)}
+                                                spendingsTypes={Object.keys(spendingsTypes)}
                                                 setSpendingSelectedCoowner={setSpendingSelectedCoowner}
                                                 spendingSelectedCoowner={spendingSelectedCoowner}
                                                 spendingSelectedType={spendingSelectedType}

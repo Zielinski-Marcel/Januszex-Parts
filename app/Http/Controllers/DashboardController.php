@@ -17,8 +17,8 @@ class DashboardController extends Controller
             $spendings = $vehicle->spendings()->with(["user", "vehicle"])->get();
         }
 
-        $coowners = $spendings->pluck("user.name")->unique()->toArray();
-        $spendingsTypes = $spendings->pluck("type")->unique()->toArray();
+        $coowners = $spendings->pluck("user.name", "user.name")->unique()->toArray();
+        $spendingsTypes = $spendings->pluck("type", "type")->unique()->toArray();
 
         return Inertia::render("Dashboard",[
             'spendings' => $spendings,
