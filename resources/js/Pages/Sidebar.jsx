@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from "@inertiajs/react";
 
-const Sidebar = ({ cars, selectedCarId, userid }) => {
+const Sidebar = ({ cars, selectedCarId}) => {
     const [showingSidebar, setShowingSidebar] = useState(false);
 
     return (
         <div className={showingSidebar ? "border-r border-gray-200 self-stretch" : "sm:border-r sm:border-gray-200 self-stretch"}>
-            {/*LOGIKA ZNIKANIA*/}
             <div className="sm:hidden pt-5">
                 <button
                     onClick={() => setShowingSidebar((prevState) => !prevState)}
@@ -41,9 +40,8 @@ const Sidebar = ({ cars, selectedCarId, userid }) => {
                     showingSidebar ? 'block' : 'hidden'
                 } sm:flex sm:flex-col w-64 p-4`}
             >
-                {/*Reszta kodu*/}
                 <div className="mb-6 flex justify-center items-center h-full flex-col">
-                    <h1 className="text-2xl font-bold text-[#2ECC71]">Lista twoich pojazdów:</h1>
+                    <h1 className="text-2xl font-bold text-[#2ECC71]">List of your vehicles:</h1>
                 </div>
                 <div className="space-y-2">
                     {cars.map((car) => (
@@ -66,7 +64,7 @@ const Sidebar = ({ cars, selectedCarId, userid }) => {
                         <div className="w-6 h-6 mr-2 flex items-center justify-center bg-[#2ECC71] text-white rounded-full text-sm">
                             +
                         </div>
-                        Dodaj nowy pojazd
+                        Add new vehicle
                     </Link>
                 </div>
                 <div className="mt-autoflex flex-col h-full"></div>
