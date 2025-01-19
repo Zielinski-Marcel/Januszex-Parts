@@ -4,6 +4,7 @@ import { Link, usePage } from '@inertiajs/react';
 import {useEffect, useState} from 'react';
 import Badge from "@/Components/Badge.jsx";
 import Alert from "@/Components/Alert.jsx";
+import Show from "@/Components/Show.jsx";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
