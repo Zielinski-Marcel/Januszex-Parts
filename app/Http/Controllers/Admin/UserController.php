@@ -49,7 +49,7 @@ class UserController
                 'role' => $user->role,
             ])
             ->log('Created a new user.');
-        return redirect()->route('admin.users.index')->with('success', 'User created successfully.');
+        return redirect()->route('admin.users.index')->with('status', 'User created successfully.');
     }
 
     public function edit(User $user)
@@ -85,7 +85,7 @@ class UserController
                 'role' => $user->role,
             ])
             ->log('Updated user information.');
-        return redirect("/admin")->with('success', 'User updated successfully.');
+        return redirect("/admin")->with('status', 'User updated successfully.');
     }
 
     public function destroy(User $user)
@@ -100,6 +100,6 @@ class UserController
             ])
             ->log('Deleted a user.');
         $user->delete();
-        return redirect("/admin")->with('success', 'User deleted successfully.');
+        return redirect("/admin")->with('status', 'User deleted successfully.');
     }
 }
