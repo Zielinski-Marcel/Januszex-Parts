@@ -24,7 +24,11 @@ class ProfileController extends Controller
         if (!$user) {
             return response()->json(['message' => 'Użytkownik nie został znaleziony.'], 404);
         }
-
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($user)
+            ->withProperties(['action' => 'Viewed profile'])
+            ->log('User viewed a profile');
         return view('user', ['user' => $user]);
     }
 
@@ -34,7 +38,10 @@ class ProfileController extends Controller
         $user = $request->user();
         $ownedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'owner')->get();
         $sharedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'shared')->get();
-
+        activity()
+            ->causedBy($user)
+            ->withProperties(['action' => 'Editing profile'])
+            ->log('User entered profile edit page');
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'vehicles' => [
@@ -51,13 +58,18 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
-
+        $user = $request->user();
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
 
         $request->user()->save();
-
+        activity()
+            ->causedBy($user)
+            ->withProperties([
+                'changes' => $request->validated()
+            ])
+            ->log('User updated profile information');
         return Redirect::route('profile.edit');
     }
 
@@ -71,7 +83,10 @@ class ProfileController extends Controller
         ]);
 
         $user = $request->user();
-
+        activity()
+            ->causedBy($user)
+            ->withProperties(['action' => 'Deleted account'])
+            ->log('User deleted their account');
         Auth::logout();
 
         $user->delete();

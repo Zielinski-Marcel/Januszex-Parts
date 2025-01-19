@@ -42,7 +42,7 @@ class InviteController extends Controller
         }
         $token = (string) Str::uuid();
 
-        Invite::create([
+        $invite=Invite::create([
             'vehicle_id' => $vehicle->id,
             'email' => $validated['email'],
             'invitor_id' => $invitor->id,
@@ -51,6 +51,15 @@ class InviteController extends Controller
 
         ]);
 
+        activity()
+            ->performedOn($invite)
+            ->causedBy($invitor)
+            ->withProperties([
+                'vehicle_id' => $vehicle->id,
+                'email' => $validated['email'],
+                'status' => 'pending',
+            ])
+            ->log('Sent an invite');
         $user = User::where('email', $validated['email'])->first();
         if ($user) {
             Mail::to($validated['email'])->send(new \App\Mail\Invite($user, $invitor, $vehicle, $token));
@@ -97,6 +106,17 @@ class InviteController extends Controller
                     'status' => 'active',
                 ],
         ]);
+        activity()
+            ->performedOn($invite)
+            ->causedBy(auth()->user())
+            ->withProperties([
+                'email' => $invite->email,
+                'vehicle_id' => $vehicle->id,
+                'user_id' => $user->id,
+                'role' => 'shared',
+                'status' => 'active',
+            ])
+            ->log('Invite updated');
         $invite->delete();
         return redirect()->back()->with('status', 'Invite updated successfully.');
     }
@@ -109,6 +129,15 @@ class InviteController extends Controller
         if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
             abort(403);
         }
+        activity()
+            ->performedOn($invite)
+            ->causedBy(auth()->user())
+            ->withProperties([
+                'invitor_id' => $invite->invitor_id,
+                'email' => $invite->email,
+                'vehicle_id' => $invite->vehicle_id,
+            ])
+            ->log('Deleted an invite');
 
         $invite->delete();
         return redirect()->back()->with('status', 'Invitation deleted successfully.');
