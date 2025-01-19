@@ -1,13 +1,11 @@
 import DangerButton from '@/Components/DangerButton';
-import Modal from '@/Components/Modal';
-import SecondaryButton from '@/Components/SecondaryButton';
-import {Link, useForm} from '@inertiajs/react';
-import React, { useRef, useState } from 'react';
+import {useForm} from '@inertiajs/react';
+import React, { useState } from 'react';
 import MessageBox from "@/Components/MessageBox.jsx";
-import PrimaryButton from "@/Components/PrimaryButton.jsx";
 import InviteMessageBox from "@/Components/InviteMessageBox.jsx";
+import Show from "@/Components/Show.jsx";
 
-export default function VehicleUsers({ users = [], vehicleId }) {
+export default function VehicleUsers({ users = [], vehicleId, ownerId }) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
     const [showInviteInput, setShowInviteInput] = useState(false);
     const [userId, setUserId] = useState();
@@ -46,16 +44,18 @@ export default function VehicleUsers({ users = [], vehicleId }) {
     return (
         <div>
             <div className="flex flex-col gap-4">
-                <h2 className="text-lg font-medium text-gray-900">List of users sharing the car</h2>
+                <h2 className="text-lg font-medium text-gray-900">List of Users Sharing The Car</h2>
                 {users.map(user => (
                     <div key={user.id} className="flex gap-2">
                         <div className="content-center">
                             {user.name}
                         </div>
                         <div className="flex flex-1"/>
-                    <DangerButton onClick={confirmUserDeletion(user.id)}>
-                        Remove
-                    </DangerButton>
+                        <Show when={ownerId!==user.id}>
+                            <DangerButton onClick={confirmUserDeletion(user.id)}>
+                                Remove
+                            </DangerButton>
+                        </Show>
                     </div>
                 ))}
                     <p onClick={()=>setShowInviteInput(true)} className="w-full flex items-center pr-3 text-gray-500 rounded-lg cursor-pointer">

@@ -53,12 +53,12 @@ class CreateVehicleTest extends DuskTestCase
                 ->assertPathIs('/login')
                 ->waitFor('.inline-flex.items-center', 10)
                 ->click('.inline-flex.items-center')
-                ->pause(3000)
+                ->pause(2000)
                 ->screenshot($screenshotsDir . '/dashboard_page')
                 ->assertPathIs('/dashboard');
 
             // Kliknij w link do dodawania nowego pojazdu
-            $browser->clickLink('Dodaj nowy pojazd')
+            $browser->clickLink('Add new vehicle')
                 ->pause(2000)
                 ->screenshot($screenshotsDir . '/create_vehicle_page')
                 ->assertPathIs('/create/vehicle');
