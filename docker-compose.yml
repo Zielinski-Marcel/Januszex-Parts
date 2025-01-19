@@ -77,19 +77,6 @@ services:
         networks:
             - projekt-pipssii_app-net
 
-    pgadmin:
-        image: dpage/pgadmin4
-        container_name: pgadmin-CCH
-        ports:
-            - ${PGADMIN_PORT}:80
-        networks:
-            - projekt-pipssii_app-net
-        environment:
-            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
-            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
-        volumes:
-            - pgadmin_data:/var/lib/pgadmin
-
     mailpit:
         image: axllent/mailpit:v1.20.5
         container_name: mailpit-CCH
