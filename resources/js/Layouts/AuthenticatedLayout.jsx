@@ -1,15 +1,23 @@
 import Dropdown from '@/Components/Dropdown';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import {Link, usePage} from '@inertiajs/react';
-import {useState} from 'react';
+import { Link, usePage } from '@inertiajs/react';
+import {useEffect, useState} from 'react';
 import Badge from "@/Components/Badge.jsx";
+import Alert from "@/Components/Alert.jsx";
 import Show from "@/Components/Show.jsx";
 
-export default function AuthenticatedLayout({header, children}) {
+export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
     const invites = usePage().props.auth.invites;
+    const status = usePage().props.flash.status;
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
+
+    const[alertText, setAlertText] = useState();
+
+    useEffect(() => {
+        setTimeout(()=>setAlertText(status), 500)
+    }, [status]);
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -24,15 +32,15 @@ export default function AuthenticatedLayout({header, children}) {
 
                         <div className="flex items-center">
                             <div className="hidden sm:flex sm:items-center">
-                                <Badge content={invites.length}>
-                                    <Link href="/invites">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                             strokeWidth={2} stroke="currentColor" className="size-6 text-primary">
-                                            <path strokeLinecap="round" strokeLinejoin="round"
-                                                  d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/>
-                                        </svg>
-                                    </Link>
-                                </Badge>
+                                    <Badge content={invites.length}>
+                                        <Link href="/invites">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                 strokeWidth={2} stroke="currentColor" className="size-6 text-primary">
+                                                <path strokeLinecap="round" strokeLinejoin="round"
+                                                      d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75"/>
+                                            </svg>
+                                        </Link>
+                                    </Badge>
 
                                 <div className="relative ms-3">
                                     <Dropdown>
@@ -70,7 +78,7 @@ export default function AuthenticatedLayout({header, children}) {
                                                 <Dropdown.Link
                                                     href={"/admin"}
                                                 >
-                                                    Admin mode
+                                                    Admin Panel
                                                 </Dropdown.Link>
                                             </Show>
                                             <Dropdown.Link
@@ -155,7 +163,7 @@ export default function AuthenticatedLayout({header, children}) {
                             </ResponsiveNavLink>
                             <Show when={user.is_admin}>
                                 <ResponsiveNavLink href={"/admin"}>
-                                    Admin panel
+                                    Admin Panel
                                 </ResponsiveNavLink>
                             </Show>
                             <ResponsiveNavLink
@@ -179,6 +187,7 @@ export default function AuthenticatedLayout({header, children}) {
             )}
 
             <main>{children}</main>
+            <Alert text={alertText} closeAlert={()=>setAlertText(null)}></Alert>
         </div>
     );
 }

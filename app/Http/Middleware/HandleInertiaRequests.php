@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Closure;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -31,6 +32,7 @@ class HandleInertiaRequests extends Middleware
     {
         return [
             ...parent::share($request),
+            "flash" => $this->getFlashData($request),
             'auth' => [
                 'user' => $request->user(),
                 'invites' => $request->user()?->getInvites(),
@@ -39,4 +41,10 @@ class HandleInertiaRequests extends Middleware
         ];
     }
 
+    protected function getFlashData(Request $request): Closure
+    {
+        return fn(): array => [
+            "status" => $request->session()->get("status"),
+        ];
+    }
 }
