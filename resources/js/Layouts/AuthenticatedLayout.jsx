@@ -4,6 +4,7 @@ import { Link, usePage } from '@inertiajs/react';
 import {useEffect, useState} from 'react';
 import Badge from "@/Components/Badge.jsx";
 import Alert from "@/Components/Alert.jsx";
+
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
     const invites = usePage().props.auth.invites;
@@ -72,6 +73,13 @@ export default function AuthenticatedLayout({ header, children }) {
                                             >
                                                 Profile
                                             </Dropdown.Link>
+                                            <Show when={user.is_admin}>
+                                                <Dropdown.Link
+                                                    href={"/admin"}
+                                                >
+                                                    Admin Panel
+                                                </Dropdown.Link>
+                                            </Show>
                                             <Dropdown.Link
                                                 href={route('logout')}
                                                 method="post"
@@ -152,6 +160,11 @@ export default function AuthenticatedLayout({ header, children }) {
                             <ResponsiveNavLink href={route('profile.edit')}>
                                 Profile
                             </ResponsiveNavLink>
+                            <Show when={user.is_admin}>
+                                <ResponsiveNavLink href={"/admin"}>
+                                    Admin Panel
+                                </ResponsiveNavLink>
+                            </Show>
                             <ResponsiveNavLink
                                 method="post"
                                 href={route('logout')}
