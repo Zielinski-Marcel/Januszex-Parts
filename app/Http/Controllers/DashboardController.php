@@ -18,11 +18,17 @@ class DashboardController extends Controller
         if($vehicle !== null){
             $spendings = $vehicle->spendings()->with(["user", "vehicle"])->get();
         }
+
+        $coowners = $spendings->pluck("user.name")->unique()->toArray();
+        $spendingsTypes = $spendings->pluck("type")->unique()->toArray();
+
         return Inertia::render("Dashboard",[
             'spendings' => $spendings,
             'vehicles' => $user->vehicles()->wherePivot('status', 'active')->get(),
             'vehicle' => $vehicle,
             'userid' => $user->id,
+            'coowners' => $coowners,
+            'spendingsTypes' => $spendingsTypes,
         ]);
     }
 }

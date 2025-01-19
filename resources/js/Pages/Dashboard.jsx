@@ -1,15 +1,46 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import {Head, Link, useForm} from '@inertiajs/react';
-import {useEffect, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Sidebar from './Sidebar';
 import MessageBox from "@/Components/MessageBox.jsx";
 import Show from "@/Components/Show.jsx";
+import IconButton from "@/Components/IconButton.jsx";
+import FilterPanel from "@/Components/FilterPanel.jsx";
+import SortPanel from "@/Components/SortPanel.jsx";
 
-export default function Dashboard({vehicles, vehicle, userid, spendings}){
+export default function Dashboard({vehicles, vehicle, userid, spendings, coowners, spendingsTypes}){
     const [confirmingSpendingDeletion, setConfirmingSpendingDeletion] = useState(false);
     const [spendingId, setSpendingId] = useState();
+    const [spendingSelectedCoowner, setSpendingSelectedCoowner] = useState(coowners.reduce((all, type) => ({ ...all, [type]: true}), {}));
+    const [spendingSelectedType, setSpendingSelectedType] = useState(spendingsTypes.reduce((all, type) => ({ ...all, [type]: true}), {}));
+    const [sortBy, setSortBy] = useState("newDate");
 
     const deleteForm = useForm();
+
+    function sort(a, b){
+        switch (sortBy){
+            case "newDate":
+                return new Date(a.date).getTime() - new Date(b.date).getTime();
+            case "oldDate":
+                return new Date(b.date).getTime() - new Date(a.date).getTime();
+            case "priceLow":
+                return a.price - b.price;
+            case "priceHigh":
+                return b.price - a.price;
+            case "type":
+                return a.type.localeCompare(b.type);
+        }
+    }
+
+    function filterByCoowner(spending){
+        return spendingSelectedCoowner[spending.user.name];
+    }
+
+    function filterByTypes(spending){
+        return spendingSelectedType[spending.type];
+    }
+
+    const sortedSpendings = useMemo(()=>spendings.filter(filterByCoowner).filter(filterByTypes).toSorted(sort),[spendingSelectedCoowner, spendings, coowners, spendingSelectedType, spendingsTypes, sort]);
 
     const confirmSpendingDeletion = (id) => () => {
         setConfirmingSpendingDeletion(true);
@@ -27,8 +58,6 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
         setConfirmingSpendingDeletion(false);
     };
 
-    console.log(vehicle);
-
     return (
         <AuthenticatedLayout>
             <Head title="Car Expenses" />
@@ -39,21 +68,36 @@ export default function Dashboard({vehicles, vehicle, userid, spendings}){
 
                                 <div className="p-4 w-full">
                                     <Show when={vehicle!==null}>
-                                        <div className="mb-4">
+                                        <div className="flex mb-4 gap-2">
                                             <Link href={`/create/spending/${vehicle?.id}`}>
-                                            <button className="w-full bg-primary text-white p-4 rounded-lg flex items-center justify-center">
-                                                <span className="mr-2">+</span>
-                                                Add new payment
-                                            </button>
+                                                <button
+                                                    className="w-full bg-primary text-white py-2 px-6 rounded-lg flex items-center justify-center">
+                                                    <span className="mr-2">+</span>
+                                                    Add new payment
+                                                </button>
                                             </Link>
+                                            <div className="flex flex-1"/>
+                                            <SortPanel
+                                                sortBy={sortBy}
+                                                setSortBy={setSortBy}
+                                            />
+                                            <FilterPanel
+                                                coowners={coowners}
+                                                spendingsTypes={spendingsTypes}
+                                                setSpendingSelectedCoowner={setSpendingSelectedCoowner}
+                                                spendingSelectedCoowner={spendingSelectedCoowner}
+                                                spendingSelectedType={spendingSelectedType}
+                                                setSpendingSelectedType={setSpendingSelectedType}
+                                            />
                                         </div>
                                     </Show>
                                     <div className="space-y-4">
 
-                                        {spendings.map((expense) => (
-                                            <div key={expense.id} className="bg-white rounded-lg border border-gray-100 min-w-full">
-                                                <div className="p-4">
-                                                    <div className="flex items-start justify-between mb-2">
+                                        {sortedSpendings.map((expense) => (
+                                            <div key={expense.id}
+                                                 className="bg-white rounded-lg border border-gray-100 min-w-full">
+                                            <div className="p-4">
+                                                <div className="flex items-start justify-between mb-2">
                                                         <div className="flex-1">
                                                             <div className="flex items-center gap-4 mb-1">
                                                                 <span className="font-medium">{expense.user.name}&nbsp;({expense.vehicle.brand}&nbsp;{expense.vehicle.model})</span>
