@@ -1,0 +1,4361 @@
+Escaped mutants:
+================
+
+1) /app/app/Http/Controllers/Admin/DashboardController.php:15    [M] FalseValue
+
+@@ @@
+     public function index()
+     {
+         $admin = auth()->user();
+-        $users = User::query()->where("is_admin", false)->withCount("vehicles")->get();
++        $users = User::query()->where("is_admin", true)->withCount("vehicles")->get();
+         activity()->causedBy(auth()->user())->log('Accessed the admin dashboard.');
+         return Inertia::render('Admin/Dashboard', ["admin" => $admin, "users" => $users]);
+     }
+
+
+2) /app/app/Http/Controllers/Admin/UserController.php:41    [M] ArrayItemRemoval
+
+@@ @@
+     }
+     public function store(Request $request)
+     {
+-        $request->validate(['name' => 'required|string|max:255', 'email' => 'required|email|unique:users,email', 'password' => 'required|string|min:8|confirmed', 'role' => 'required|string|in:user,admin']);
++        $request->validate(['email' => 'required|email|unique:users,email', 'password' => 'required|string|min:8|confirmed', 'role' => 'required|string|in:user,admin']);
+         $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password), 'role' => $request->role]);
+         activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Created a new user.');
+         return redirect()->route('admin.users.index')->with('status', 'User created successfully.');
+
+
+3) /app/app/Http/Controllers/Admin/UserController.php:68    [M] MethodCallRemoval
+
+@@ @@
+     }
+     public function edit(User $user)
+     {
+-        activity()->causedBy(auth()->user())->performedOn($user)->log('Accessed the edit user page.');
++        
+         return Inertia::render('Admin/EditUser', ["user" => $user]);
+     }
+     public function update(Request $request, User $user)
+
+
+4) /app/app/Http/Controllers/Admin/UserController.php:74    [M] ArrayItemRemoval
+
+@@ @@
+     public function edit(User $user)
+     {
+         activity()->causedBy(auth()->user())->performedOn($user)->log('Accessed the edit user page.');
+-        return Inertia::render('Admin/EditUser', ["user" => $user]);
++        return Inertia::render('Admin/EditUser', []);
+     }
+     public function update(Request $request, User $user)
+     {
+
+
+5) /app/app/Http/Controllers/Admin/UserController.php:81    [M] ArrayItemRemoval
+
+@@ @@
+     }
+     public function update(Request $request, User $user)
+     {
+-        $request->validate(['name' => 'required|string|max:255', 'email' => 'required|email|unique:users,email,' . $user->id]);
++        $request->validate(['email' => 'required|email|unique:users,email,' . $user->id]);
+         $user->update(['name' => $request->name, 'email' => $request->email]);
+         activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Updated user information.');
+         return redirect("/admin")->with('status', 'User updated successfully.');
+
+
+6) /app/app/Http/Controllers/Admin/UserController.php:93    [M] ArrayItemRemoval
+
+@@ @@
+     {
+         $request->validate(['name' => 'required|string|max:255', 'email' => 'required|email|unique:users,email,' . $user->id]);
+         $user->update(['name' => $request->name, 'email' => $request->email]);
+-        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Updated user information.');
++        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['email' => $user->email, 'role' => $user->role])->log('Updated user information.');
+         return redirect("/admin")->with('status', 'User updated successfully.');
+     }
+     public function destroy(User $user)
+
+
+7) /app/app/Http/Controllers/Admin/UserController.php:94    [M] ArrayItem
+
+@@ @@
+     {
+         $request->validate(['name' => 'required|string|max:255', 'email' => 'required|email|unique:users,email,' . $user->id]);
+         $user->update(['name' => $request->name, 'email' => $request->email]);
+-        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Updated user information.');
++        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' > $user->id, 'email' => $user->email, 'role' => $user->role])->log('Updated user information.');
+         return redirect("/admin")->with('status', 'User updated successfully.');
+     }
+     public function destroy(User $user)
+
+
+8) /app/app/Http/Controllers/Admin/UserController.php:95    [M] ArrayItem
+
+@@ @@
+     {
+         $request->validate(['name' => 'required|string|max:255', 'email' => 'required|email|unique:users,email,' . $user->id]);
+         $user->update(['name' => $request->name, 'email' => $request->email]);
+-        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Updated user information.');
++        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' > $user->email, 'role' => $user->role])->log('Updated user information.');
+         return redirect("/admin")->with('status', 'User updated successfully.');
+     }
+     public function destroy(User $user)
+
+
+9) /app/app/Http/Controllers/Admin/UserController.php:96    [M] ArrayItem
+
+@@ @@
+     {
+         $request->validate(['name' => 'required|string|max:255', 'email' => 'required|email|unique:users,email,' . $user->id]);
+         $user->update(['name' => $request->name, 'email' => $request->email]);
+-        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Updated user information.');
++        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' > $user->role])->log('Updated user information.');
+         return redirect("/admin")->with('status', 'User updated successfully.');
+     }
+     public function destroy(User $user)
+
+
+10) /app/app/Http/Controllers/Admin/UserController.php:107    [M] ArrayItemRemoval
+
+@@ @@
+     }
+     public function destroy(User $user)
+     {
+-        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Deleted a user.');
++        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['email' => $user->email, 'role' => $user->role])->log('Deleted a user.');
+         $user->delete();
+         return redirect("/admin")->with('status', 'User deleted successfully.');
+     }
+ }
+
+
+11) /app/app/Http/Controllers/Admin/UserController.php:108    [M] ArrayItem
+
+@@ @@
+     }
+     public function destroy(User $user)
+     {
+-        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Deleted a user.');
++        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' > $user->id, 'email' => $user->email, 'role' => $user->role])->log('Deleted a user.');
+         $user->delete();
+         return redirect("/admin")->with('status', 'User deleted successfully.');
+     }
+ }
+
+
+12) /app/app/Http/Controllers/Admin/UserController.php:109    [M] ArrayItem
+
+@@ @@
+     }
+     public function destroy(User $user)
+     {
+-        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Deleted a user.');
++        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' > $user->email, 'role' => $user->role])->log('Deleted a user.');
+         $user->delete();
+         return redirect("/admin")->with('status', 'User deleted successfully.');
+     }
+ }
+
+
+13) /app/app/Http/Controllers/Admin/UserController.php:110    [M] ArrayItem
+
+@@ @@
+     }
+     public function destroy(User $user)
+     {
+-        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Deleted a user.');
++        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' > $user->role])->log('Deleted a user.');
+         $user->delete();
+         return redirect("/admin")->with('status', 'User deleted successfully.');
+     }
+ }
+
+
+14) /app/app/Http/Controllers/Auth/AuthenticatedSessionController.php:21    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function create(): Response
+     {
+-        return Inertia::render('Auth/Login', ['canResetPassword' => Route::has('password.request'), 'status' => session('status')]);
++        return Inertia::render('Auth/Login', ['status' => session('status')]);
+     }
+     /**
+      * Handle an incoming authentication request.
+
+
+15) /app/app/Http/Controllers/Auth/AuthenticatedSessionController.php:23    [M] ArrayItem
+
+@@ @@
+      */
+     public function create(): Response
+     {
+-        return Inertia::render('Auth/Login', ['canResetPassword' => Route::has('password.request'), 'status' => session('status')]);
++        return Inertia::render('Auth/Login', ['canResetPassword' => Route::has('password.request'), 'status' > session('status')]);
+     }
+     /**
+      * Handle an incoming authentication request.
+
+
+16) /app/app/Http/Controllers/Auth/AuthenticatedSessionController.php:34    [M] MethodCallRemoval
+
+@@ @@
+     public function store(LoginRequest $request): RedirectResponse
+     {
+         $request->authenticate();
+-        $request->session()->regenerate();
++        
+         //        dd();
+         return redirect()->intended(route('dashboard', absolute: false));
+     }
+
+
+17) /app/app/Http/Controllers/Auth/AuthenticatedSessionController.php:36    [M] FalseValue
+
+@@ @@
+         $request->authenticate();
+         $request->session()->regenerate();
+         //        dd();
+-        return redirect()->intended(route('dashboard', absolute: false));
++        return redirect()->intended(route('dashboard', absolute: true));
+     }
+     /**
+      * Destroy an authenticated session.
+
+
+18) /app/app/Http/Controllers/Auth/AuthenticatedSessionController.php:46    [M] MethodCallRemoval
+
+@@ @@
+     public function destroy(Request $request): RedirectResponse
+     {
+         Auth::guard('web')->logout();
+-        $request->session()->invalidate();
++        
+         $request->session()->regenerateToken();
+         return redirect('/');
+     }
+ }
+
+
+19) /app/app/Http/Controllers/Auth/AuthenticatedSessionController.php:48    [M] MethodCallRemoval
+
+@@ @@
+     {
+         Auth::guard('web')->logout();
+         $request->session()->invalidate();
+-        $request->session()->regenerateToken();
++        
+         return redirect('/');
+     }
+ }
+
+
+20) /app/app/Http/Controllers/Auth/ConfirmablePasswordController.php:32    [M] ArrayItemRemoval
+
+@@ @@
+     public function store(Request $request): RedirectResponse
+     {
+         if (!Auth::guard('web')->validate(['email' => $request->user()->email, 'password' => $request->password])) {
+-            throw ValidationException::withMessages(['password' => __('auth.password')]);
++            throw ValidationException::withMessages([]);
+         }
+         $request->session()->put('auth.password_confirmed_at', time());
+         return redirect()->intended(route('dashboard', absolute: false));
+     }
+ }
+
+
+21) /app/app/Http/Controllers/Auth/ConfirmablePasswordController.php:33    [M] ArrayItem
+
+@@ @@
+     public function store(Request $request): RedirectResponse
+     {
+         if (!Auth::guard('web')->validate(['email' => $request->user()->email, 'password' => $request->password])) {
+-            throw ValidationException::withMessages(['password' => __('auth.password')]);
++            throw ValidationException::withMessages(['password' > __('auth.password')]);
+         }
+         $request->session()->put('auth.password_confirmed_at', time());
+         return redirect()->intended(route('dashboard', absolute: false));
+     }
+ }
+
+
+22) /app/app/Http/Controllers/Auth/ConfirmablePasswordController.php:37    [M] MethodCallRemoval
+
+@@ @@
+         if (!Auth::guard('web')->validate(['email' => $request->user()->email, 'password' => $request->password])) {
+             throw ValidationException::withMessages(['password' => __('auth.password')]);
+         }
+-        $request->session()->put('auth.password_confirmed_at', time());
++        
+         return redirect()->intended(route('dashboard', absolute: false));
+     }
+ }
+
+
+23) /app/app/Http/Controllers/Auth/ConfirmablePasswordController.php:39    [M] FalseValue
+
+@@ @@
+             throw ValidationException::withMessages(['password' => __('auth.password')]);
+         }
+         $request->session()->put('auth.password_confirmed_at', time());
+-        return redirect()->intended(route('dashboard', absolute: false));
++        return redirect()->intended(route('dashboard', absolute: true));
+     }
+ }
+
+
+24) /app/app/Http/Controllers/Auth/EmailVerificationPromptController.php:20    [M] ArrayItem
+
+@@ @@
+      */
+     public function __invoke(Request $request): RedirectResponse|Response
+     {
+-        return $request->user()->hasVerifiedEmail() ? redirect()->intended(route('dashboard', absolute: false)) : Inertia::render('Auth/VerifyEmail', ['status' => session('status')]);
++        return $request->user()->hasVerifiedEmail() ? redirect()->intended(route('dashboard', absolute: false)) : Inertia::render('Auth/VerifyEmail', ['status' > session('status')]);
+     }
+ }
+
+
+25) /app/app/Http/Controllers/Auth/EmailVerificationPromptController.php:20    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function __invoke(Request $request): RedirectResponse|Response
+     {
+-        return $request->user()->hasVerifiedEmail() ? redirect()->intended(route('dashboard', absolute: false)) : Inertia::render('Auth/VerifyEmail', ['status' => session('status')]);
++        return $request->user()->hasVerifiedEmail() ? redirect()->intended(route('dashboard', absolute: false)) : Inertia::render('Auth/VerifyEmail', []);
+     }
+ }
+
+
+26) /app/app/Http/Controllers/Auth/NewPasswordController.php:24    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function create(Request $request): Response
+     {
+-        return Inertia::render('Auth/ResetPassword', ['email' => $request->email, 'token' => $request->route('token')]);
++        return Inertia::render('Auth/ResetPassword', ['token' => $request->route('token')]);
+     }
+     /**
+      * Handle an incoming new password request.
+
+
+27) /app/app/Http/Controllers/Auth/NewPasswordController.php:25    [M] ArrayItem
+
+@@ @@
+      */
+     public function create(Request $request): Response
+     {
+-        return Inertia::render('Auth/ResetPassword', ['email' => $request->email, 'token' => $request->route('token')]);
++        return Inertia::render('Auth/ResetPassword', ['email' > $request->email, 'token' => $request->route('token')]);
+     }
+     /**
+      * Handle an incoming new password request.
+
+
+28) /app/app/Http/Controllers/Auth/NewPasswordController.php:26    [M] ArrayItem
+
+@@ @@
+      */
+     public function create(Request $request): Response
+     {
+-        return Inertia::render('Auth/ResetPassword', ['email' => $request->email, 'token' => $request->route('token')]);
++        return Inertia::render('Auth/ResetPassword', ['email' => $request->email, 'token' > $request->route('token')]);
+     }
+     /**
+      * Handle an incoming new password request.
+
+
+29) /app/app/Http/Controllers/Auth/NewPasswordController.php:37    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function store(Request $request): RedirectResponse
+     {
+-        $request->validate(['token' => 'required', 'email' => 'required|email', 'password' => ['required', 'confirmed', Rules\Password::defaults()]]);
++        $request->validate(['email' => 'required|email', 'password' => ['required', 'confirmed', Rules\Password::defaults()]]);
+         // Here we will attempt to reset the user's password. If it is successful we
+         // will update the password on an actual user model and persist it to the
+         // database. Otherwise we will parse the error and return the response.
+
+
+30) /app/app/Http/Controllers/Auth/NewPasswordController.php:37    [M] MethodCallRemoval
+
+@@ @@
+      */
+     public function store(Request $request): RedirectResponse
+     {
+-        $request->validate(['token' => 'required', 'email' => 'required|email', 'password' => ['required', 'confirmed', Rules\Password::defaults()]]);
++        
+         // Here we will attempt to reset the user's password. If it is successful we
+         // will update the password on an actual user model and persist it to the
+         // database. Otherwise we will parse the error and return the response.
+
+
+31) /app/app/Http/Controllers/Auth/NewPasswordController.php:40    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function store(Request $request): RedirectResponse
+     {
+-        $request->validate(['token' => 'required', 'email' => 'required|email', 'password' => ['required', 'confirmed', Rules\Password::defaults()]]);
++        $request->validate(['token' => 'required', 'email' => 'required|email', 'password' => ['confirmed', Rules\Password::defaults()]]);
+         // Here we will attempt to reset the user's password. If it is successful we
+         // will update the password on an actual user model and persist it to the
+         // database. Otherwise we will parse the error and return the response.
+
+
+32) /app/app/Http/Controllers/Auth/NewPasswordController.php:49    [M] ArrayItemRemoval
+
+@@ @@
+         // will update the password on an actual user model and persist it to the
+         // database. Otherwise we will parse the error and return the response.
+         $status = Password::reset($request->only('email', 'password', 'password_confirmation', 'token'), function ($user) use ($request) {
+-            $user->forceFill(['password' => Hash::make($request->password), 'remember_token' => Str::random(60)])->save();
++            $user->forceFill(['remember_token' => Str::random(60)])->save();
+             event(new PasswordReset($user));
+         });
+         // If the password was successfully reset, we will redirect the user back to
+
+
+33) /app/app/Http/Controllers/Auth/NewPasswordController.php:49    [M] MethodCallRemoval
+
+@@ @@
+         // will update the password on an actual user model and persist it to the
+         // database. Otherwise we will parse the error and return the response.
+         $status = Password::reset($request->only('email', 'password', 'password_confirmation', 'token'), function ($user) use ($request) {
+-            $user->forceFill(['password' => Hash::make($request->password), 'remember_token' => Str::random(60)])->save();
++            
+             event(new PasswordReset($user));
+         });
+         // If the password was successfully reset, we will redirect the user back to
+
+
+34) /app/app/Http/Controllers/Auth/NewPasswordController.php:51    [M] DecrementInteger
+
+@@ @@
+         // will update the password on an actual user model and persist it to the
+         // database. Otherwise we will parse the error and return the response.
+         $status = Password::reset($request->only('email', 'password', 'password_confirmation', 'token'), function ($user) use ($request) {
+-            $user->forceFill(['password' => Hash::make($request->password), 'remember_token' => Str::random(60)])->save();
++            $user->forceFill(['password' => Hash::make($request->password), 'remember_token' => Str::random(59)])->save();
+             event(new PasswordReset($user));
+         });
+         // If the password was successfully reset, we will redirect the user back to
+
+
+35) /app/app/Http/Controllers/Auth/NewPasswordController.php:51    [M] IncrementInteger
+
+@@ @@
+         // will update the password on an actual user model and persist it to the
+         // database. Otherwise we will parse the error and return the response.
+         $status = Password::reset($request->only('email', 'password', 'password_confirmation', 'token'), function ($user) use ($request) {
+-            $user->forceFill(['password' => Hash::make($request->password), 'remember_token' => Str::random(60)])->save();
++            $user->forceFill(['password' => Hash::make($request->password), 'remember_token' => Str::random(61)])->save();
+             event(new PasswordReset($user));
+         });
+         // If the password was successfully reset, we will redirect the user back to
+
+
+36) /app/app/Http/Controllers/Auth/NewPasswordController.php:54    [M] FunctionCallRemoval
+
+@@ @@
+         // database. Otherwise we will parse the error and return the response.
+         $status = Password::reset($request->only('email', 'password', 'password_confirmation', 'token'), function ($user) use ($request) {
+             $user->forceFill(['password' => Hash::make($request->password), 'remember_token' => Str::random(60)])->save();
+-            event(new PasswordReset($user));
++            
+         });
+         // If the password was successfully reset, we will redirect the user back to
+         // the application's home authenticated view. If there is an error we can
+
+
+37) /app/app/Http/Controllers/Auth/NewPasswordController.php:61    [M] AssignmentEqual
+
+@@ @@
+         // If the password was successfully reset, we will redirect the user back to
+         // the application's home authenticated view. If there is an error we can
+         // redirect them back to where they came from with their error message.
+-        if ($status == Password::PASSWORD_RESET) {
++        if ($status = Password::PASSWORD_RESET) {
+             return redirect()->route('login')->with('status', __($status));
+         }
+         throw ValidationException::withMessages(['email' => [trans($status)]]);
+     }
+ }
+
+
+38) /app/app/Http/Controllers/Auth/PasswordController.php:19    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function update(Request $request): RedirectResponse
+     {
+-        $validated = $request->validate(['current_password' => ['required', 'current_password'], 'password' => ['required', Password::defaults(), 'confirmed']]);
++        $validated = $request->validate(['current_password' => ['current_password'], 'password' => ['required', Password::defaults(), 'confirmed']]);
+         $request->user()->update(['password' => Hash::make($validated['password'])]);
+         return back();
+     }
+ }
+
+
+39) /app/app/Http/Controllers/Auth/PasswordController.php:20    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function update(Request $request): RedirectResponse
+     {
+-        $validated = $request->validate(['current_password' => ['required', 'current_password'], 'password' => ['required', Password::defaults(), 'confirmed']]);
++        $validated = $request->validate(['current_password' => ['required', 'current_password'], 'password' => [Password::defaults(), 'confirmed']]);
+         $request->user()->update(['password' => Hash::make($validated['password'])]);
+         return back();
+     }
+ }
+
+
+40) /app/app/Http/Controllers/Auth/PasswordResetLinkController.php:20    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function create(): Response
+     {
+-        return Inertia::render('Auth/ForgotPassword', ['status' => session('status')]);
++        return Inertia::render('Auth/ForgotPassword', []);
+     }
+     /**
+      * Handle an incoming password reset link request.
+
+
+41) /app/app/Http/Controllers/Auth/PasswordResetLinkController.php:21    [M] ArrayItem
+
+@@ @@
+      */
+     public function create(): Response
+     {
+-        return Inertia::render('Auth/ForgotPassword', ['status' => session('status')]);
++        return Inertia::render('Auth/ForgotPassword', ['status' > session('status')]);
+     }
+     /**
+      * Handle an incoming password reset link request.
+
+
+42) /app/app/Http/Controllers/Auth/PasswordResetLinkController.php:32    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function store(Request $request): RedirectResponse
+     {
+-        $request->validate(['email' => 'required|email']);
++        $request->validate([]);
+         // We will send the password reset link to this user. Once we have attempted
+         // to send the link, we will examine the response then see the message we
+         // need to show to the user. Finally, we'll send out a proper response.
+
+
+43) /app/app/Http/Controllers/Auth/PasswordResetLinkController.php:32    [M] MethodCallRemoval
+
+@@ @@
+      */
+     public function store(Request $request): RedirectResponse
+     {
+-        $request->validate(['email' => 'required|email']);
++        
+         // We will send the password reset link to this user. Once we have attempted
+         // to send the link, we will examine the response then see the message we
+         // need to show to the user. Finally, we'll send out a proper response.
+
+
+44) /app/app/Http/Controllers/Auth/PasswordResetLinkController.php:43    [M] AssignmentEqual
+
+@@ @@
+         // to send the link, we will examine the response then see the message we
+         // need to show to the user. Finally, we'll send out a proper response.
+         $status = Password::sendResetLink($request->only('email'));
+-        if ($status == Password::RESET_LINK_SENT) {
++        if ($status = Password::RESET_LINK_SENT) {
+             return back()->with('status', __($status));
+         }
+         throw ValidationException::withMessages(['email' => [trans($status)]]);
+     }
+ }
+
+
+45) /app/app/Http/Controllers/Auth/PasswordResetLinkController.php:43    [M] Equal
+
+@@ @@
+         // to send the link, we will examine the response then see the message we
+         // need to show to the user. Finally, we'll send out a proper response.
+         $status = Password::sendResetLink($request->only('email'));
+-        if ($status == Password::RESET_LINK_SENT) {
++        if ($status != Password::RESET_LINK_SENT) {
+             return back()->with('status', __($status));
+         }
+         throw ValidationException::withMessages(['email' => [trans($status)]]);
+     }
+ }
+
+
+46) /app/app/Http/Controllers/Auth/RegisteredUserController.php:33    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function store(Request $request): RedirectResponse
+     {
+-        $request->validate(['name' => 'required|string|max:255', 'email' => 'required|string|lowercase|email|max:255|unique:' . User::class, 'password' => ['required', 'confirmed', Rules\Password::defaults()]]);
++        $request->validate(['email' => 'required|string|lowercase|email|max:255|unique:' . User::class, 'password' => ['required', 'confirmed', Rules\Password::defaults()]]);
+         $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password)]);
+         event(new Registered($user));
+         Auth::login($user);
+
+
+47) /app/app/Http/Controllers/Auth/RegisteredUserController.php:33    [M] MethodCallRemoval
+
+@@ @@
+      */
+     public function store(Request $request): RedirectResponse
+     {
+-        $request->validate(['name' => 'required|string|max:255', 'email' => 'required|string|lowercase|email|max:255|unique:' . User::class, 'password' => ['required', 'confirmed', Rules\Password::defaults()]]);
++        
+         $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password)]);
+         event(new Registered($user));
+         Auth::login($user);
+
+
+48) /app/app/Http/Controllers/Auth/RegisteredUserController.php:36    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function store(Request $request): RedirectResponse
+     {
+-        $request->validate(['name' => 'required|string|max:255', 'email' => 'required|string|lowercase|email|max:255|unique:' . User::class, 'password' => ['required', 'confirmed', Rules\Password::defaults()]]);
++        $request->validate(['name' => 'required|string|max:255', 'email' => 'required|string|lowercase|email|max:255|unique:' . User::class, 'password' => ['confirmed', Rules\Password::defaults()]]);
+         $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password)]);
+         event(new Registered($user));
+         Auth::login($user);
+
+
+49) /app/app/Http/Controllers/Auth/RegisteredUserController.php:45    [M] FunctionCallRemoval
+
+@@ @@
+     {
+         $request->validate(['name' => 'required|string|max:255', 'email' => 'required|string|lowercase|email|max:255|unique:' . User::class, 'password' => ['required', 'confirmed', Rules\Password::defaults()]]);
+         $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password)]);
+-        event(new Registered($user));
++        
+         Auth::login($user);
+         return redirect(route('dashboard', absolute: false));
+     }
+ }
+
+
+50) /app/app/Http/Controllers/Auth/RegisteredUserController.php:49    [M] FalseValue
+
+@@ @@
+         $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password)]);
+         event(new Registered($user));
+         Auth::login($user);
+-        return redirect(route('dashboard', absolute: false));
++        return redirect(route('dashboard', absolute: true));
+     }
+ }
+
+
+51) /app/app/Http/Controllers/Auth/VerifyEmailController.php:25    [M] FalseValue
+
+@@ @@
+         if ($request->user()->markEmailAsVerified()) {
+             event(new Verified($request->user()));
+         }
+-        return redirect()->intended(route('dashboard', absolute: false) . '?verified=1');
++        return redirect()->intended(route('dashboard', absolute: true) . '?verified=1');
+     }
+ }
+
+
+52) /app/app/Http/Controllers/DashboardController.php:17    [M] ArrayItemRemoval
+
+@@ @@
+         $user = $request->user();
+         $spendings = $user->lastSpendings();
+         if ($vehicle !== null) {
+-            $spendings = $vehicle->spendings()->with(["user", "vehicle"])->get();
++            $spendings = $vehicle->spendings()->with(["vehicle"])->get();
+         }
+         $coowners = $spendings->pluck("user.name", "user.name")->unique()->toArray();
+         $spendingsTypes = $spendings->pluck("type", "type")->unique()->toArray();
+
+
+53) /app/app/Http/Controllers/DashboardController.php:22    [M] MethodCallRemoval
+
+@@ @@
+         }
+         $coowners = $spendings->pluck("user.name", "user.name")->unique()->toArray();
+         $spendingsTypes = $spendings->pluck("type", "type")->unique()->toArray();
+-        activity()->causedBy($user)->withProperties(['action' => 'Viewed dashboard'])->log('User accessed ' . ($vehicle ? $vehicle->brand : '') . ' dashboard');
++        
+         return Inertia::render("Dashboard", ['spendings' => $spendings, 'vehicles' => $user->vehicles()->wherePivot('status', 'active')->get(), 'vehicle' => $vehicle, 'userid' => $user->id, 'coowners' => $coowners, 'spendingsTypes' => $spendingsTypes]);
+     }
+ }
+
+
+54) /app/app/Http/Controllers/DashboardController.php:24    [M] ArrayItemRemoval
+
+@@ @@
+         }
+         $coowners = $spendings->pluck("user.name", "user.name")->unique()->toArray();
+         $spendingsTypes = $spendings->pluck("type", "type")->unique()->toArray();
+-        activity()->causedBy($user)->withProperties(['action' => 'Viewed dashboard'])->log('User accessed ' . ($vehicle ? $vehicle->brand : '') . ' dashboard');
++        activity()->causedBy($user)->withProperties([])->log('User accessed ' . ($vehicle ? $vehicle->brand : '') . ' dashboard');
+         return Inertia::render("Dashboard", ['spendings' => $spendings, 'vehicles' => $user->vehicles()->wherePivot('status', 'active')->get(), 'vehicle' => $vehicle, 'userid' => $user->id, 'coowners' => $coowners, 'spendingsTypes' => $spendingsTypes]);
+     }
+ }
+
+
+55) /app/app/Http/Controllers/DashboardController.php:25    [M] Concat
+
+@@ @@
+         }
+         $coowners = $spendings->pluck("user.name", "user.name")->unique()->toArray();
+         $spendingsTypes = $spendings->pluck("type", "type")->unique()->toArray();
+-        activity()->causedBy($user)->withProperties(['action' => 'Viewed dashboard'])->log('User accessed ' . ($vehicle ? $vehicle->brand : '') . ' dashboard');
++        activity()->causedBy($user)->withProperties(['action' => 'Viewed dashboard'])->log(($vehicle ? $vehicle->brand : '') . 'User accessed ' . ' dashboard');
+         return Inertia::render("Dashboard", ['spendings' => $spendings, 'vehicles' => $user->vehicles()->wherePivot('status', 'active')->get(), 'vehicle' => $vehicle, 'userid' => $user->id, 'coowners' => $coowners, 'spendingsTypes' => $spendingsTypes]);
+     }
+ }
+
+
+56) /app/app/Http/Controllers/DashboardController.php:25    [M] ConcatOperandRemoval
+
+@@ @@
+         }
+         $coowners = $spendings->pluck("user.name", "user.name")->unique()->toArray();
+         $spendingsTypes = $spendings->pluck("type", "type")->unique()->toArray();
+-        activity()->causedBy($user)->withProperties(['action' => 'Viewed dashboard'])->log('User accessed ' . ($vehicle ? $vehicle->brand : '') . ' dashboard');
++        activity()->causedBy($user)->withProperties(['action' => 'Viewed dashboard'])->log(($vehicle ? $vehicle->brand : '') . ' dashboard');
+         return Inertia::render("Dashboard", ['spendings' => $spendings, 'vehicles' => $user->vehicles()->wherePivot('status', 'active')->get(), 'vehicle' => $vehicle, 'userid' => $user->id, 'coowners' => $coowners, 'spendingsTypes' => $spendingsTypes]);
+     }
+ }
+
+
+57) /app/app/Http/Controllers/DashboardController.php:25    [M] ConcatOperandRemoval
+
+@@ @@
+         }
+         $coowners = $spendings->pluck("user.name", "user.name")->unique()->toArray();
+         $spendingsTypes = $spendings->pluck("type", "type")->unique()->toArray();
+-        activity()->causedBy($user)->withProperties(['action' => 'Viewed dashboard'])->log('User accessed ' . ($vehicle ? $vehicle->brand : '') . ' dashboard');
++        activity()->causedBy($user)->withProperties(['action' => 'Viewed dashboard'])->log('User accessed ' . ' dashboard');
+         return Inertia::render("Dashboard", ['spendings' => $spendings, 'vehicles' => $user->vehicles()->wherePivot('status', 'active')->get(), 'vehicle' => $vehicle, 'userid' => $user->id, 'coowners' => $coowners, 'spendingsTypes' => $spendingsTypes]);
+     }
+ }
+
+
+58) /app/app/Http/Controllers/DashboardController.php:25    [M] Concat
+
+@@ @@
+         }
+         $coowners = $spendings->pluck("user.name", "user.name")->unique()->toArray();
+         $spendingsTypes = $spendings->pluck("type", "type")->unique()->toArray();
+-        activity()->causedBy($user)->withProperties(['action' => 'Viewed dashboard'])->log('User accessed ' . ($vehicle ? $vehicle->brand : '') . ' dashboard');
++        activity()->causedBy($user)->withProperties(['action' => 'Viewed dashboard'])->log('User accessed ' . ' dashboard' . ($vehicle ? $vehicle->brand : ''));
+         return Inertia::render("Dashboard", ['spendings' => $spendings, 'vehicles' => $user->vehicles()->wherePivot('status', 'active')->get(), 'vehicle' => $vehicle, 'userid' => $user->id, 'coowners' => $coowners, 'spendingsTypes' => $spendingsTypes]);
+     }
+ }
+
+
+59) /app/app/Http/Controllers/DashboardController.php:25    [M] ConcatOperandRemoval
+
+@@ @@
+         }
+         $coowners = $spendings->pluck("user.name", "user.name")->unique()->toArray();
+         $spendingsTypes = $spendings->pluck("type", "type")->unique()->toArray();
+-        activity()->causedBy($user)->withProperties(['action' => 'Viewed dashboard'])->log('User accessed ' . ($vehicle ? $vehicle->brand : '') . ' dashboard');
++        activity()->causedBy($user)->withProperties(['action' => 'Viewed dashboard'])->log('User accessed ' . ($vehicle ? $vehicle->brand : ''));
+         return Inertia::render("Dashboard", ['spendings' => $spendings, 'vehicles' => $user->vehicles()->wherePivot('status', 'active')->get(), 'vehicle' => $vehicle, 'userid' => $user->id, 'coowners' => $coowners, 'spendingsTypes' => $spendingsTypes]);
+     }
+ }
+
+
+60) /app/app/Http/Controllers/InviteController.php:43    [M] CastString
+
+@@ @@
+         if ($validated['email'] == $invitor->email) {
+             abort(404, 'You cannot invite yourself.');
+         }
+-        $token = (string) Str::uuid();
++        $token = Str::uuid();
+         $invite = Invite::create(['vehicle_id' => $vehicle->id, 'email' => $validated['email'], 'invitor_id' => $invitor->id, 'status' => 'pending', 'verification_token' => $token]);
+         activity()->performedOn($invite)->causedBy($invitor)->withProperties(['vehicle_id' => $vehicle->id, 'email' => $validated['email'], 'status' => 'pending'])->log('Sent an invite');
+         $user = User::where('email', $validated['email'])->first();
+
+
+61) /app/app/Http/Controllers/InviteController.php:54    [M] MethodCallRemoval
+
+@@ @@
+         }
+         $token = (string) Str::uuid();
+         $invite = Invite::create(['vehicle_id' => $vehicle->id, 'email' => $validated['email'], 'invitor_id' => $invitor->id, 'status' => 'pending', 'verification_token' => $token]);
+-        activity()->performedOn($invite)->causedBy($invitor)->withProperties(['vehicle_id' => $vehicle->id, 'email' => $validated['email'], 'status' => 'pending'])->log('Sent an invite');
++        
+         $user = User::where('email', $validated['email'])->first();
+         if ($user) {
+             Mail::to($validated['email'])->send(new \App\Mail\Invite($user, $invitor, $vehicle, $token));
+
+
+62) /app/app/Http/Controllers/InviteController.php:57    [M] ArrayItemRemoval
+
+@@ @@
+         }
+         $token = (string) Str::uuid();
+         $invite = Invite::create(['vehicle_id' => $vehicle->id, 'email' => $validated['email'], 'invitor_id' => $invitor->id, 'status' => 'pending', 'verification_token' => $token]);
+-        activity()->performedOn($invite)->causedBy($invitor)->withProperties(['vehicle_id' => $vehicle->id, 'email' => $validated['email'], 'status' => 'pending'])->log('Sent an invite');
++        activity()->performedOn($invite)->causedBy($invitor)->withProperties(['email' => $validated['email'], 'status' => 'pending'])->log('Sent an invite');
+         $user = User::where('email', $validated['email'])->first();
+         if ($user) {
+             Mail::to($validated['email'])->send(new \App\Mail\Invite($user, $invitor, $vehicle, $token));
+
+
+63) /app/app/Http/Controllers/InviteController.php:58    [M] ArrayItem
+
+@@ @@
+         }
+         $token = (string) Str::uuid();
+         $invite = Invite::create(['vehicle_id' => $vehicle->id, 'email' => $validated['email'], 'invitor_id' => $invitor->id, 'status' => 'pending', 'verification_token' => $token]);
+-        activity()->performedOn($invite)->causedBy($invitor)->withProperties(['vehicle_id' => $vehicle->id, 'email' => $validated['email'], 'status' => 'pending'])->log('Sent an invite');
++        activity()->performedOn($invite)->causedBy($invitor)->withProperties(['vehicle_id' > $vehicle->id, 'email' => $validated['email'], 'status' => 'pending'])->log('Sent an invite');
+         $user = User::where('email', $validated['email'])->first();
+         if ($user) {
+             Mail::to($validated['email'])->send(new \App\Mail\Invite($user, $invitor, $vehicle, $token));
+
+
+64) /app/app/Http/Controllers/ProfileController.php:31    [M] MethodCallRemoval
+
+@@ @@
+         $user = $request->user();
+         $ownedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'owner')->get();
+         $sharedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'shared')->get();
+-        activity()->causedBy($user)->withProperties(['action' => 'Editing profile'])->log('User entered profile edit page');
++        
+         return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
+     }
+     /**
+
+
+65) /app/app/Http/Controllers/ProfileController.php:33    [M] ArrayItemRemoval
+
+@@ @@
+         $user = $request->user();
+         $ownedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'owner')->get();
+         $sharedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'shared')->get();
+-        activity()->causedBy($user)->withProperties(['action' => 'Editing profile'])->log('User entered profile edit page');
++        activity()->causedBy($user)->withProperties([])->log('User entered profile edit page');
+         return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
+     }
+     /**
+
+
+66) /app/app/Http/Controllers/ProfileController.php:35    [M] ArrayItemRemoval
+
+@@ @@
+         $ownedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'owner')->get();
+         $sharedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'shared')->get();
+         activity()->causedBy($user)->withProperties(['action' => 'Editing profile'])->log('User entered profile edit page');
+-        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
++        return Inertia::render('Profile/Edit', ['vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
+     }
+     /**
+      * Update the user's profile information.
+
+
+67) /app/app/Http/Controllers/ProfileController.php:36    [M] InstanceOf_
+
+@@ @@
+         $ownedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'owner')->get();
+         $sharedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'shared')->get();
+         activity()->causedBy($user)->withProperties(['action' => 'Editing profile'])->log('User entered profile edit page');
+-        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
++        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => true, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
+     }
+     /**
+      * Update the user's profile information.
+
+
+68) /app/app/Http/Controllers/ProfileController.php:36    [M] InstanceOf_
+
+@@ @@
+         $ownedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'owner')->get();
+         $sharedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'shared')->get();
+         activity()->causedBy($user)->withProperties(['action' => 'Editing profile'])->log('User entered profile edit page');
+-        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
++        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => false, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
+     }
+     /**
+      * Update the user's profile information.
+
+
+69) /app/app/Http/Controllers/ProfileController.php:41    [M] ArrayItem
+
+@@ @@
+         $ownedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'owner')->get();
+         $sharedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'shared')->get();
+         activity()->causedBy($user)->withProperties(['action' => 'Editing profile'])->log('User entered profile edit page');
+-        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
++        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' > session('status')]);
+     }
+     /**
+      * Update the user's profile information.
+
+
+70) /app/app/Http/Controllers/ProfileController.php:57    [M] MethodCallRemoval
+
+@@ @@
+             $request->user()->email_verified_at = null;
+         }
+         $request->user()->save();
+-        activity()->causedBy($user)->withProperties(['changes' => $request->validated()])->log('User updated profile information');
++        
+         return Redirect::route('profile.edit');
+     }
+     /**
+
+
+71) /app/app/Http/Controllers/ProfileController.php:59    [M] ArrayItemRemoval
+
+@@ @@
+             $request->user()->email_verified_at = null;
+         }
+         $request->user()->save();
+-        activity()->causedBy($user)->withProperties(['changes' => $request->validated()])->log('User updated profile information');
++        activity()->causedBy($user)->withProperties([])->log('User updated profile information');
+         return Redirect::route('profile.edit');
+     }
+     /**
+
+
+72) /app/app/Http/Controllers/ProfileController.php:60    [M] ArrayItem
+
+@@ @@
+             $request->user()->email_verified_at = null;
+         }
+         $request->user()->save();
+-        activity()->causedBy($user)->withProperties(['changes' => $request->validated()])->log('User updated profile information');
++        activity()->causedBy($user)->withProperties(['changes' > $request->validated()])->log('User updated profile information');
+         return Redirect::route('profile.edit');
+     }
+     /**
+
+
+73) /app/app/Http/Controllers/ProfileController.php:72    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function destroy(Request $request): RedirectResponse
+     {
+-        $request->validate(['password' => ['required', 'current_password']]);
++        $request->validate(['password' => ['current_password']]);
+         $user = $request->user();
+         activity()->causedBy($user)->withProperties(['action' => 'Deleted account'])->log('User deleted their account');
+         Auth::logout();
+
+
+74) /app/app/Http/Controllers/ProfileController.php:76    [M] MethodCallRemoval
+
+@@ @@
+     {
+         $request->validate(['password' => ['required', 'current_password']]);
+         $user = $request->user();
+-        activity()->causedBy($user)->withProperties(['action' => 'Deleted account'])->log('User deleted their account');
++        
+         Auth::logout();
+         $user->delete();
+         $request->session()->invalidate();
+
+
+75) /app/app/Http/Controllers/ProfileController.php:78    [M] ArrayItemRemoval
+
+@@ @@
+     {
+         $request->validate(['password' => ['required', 'current_password']]);
+         $user = $request->user();
+-        activity()->causedBy($user)->withProperties(['action' => 'Deleted account'])->log('User deleted their account');
++        activity()->causedBy($user)->withProperties([])->log('User deleted their account');
+         Auth::logout();
+         $user->delete();
+         $request->session()->invalidate();
+
+
+76) /app/app/Http/Controllers/ProfileController.php:84    [M] MethodCallRemoval
+
+@@ @@
+         activity()->causedBy($user)->withProperties(['action' => 'Deleted account'])->log('User deleted their account');
+         Auth::logout();
+         $user->delete();
+-        $request->session()->invalidate();
++        
+         $request->session()->regenerateToken();
+         return Redirect::to('/');
+     }
+ }
+
+
+77) /app/app/Http/Controllers/ProfileController.php:85    [M] MethodCallRemoval
+
+@@ @@
+         Auth::logout();
+         $user->delete();
+         $request->session()->invalidate();
+-        $request->session()->regenerateToken();
++        
+         return Redirect::to('/');
+     }
+ }
+
+
+78) /app/app/Http/Controllers/SocialAuthController.php:14    [M] MethodCallRemoval
+
+@@ @@
+ {
+     public function redirectToFacebook()
+     {
+-        activity()->causedBy(auth()->user())->withProperties(['action' => 'Redirecting to Facebook login'])->log('User redirected to Facebook for authentication.');
++        
+         return Socialite::driver('facebook')->redirect();
+     }
+     public function handleFacebookCallback()
+
+
+79) /app/app/Http/Controllers/SocialAuthController.php:16    [M] ArrayItemRemoval
+
+@@ @@
+ {
+     public function redirectToFacebook()
+     {
+-        activity()->causedBy(auth()->user())->withProperties(['action' => 'Redirecting to Facebook login'])->log('User redirected to Facebook for authentication.');
++        activity()->causedBy(auth()->user())->withProperties([])->log('User redirected to Facebook for authentication.');
+         return Socialite::driver('facebook')->redirect();
+     }
+     public function handleFacebookCallback()
+
+
+80) /app/app/Http/Controllers/SpendingController.php:39    [M] MethodCallRemoval
+
+@@ @@
+         $validated['user_id'] = auth()->id();
+         $validated['vehicle_id'] = $vehicle['id'];
+         $spending = Spending::create($validated);
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $vehicle->id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Created a new spending.');
++        
+         return redirect()->to("/dashboard/" . $vehicle_id)->with('status', 'Added the spending successfully.');
+     }
+     public function edit(Spending $spending)
+
+
+81) /app/app/Http/Controllers/SpendingController.php:41    [M] ArrayItemRemoval
+
+@@ @@
+         $validated['user_id'] = auth()->id();
+         $validated['vehicle_id'] = $vehicle['id'];
+         $spending = Spending::create($validated);
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $vehicle->id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Created a new spending.');
++        activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Created a new spending.');
+         return redirect()->to("/dashboard/" . $vehicle_id)->with('status', 'Added the spending successfully.');
+     }
+     public function edit(Spending $spending)
+
+
+82) /app/app/Http/Controllers/SpendingController.php:42    [M] ArrayItem
+
+@@ @@
+         $validated['user_id'] = auth()->id();
+         $validated['vehicle_id'] = $vehicle['id'];
+         $spending = Spending::create($validated);
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $vehicle->id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Created a new spending.');
++        activity()->causedBy($user)->withProperties(['spending_id' > $spending->id, 'vehicle_id' => $vehicle->id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Created a new spending.');
+         return redirect()->to("/dashboard/" . $vehicle_id)->with('status', 'Added the spending successfully.');
+     }
+     public function edit(Spending $spending)
+
+
+83) /app/app/Http/Controllers/SpendingController.php:43    [M] ArrayItem
+
+@@ @@
+         $validated['user_id'] = auth()->id();
+         $validated['vehicle_id'] = $vehicle['id'];
+         $spending = Spending::create($validated);
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $vehicle->id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Created a new spending.');
++        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' > $vehicle->id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Created a new spending.');
+         return redirect()->to("/dashboard/" . $vehicle_id)->with('status', 'Added the spending successfully.');
+     }
+     public function edit(Spending $spending)
+
+
+84) /app/app/Http/Controllers/SpendingController.php:44    [M] ArrayItem
+
+@@ @@
+         $validated['user_id'] = auth()->id();
+         $validated['vehicle_id'] = $vehicle['id'];
+         $spending = Spending::create($validated);
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $vehicle->id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Created a new spending.');
++        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $vehicle->id, 'amount' > $spending->amount, 'description' => $spending->description])->log('Created a new spending.');
+         return redirect()->to("/dashboard/" . $vehicle_id)->with('status', 'Added the spending successfully.');
+     }
+     public function edit(Spending $spending)
+
+
+85) /app/app/Http/Controllers/SpendingController.php:45    [M] ArrayItem
+
+@@ @@
+         $validated['user_id'] = auth()->id();
+         $validated['vehicle_id'] = $vehicle['id'];
+         $spending = Spending::create($validated);
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $vehicle->id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Created a new spending.');
++        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $vehicle->id, 'amount' => $spending->amount, 'description' > $spending->description])->log('Created a new spending.');
+         return redirect()->to("/dashboard/" . $vehicle_id)->with('status', 'Added the spending successfully.');
+     }
+     public function edit(Spending $spending)
+
+
+86) /app/app/Http/Controllers/SpendingController.php:69    [M] LogicalOr
+
+@@ @@
+     {
+         $user = auth()->user();
+         $vehicle = $user->vehicles()->where('vehicles.id', $spending->vehicle_id)->wherePivot('status', 'active')->first();
+-        if ($spending->user_id !== $user->id || !$vehicle) {
++        if ($spending->user_id !== $user->id && !$vehicle) {
+             abort(403, 'Spending not found or does not belong to the authenticated user.');
+         }
+         $validated = $request->validated();
+
+
+87) /app/app/Http/Controllers/SpendingController.php:75    [M] MethodCallRemoval
+
+@@ @@
+         }
+         $validated = $request->validated();
+         $spending->update($validated);
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Updated a spending.');
++        
+         return redirect()->to("/dashboard/" . $spending->vehicle_id)->with('status', 'Edited the spending successfully.');
+     }
+     public function deleteSpending(Spending $spending): \Illuminate\Http\RedirectResponse
+
+
+88) /app/app/Http/Controllers/SpendingController.php:77    [M] ArrayItemRemoval
+
+@@ @@
+         }
+         $validated = $request->validated();
+         $spending->update($validated);
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Updated a spending.');
++        activity()->causedBy($user)->withProperties(['vehicle_id' => $spending->vehicle_id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Updated a spending.');
+         return redirect()->to("/dashboard/" . $spending->vehicle_id)->with('status', 'Edited the spending successfully.');
+     }
+     public function deleteSpending(Spending $spending): \Illuminate\Http\RedirectResponse
+
+
+89) /app/app/Http/Controllers/SpendingController.php:78    [M] ArrayItem
+
+@@ @@
+         }
+         $validated = $request->validated();
+         $spending->update($validated);
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Updated a spending.');
++        activity()->causedBy($user)->withProperties(['spending_id' > $spending->id, 'vehicle_id' => $spending->vehicle_id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Updated a spending.');
+         return redirect()->to("/dashboard/" . $spending->vehicle_id)->with('status', 'Edited the spending successfully.');
+     }
+     public function deleteSpending(Spending $spending): \Illuminate\Http\RedirectResponse
+
+
+90) /app/app/Http/Controllers/SpendingController.php:79    [M] ArrayItem
+
+@@ @@
+         }
+         $validated = $request->validated();
+         $spending->update($validated);
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Updated a spending.');
++        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' > $spending->vehicle_id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Updated a spending.');
+         return redirect()->to("/dashboard/" . $spending->vehicle_id)->with('status', 'Edited the spending successfully.');
+     }
+     public function deleteSpending(Spending $spending): \Illuminate\Http\RedirectResponse
+
+
+91) /app/app/Http/Controllers/SpendingController.php:80    [M] ArrayItem
+
+@@ @@
+         }
+         $validated = $request->validated();
+         $spending->update($validated);
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Updated a spending.');
++        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id, 'amount' > $spending->amount, 'description' => $spending->description])->log('Updated a spending.');
+         return redirect()->to("/dashboard/" . $spending->vehicle_id)->with('status', 'Edited the spending successfully.');
+     }
+     public function deleteSpending(Spending $spending): \Illuminate\Http\RedirectResponse
+
+
+92) /app/app/Http/Controllers/SpendingController.php:81    [M] ArrayItem
+
+@@ @@
+         }
+         $validated = $request->validated();
+         $spending->update($validated);
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Updated a spending.');
++        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id, 'amount' => $spending->amount, 'description' > $spending->description])->log('Updated a spending.');
+         return redirect()->to("/dashboard/" . $spending->vehicle_id)->with('status', 'Edited the spending successfully.');
+     }
+     public function deleteSpending(Spending $spending): \Illuminate\Http\RedirectResponse
+
+
+93) /app/app/Http/Controllers/SpendingController.php:93    [M] LogicalOr
+
+@@ @@
+     {
+         $user = auth()->user();
+         $vehicle = $user->vehicles()->where('vehicles.id', $spending->vehicle_id)->wherePivot('status', 'active')->first();
+-        if ($spending->user_id !== $user->id || !$vehicle) {
++        if ($spending->user_id !== $user->id && !$vehicle) {
+             abort(403, 'Spending not found or does not belong to the authenticated user.');
+         }
+         $spending->delete();
+
+
+94) /app/app/Http/Controllers/SpendingController.php:98    [M] MethodCallRemoval
+
+@@ @@
+             abort(403, 'Spending not found or does not belong to the authenticated user.');
+         }
+         $spending->delete();
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id])->log('Deleted a spending.');
++        
+         return redirect()->back()->with("status", 'Spending deleted successfully.');
+     }
+ }
+
+
+95) /app/app/Http/Controllers/SpendingController.php:100    [M] ArrayItemRemoval
+
+@@ @@
+             abort(403, 'Spending not found or does not belong to the authenticated user.');
+         }
+         $spending->delete();
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id])->log('Deleted a spending.');
++        activity()->causedBy($user)->withProperties(['vehicle_id' => $spending->vehicle_id])->log('Deleted a spending.');
+         return redirect()->back()->with("status", 'Spending deleted successfully.');
+     }
+ }
+
+
+96) /app/app/Http/Controllers/SpendingController.php:101    [M] ArrayItem
+
+@@ @@
+             abort(403, 'Spending not found or does not belong to the authenticated user.');
+         }
+         $spending->delete();
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id])->log('Deleted a spending.');
++        activity()->causedBy($user)->withProperties(['spending_id' > $spending->id, 'vehicle_id' => $spending->vehicle_id])->log('Deleted a spending.');
+         return redirect()->back()->with("status", 'Spending deleted successfully.');
+     }
+ }
+
+
+97) /app/app/Http/Controllers/SpendingController.php:102    [M] ArrayItem
+
+@@ @@
+             abort(403, 'Spending not found or does not belong to the authenticated user.');
+         }
+         $spending->delete();
+-        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id])->log('Deleted a spending.');
++        activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' > $spending->vehicle_id])->log('Deleted a spending.');
+         return redirect()->back()->with("status", 'Spending deleted successfully.');
+     }
+ }
+
+
+98) /app/app/Http/Controllers/VehicleController.php:30    [M] MethodCallRemoval
+
+@@ @@
+         $vehicle->user()->associate($user);
+         $vehicle->save();
+         $user->vehicles()->attach($vehicle->id, ['role' => 'owner', 'status' => 'active']);
+-        activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('Created a new vehicle.');
++        
+         return redirect()->to("/dashboard");
+     }
+     public function editVehicle(EditVehicleRequest $request, $id): \Illuminate\Http\RedirectResponse
+
+
+99) /app/app/Http/Controllers/VehicleController.php:32    [M] ArrayItem
+
+@@ @@
+         $vehicle->user()->associate($user);
+         $vehicle->save();
+         $user->vehicles()->attach($vehicle->id, ['role' => 'owner', 'status' => 'active']);
+-        activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('Created a new vehicle.');
++        activity()->causedBy($user)->withProperties(['vehicle_id' > $vehicle->id])->log('Created a new vehicle.');
+         return redirect()->to("/dashboard");
+     }
+     public function editVehicle(EditVehicleRequest $request, $id): \Illuminate\Http\RedirectResponse
+
+
+100) /app/app/Http/Controllers/VehicleController.php:32    [M] ArrayItemRemoval
+
+@@ @@
+         $vehicle->user()->associate($user);
+         $vehicle->save();
+         $user->vehicles()->attach($vehicle->id, ['role' => 'owner', 'status' => 'active']);
+-        activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('Created a new vehicle.');
++        activity()->causedBy($user)->withProperties([])->log('Created a new vehicle.');
+         return redirect()->to("/dashboard");
+     }
+     public function editVehicle(EditVehicleRequest $request, $id): \Illuminate\Http\RedirectResponse
+
+
+101) /app/app/Http/Controllers/VehicleController.php:64    [M] MethodCallRemoval
+
+@@ @@
+             abort(404);
+         }
+         $vehicle->delete();
+-        activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('Deleted vehicle.');
++        
+         return redirect()->back()->with('status', 'Vehicle deleted successfully.');
+     }
+     public function removeUserFromVehicle($vehicle_id, $user_id)
+
+
+102) /app/app/Http/Controllers/VehicleController.php:66    [M] ArrayItem
+
+@@ @@
+             abort(404);
+         }
+         $vehicle->delete();
+-        activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('Deleted vehicle.');
++        activity()->causedBy($user)->withProperties(['vehicle_id' > $vehicle->id])->log('Deleted vehicle.');
+         return redirect()->back()->with('status', 'Vehicle deleted successfully.');
+     }
+     public function removeUserFromVehicle($vehicle_id, $user_id)
+
+
+103) /app/app/Http/Controllers/VehicleController.php:66    [M] ArrayItemRemoval
+
+@@ @@
+             abort(404);
+         }
+         $vehicle->delete();
+-        activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('Deleted vehicle.');
++        activity()->causedBy($user)->withProperties([])->log('Deleted vehicle.');
+         return redirect()->back()->with('status', 'Vehicle deleted successfully.');
+     }
+     public function removeUserFromVehicle($vehicle_id, $user_id)
+
+
+104) /app/app/Http/Controllers/VehicleController.php:88    [M] ArrayItemRemoval
+
+@@ @@
+         if ($user_id == $owner_id) {
+             abort(404, 'Cannot delete owner of vehicle.');
+         }
+-        $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
++        $vehicle->users()->syncWithoutDetaching([$user->id => ['status' => 'inactive']]);
+         activity()->causedBy(auth()->user())->withProperties(['vehicle_id' => $vehicle->id, 'user_id' => $user_id])->log('Removed user from vehicle.');
+         return redirect()->back()->with('status', 'User deleted successfully.');
+     }
+
+
+105) /app/app/Http/Controllers/VehicleController.php:93    [M] MethodCallRemoval
+
+@@ @@
+             abort(404, 'Cannot delete owner of vehicle.');
+         }
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
+-        activity()->causedBy(auth()->user())->withProperties(['vehicle_id' => $vehicle->id, 'user_id' => $user_id])->log('Removed user from vehicle.');
++        
+         return redirect()->back()->with('status', 'User deleted successfully.');
+     }
+     public function leaveVehicle(Vehicle $vehicle)
+
+
+106) /app/app/Http/Controllers/VehicleController.php:95    [M] ArrayItem
+
+@@ @@
+             abort(404, 'Cannot delete owner of vehicle.');
+         }
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
+-        activity()->causedBy(auth()->user())->withProperties(['vehicle_id' => $vehicle->id, 'user_id' => $user_id])->log('Removed user from vehicle.');
++        activity()->causedBy(auth()->user())->withProperties(['vehicle_id' > $vehicle->id, 'user_id' => $user_id])->log('Removed user from vehicle.');
+         return redirect()->back()->with('status', 'User deleted successfully.');
+     }
+     public function leaveVehicle(Vehicle $vehicle)
+
+
+107) /app/app/Http/Controllers/VehicleController.php:95    [M] ArrayItemRemoval
+
+@@ @@
+             abort(404, 'Cannot delete owner of vehicle.');
+         }
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
+-        activity()->causedBy(auth()->user())->withProperties(['vehicle_id' => $vehicle->id, 'user_id' => $user_id])->log('Removed user from vehicle.');
++        activity()->causedBy(auth()->user())->withProperties(['user_id' => $user_id])->log('Removed user from vehicle.');
+         return redirect()->back()->with('status', 'User deleted successfully.');
+     }
+     public function leaveVehicle(Vehicle $vehicle)
+
+
+108) /app/app/Http/Middleware/HandleInertiaRequests.php:33    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function share(Request $request): array
+     {
+-        return [...parent::share($request), "flash" => $this->getFlashData($request), 'auth' => ['user' => $request->user(), 'invites' => $request->user()?->getInvites()]];
++        return ["flash" => $this->getFlashData($request), 'auth' => ['user' => $request->user(), 'invites' => $request->user()?->getInvites()]];
+     }
+     protected function getFlashData(Request $request): Closure
+     {
+
+
+109) /app/app/Http/Middleware/HandleInertiaRequests.php:34    [M] SpreadRemoval
+
+@@ @@
+      */
+     public function share(Request $request): array
+     {
+-        return [...parent::share($request), "flash" => $this->getFlashData($request), 'auth' => ['user' => $request->user(), 'invites' => $request->user()?->getInvites()]];
++        return [parent::share($request), "flash" => $this->getFlashData($request), 'auth' => ['user' => $request->user(), 'invites' => $request->user()?->getInvites()]];
+     }
+     protected function getFlashData(Request $request): Closure
+     {
+
+
+110) /app/app/Http/Middleware/HandleInertiaRequests.php:35    [M] ArrayItem
+
+@@ @@
+      */
+     public function share(Request $request): array
+     {
+-        return [...parent::share($request), "flash" => $this->getFlashData($request), 'auth' => ['user' => $request->user(), 'invites' => $request->user()?->getInvites()]];
++        return [...parent::share($request), "flash" > $this->getFlashData($request), 'auth' => ['user' => $request->user(), 'invites' => $request->user()?->getInvites()]];
+     }
+     protected function getFlashData(Request $request): Closure
+     {
+
+
+111) /app/app/Http/Middleware/HandleInertiaRequests.php:36    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function share(Request $request): array
+     {
+-        return [...parent::share($request), "flash" => $this->getFlashData($request), 'auth' => ['user' => $request->user(), 'invites' => $request->user()?->getInvites()]];
++        return [...parent::share($request), "flash" => $this->getFlashData($request), 'auth' => ['invites' => $request->user()?->getInvites()]];
+     }
+     protected function getFlashData(Request $request): Closure
+     {
+
+
+112) /app/app/Http/Middleware/HandleInertiaRequests.php:37    [M] ArrayItem
+
+@@ @@
+      */
+     public function share(Request $request): array
+     {
+-        return [...parent::share($request), "flash" => $this->getFlashData($request), 'auth' => ['user' => $request->user(), 'invites' => $request->user()?->getInvites()]];
++        return [...parent::share($request), "flash" => $this->getFlashData($request), 'auth' => ['user' > $request->user(), 'invites' => $request->user()?->getInvites()]];
+     }
+     protected function getFlashData(Request $request): Closure
+     {
+
+
+113) /app/app/Http/Middleware/HandleInertiaRequests.php:44    [M] ProtectedVisibility
+
+@@ @@
+     {
+         return [...parent::share($request), "flash" => $this->getFlashData($request), 'auth' => ['user' => $request->user(), 'invites' => $request->user()?->getInvites()]];
+     }
+-    protected function getFlashData(Request $request): Closure
++    private function getFlashData(Request $request): Closure
+     {
+         return fn(): array => ["status" => $request->session()->get("status")];
+     }
+ }
+
+
+114) /app/app/Http/Middleware/HandleInertiaRequests.php:46    [M] ArrayItemRemoval
+
+@@ @@
+     }
+     protected function getFlashData(Request $request): Closure
+     {
+-        return fn(): array => ["status" => $request->session()->get("status")];
++        return fn(): array => [];
+     }
+ }
+
+
+115) /app/app/Http/Middleware/HandleInertiaRequests.php:47    [M] ArrayItem
+
+@@ @@
+     }
+     protected function getFlashData(Request $request): Closure
+     {
+-        return fn(): array => ["status" => $request->session()->get("status")];
++        return fn(): array => ["status" > $request->session()->get("status")];
+     }
+ }
+
+
+116) /app/app/Http/Requests/Auth/LoginRequest.php:42    [M] MethodCallRemoval
+
+@@ @@
+      */
+     public function authenticate(): void
+     {
+-        $this->ensureIsNotRateLimited();
++        
+         if (!Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+             RateLimiter::hit($this->throttleKey());
+             throw ValidationException::withMessages(['email' => trans('auth.failed')]);
+
+
+117) /app/app/Http/Requests/Auth/LoginRequest.php:45    [M] MethodCallRemoval
+
+@@ @@
+     {
+         $this->ensureIsNotRateLimited();
+         if (!Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
+-            RateLimiter::hit($this->throttleKey());
++            
+             throw ValidationException::withMessages(['email' => trans('auth.failed')]);
+         }
+         RateLimiter::clear($this->throttleKey());
+
+
+118) /app/app/Http/Requests/Auth/LoginRequest.php:52    [M] MethodCallRemoval
+
+@@ @@
+             RateLimiter::hit($this->throttleKey());
+             throw ValidationException::withMessages(['email' => trans('auth.failed')]);
+         }
+-        RateLimiter::clear($this->throttleKey());
++        
+     }
+     /**
+      * Ensure the login request is not rate limited.
+
+
+119) /app/app/Http/Requests/Auth/LoginRequest.php:60    [M] PublicVisibility
+
+@@ @@
+      *
+      * @throws \Illuminate\Validation\ValidationException
+      */
+-    public function ensureIsNotRateLimited(): void
++    protected function ensureIsNotRateLimited(): void
+     {
+         if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+             return;
+
+
+120) /app/app/Http/Requests/Auth/LoginRequest.php:62    [M] DecrementInteger
+
+@@ @@
+      */
+     public function ensureIsNotRateLimited(): void
+     {
+-        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
++        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 4)) {
+             return;
+         }
+         event(new Lockout($this));
+
+
+121) /app/app/Http/Requests/Auth/LoginRequest.php:62    [M] IncrementInteger
+
+@@ @@
+      */
+     public function ensureIsNotRateLimited(): void
+     {
+-        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
++        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 6)) {
+             return;
+         }
+         event(new Lockout($this));
+
+
+122) /app/app/Http/Requests/Auth/LoginRequest.php:66    [M] FunctionCallRemoval
+
+@@ @@
+         if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+             return;
+         }
+-        event(new Lockout($this));
++        
+         $seconds = RateLimiter::availableIn($this->throttleKey());
+         throw ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => ceil($seconds / 60)])]);
+     }
+
+
+123) /app/app/Http/Requests/Auth/LoginRequest.php:70    [M] Throw_
+
+@@ @@
+         }
+         event(new Lockout($this));
+         $seconds = RateLimiter::availableIn($this->throttleKey());
+-        throw ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => ceil($seconds / 60)])]);
++        ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => ceil($seconds / 60)])]);
+     }
+     /**
+      * Get the rate limiting throttle key for the request.
+
+
+124) /app/app/Http/Requests/Auth/LoginRequest.php:71    [M] ArrayItemRemoval
+
+@@ @@
+         }
+         event(new Lockout($this));
+         $seconds = RateLimiter::availableIn($this->throttleKey());
+-        throw ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => ceil($seconds / 60)])]);
++        throw ValidationException::withMessages(['email' => trans('auth.throttle', ['minutes' => ceil($seconds / 60)])]);
+     }
+     /**
+      * Get the rate limiting throttle key for the request.
+
+
+125) /app/app/Http/Requests/Auth/LoginRequest.php:73    [M] DecrementInteger
+
+@@ @@
+         }
+         event(new Lockout($this));
+         $seconds = RateLimiter::availableIn($this->throttleKey());
+-        throw ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => ceil($seconds / 60)])]);
++        throw ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => ceil($seconds / 59)])]);
+     }
+     /**
+      * Get the rate limiting throttle key for the request.
+
+
+126) /app/app/Http/Requests/Auth/LoginRequest.php:73    [M] IncrementInteger
+
+@@ @@
+         }
+         event(new Lockout($this));
+         $seconds = RateLimiter::availableIn($this->throttleKey());
+-        throw ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => ceil($seconds / 60)])]);
++        throw ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => ceil($seconds / 61)])]);
+     }
+     /**
+      * Get the rate limiting throttle key for the request.
+
+
+127) /app/app/Http/Requests/Auth/LoginRequest.php:73    [M] Division
+
+@@ @@
+         }
+         event(new Lockout($this));
+         $seconds = RateLimiter::availableIn($this->throttleKey());
+-        throw ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => ceil($seconds / 60)])]);
++        throw ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => ceil($seconds * 60)])]);
+     }
+     /**
+      * Get the rate limiting throttle key for the request.
+
+
+128) /app/app/Http/Requests/Auth/LoginRequest.php:73    [M] RoundingFamily
+
+@@ @@
+         }
+         event(new Lockout($this));
+         $seconds = RateLimiter::availableIn($this->throttleKey());
+-        throw ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => ceil($seconds / 60)])]);
++        throw ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => floor($seconds / 60)])]);
+     }
+     /**
+      * Get the rate limiting throttle key for the request.
+
+
+129) /app/app/Http/Requests/Auth/LoginRequest.php:73    [M] RoundingFamily
+
+@@ @@
+         }
+         event(new Lockout($this));
+         $seconds = RateLimiter::availableIn($this->throttleKey());
+-        throw ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => ceil($seconds / 60)])]);
++        throw ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => round($seconds / 60)])]);
+     }
+     /**
+      * Get the rate limiting throttle key for the request.
+
+
+130) /app/app/Http/Requests/Auth/LoginRequest.php:73    [M] ArrayItem
+
+@@ @@
+         }
+         event(new Lockout($this));
+         $seconds = RateLimiter::availableIn($this->throttleKey());
+-        throw ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' => ceil($seconds / 60)])]);
++        throw ValidationException::withMessages(['email' => trans('auth.throttle', ['seconds' => $seconds, 'minutes' > ceil($seconds / 60)])]);
+     }
+     /**
+      * Get the rate limiting throttle key for the request.
+
+
+131) /app/app/Http/Requests/Auth/LoginRequest.php:81    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Get the rate limiting throttle key for the request.
+      */
+-    public function throttleKey(): string
++    protected function throttleKey(): string
+     {
+         return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
+     }
+ }
+
+
+132) /app/app/Http/Requests/Auth/LoginRequest.php:83    [M] Concat
+
+@@ @@
+      */
+     public function throttleKey(): string
+     {
+-        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
++        return Str::transliterate('|' . Str::lower($this->string('email')) . $this->ip());
+     }
+ }
+
+
+133) /app/app/Http/Requests/Auth/LoginRequest.php:83    [M] ConcatOperandRemoval
+
+@@ @@
+      */
+     public function throttleKey(): string
+     {
+-        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
++        return Str::transliterate('|' . $this->ip());
+     }
+ }
+
+
+134) /app/app/Http/Requests/Auth/LoginRequest.php:83    [M] ConcatOperandRemoval
+
+@@ @@
+      */
+     public function throttleKey(): string
+     {
+-        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
++        return Str::transliterate(Str::lower($this->string('email')) . $this->ip());
+     }
+ }
+
+
+135) /app/app/Http/Requests/Auth/LoginRequest.php:83    [M] Concat
+
+@@ @@
+      */
+     public function throttleKey(): string
+     {
+-        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
++        return Str::transliterate(Str::lower($this->string('email')) . $this->ip() . '|');
+     }
+ }
+
+
+136) /app/app/Http/Requests/Auth/LoginRequest.php:83    [M] ConcatOperandRemoval
+
+@@ @@
+      */
+     public function throttleKey(): string
+     {
+-        return Str::transliterate(Str::lower($this->string('email')) . '|' . $this->ip());
++        return Str::transliterate(Str::lower($this->string('email')) . '|');
+     }
+ }
+
+
+137) /app/app/Http/Requests/ProfileUpdateRequest.php:19    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function rules(): array
+     {
+-        return ['name' => ['required', 'string', 'max:255'], 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)]];
++        return ['name' => ['string', 'max:255'], 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)]];
+     }
+ }
+
+
+138) /app/app/Http/Requests/ProfileUpdateRequest.php:20    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function rules(): array
+     {
+-        return ['name' => ['required', 'string', 'max:255'], 'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)]];
++        return ['name' => ['required', 'string', 'max:255'], 'email' => ['string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)]];
+     }
+ }
+
+
+139) /app/app/Mail/Invite.php:33    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Get the message envelope.
+      */
+-    public function envelope(): Envelope
++    protected function envelope(): Envelope
+     {
+         return new Envelope(subject: 'Invite');
+     }
+
+
+140) /app/app/Models/Invite.php:32    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Get the vehicle associated with the invite.
+      */
+-    public function vehicle()
++    protected function vehicle()
+     {
+         return $this->belongsTo(Vehicle::class);
+     }
+
+
+141) /app/app/Models/Invite.php:40    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Get the user who sent the invite.
+      */
+-    public function invitor()
++    protected function invitor()
+     {
+         return $this->belongsTo(User::class, 'invitor_id');
+     }
+ }
+
+
+142) /app/app/Models/User.php:51    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     protected function casts(): array
+     {
+-        return ['email_verified_at' => 'datetime', 'password' => 'hashed'];
++        return ['password' => 'hashed'];
+     }
+     public function vehicles()
+     {
+
+
+143) /app/app/Models/User.php:78    [M] DecrementInteger
+
+@@ @@
+     public function lastSpendings()
+     {
+         $vehicles = $this->vehicles()->select('vehicles.id')->get()->pluck('id');
+-        $spendings = Spending::query()->whereIn('vehicle_id', $vehicles)->orderBy('updated_at')->limit(10)->with(["user", "vehicle"])->get();
++        $spendings = Spending::query()->whereIn('vehicle_id', $vehicles)->orderBy('updated_at')->limit(9)->with(["user", "vehicle"])->get();
+         $spendings = $spendings->sortBy(function (Spending $spending) {
+             return $spending->updated_at->timestamp;
+         });
+
+
+144) /app/app/Models/User.php:78    [M] IncrementInteger
+
+@@ @@
+     public function lastSpendings()
+     {
+         $vehicles = $this->vehicles()->select('vehicles.id')->get()->pluck('id');
+-        $spendings = Spending::query()->whereIn('vehicle_id', $vehicles)->orderBy('updated_at')->limit(10)->with(["user", "vehicle"])->get();
++        $spendings = Spending::query()->whereIn('vehicle_id', $vehicles)->orderBy('updated_at')->limit(11)->with(["user", "vehicle"])->get();
+         $spendings = $spendings->sortBy(function (Spending $spending) {
+             return $spending->updated_at->timestamp;
+         });
+
+
+145) /app/app/Models/User.php:78    [M] ArrayItemRemoval
+
+@@ @@
+     public function lastSpendings()
+     {
+         $vehicles = $this->vehicles()->select('vehicles.id')->get()->pluck('id');
+-        $spendings = Spending::query()->whereIn('vehicle_id', $vehicles)->orderBy('updated_at')->limit(10)->with(["user", "vehicle"])->get();
++        $spendings = Spending::query()->whereIn('vehicle_id', $vehicles)->orderBy('updated_at')->limit(10)->with(["vehicle"])->get();
+         $spendings = $spendings->sortBy(function (Spending $spending) {
+             return $spending->updated_at->timestamp;
+         });
+
+
+146) /app/app/Models/User.php:86    [M] MethodCallRemoval
+
+@@ @@
+     }
+     public function sendEmailVerificationNotification()
+     {
+-        $this->notify(new VerifyAccountNotification());
++        
+     }
+     public function getInvites()
+     {
+
+
+147) /app/app/Models/User.php:89    [M] ArrayItemRemoval
+
+@@ @@
+     }
+     public function getInvites()
+     {
+-        return Invite::query()->where("email", $this->email)->with(["invitor", "vehicle"])->get();
++        return Invite::query()->where("email", $this->email)->with(["vehicle"])->get();
+     }
+ }
+
+
+148) /app/app/Notifications/VerifyAccountNotification.php:24    [M] ArrayItemRemoval
+
+@@ @@
+     }
+     public function via(object $notifiable): array
+     {
+-        return ["mail"];
++        return [];
+     }
+     public function toMail(object $notifiable): MailMessage
+     {
+
+
+149) /app/app/Notifications/VerifyAccountNotification.php:36    [M] PublicVisibility
+
+@@ @@
+     {
+         return (new MailMessage())->subject("Weryfikacja konta HKS")->view("mail.VerifyMail", ["user" => $notifiable, "verificationLink" => $this->getVerifyUrl($notifiable)]);
+     }
+-    public function getVerifyUrl(object $notifiable)
++    protected function getVerifyUrl(object $notifiable)
+     {
+         return URL::temporarySignedRoute('verification.verify', Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)), ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]);
+     }
+ }
+
+
+150) /app/app/Notifications/VerifyAccountNotification.php:39    [M] DecrementInteger
+
+@@ @@
+     }
+     public function getVerifyUrl(object $notifiable)
+     {
+-        return URL::temporarySignedRoute('verification.verify', Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)), ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]);
++        return URL::temporarySignedRoute('verification.verify', Carbon::now()->addMinutes(Config::get('auth.verification.expire', 59)), ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]);
+     }
+ }
+
+
+151) /app/app/Notifications/VerifyAccountNotification.php:39    [M] IncrementInteger
+
+@@ @@
+     }
+     public function getVerifyUrl(object $notifiable)
+     {
+-        return URL::temporarySignedRoute('verification.verify', Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)), ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]);
++        return URL::temporarySignedRoute('verification.verify', Carbon::now()->addMinutes(Config::get('auth.verification.expire', 61)), ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]);
+     }
+ }
+
+
+152) /app/app/Notifications/VerifyAccountNotification.php:41    [M] ArrayItem
+
+@@ @@
+     }
+     public function getVerifyUrl(object $notifiable)
+     {
+-        return URL::temporarySignedRoute('verification.verify', Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)), ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]);
++        return URL::temporarySignedRoute('verification.verify', Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)), ['id' > $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]);
+     }
+ }
+
+
+153) /app/app/Notifications/VerifyAccountNotification.php:42    [M] ArrayItem
+
+@@ @@
+     }
+     public function getVerifyUrl(object $notifiable)
+     {
+-        return URL::temporarySignedRoute('verification.verify', Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)), ['id' => $notifiable->getKey(), 'hash' => sha1($notifiable->getEmailForVerification())]);
++        return URL::temporarySignedRoute('verification.verify', Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)), ['id' => $notifiable->getKey(), 'hash' > sha1($notifiable->getEmailForVerification())]);
+     }
+ }
+
+
+154) /app/app/Providers/AppServiceProvider.php:23    [M] DecrementInteger
+
+@@ @@
+      */
+     public function boot(): void
+     {
+-        Vite::prefetch(concurrency: 3);
++        Vite::prefetch(concurrency: 2);
+     }
+ }
+
+
+155) /app/app/Providers/AppServiceProvider.php:23    [M] IncrementInteger
+
+@@ @@
+      */
+     public function boot(): void
+     {
+-        Vite::prefetch(concurrency: 3);
++        Vite::prefetch(concurrency: 4);
+     }
+ }
+
+
+156) /app/app/Providers/AppServiceProvider.php:23    [M] MethodCallRemoval
+
+@@ @@
+      */
+     public function boot(): void
+     {
+-        Vite::prefetch(concurrency: 3);
++        
+     }
+ }
+
+
+Timed Out mutants:
+==================
+
+Skipped mutants:
+================
+
+Not Covered mutants:
+====================
+
+1) /app/app/Http/Controllers/Admin/DashboardController.php:25    [M] PublicVisibility
+
+@@ @@
+         activity()->causedBy(auth()->user())->log('Accessed the admin dashboard.');
+         return Inertia::render('Admin/Dashboard', ["admin" => $admin, "users" => $users]);
+     }
+-    public function logs()
++    protected function logs()
+     {
+         $logs = Activity::all();
+         activity()->causedBy(auth()->user())->log('Accessed the admin dashboard logs.');
+
+
+2) /app/app/Http/Controllers/Admin/DashboardController.php:27    [M] MethodCallRemoval
+
+@@ @@
+     public function logs()
+     {
+         $logs = Activity::all();
+-        activity()->causedBy(auth()->user())->log('Accessed the admin dashboard logs.');
++        
+         return Inertia::render('Admin/Logs', ["logs" => $logs]);
+     }
+ }
+
+
+3) /app/app/Http/Controllers/Admin/DashboardController.php:32    [M] ArrayItemRemoval
+
+@@ @@
+     {
+         $logs = Activity::all();
+         activity()->causedBy(auth()->user())->log('Accessed the admin dashboard logs.');
+-        return Inertia::render('Admin/Logs', ["logs" => $logs]);
++        return Inertia::render('Admin/Logs', []);
+     }
+ }
+
+
+4) /app/app/Http/Controllers/Admin/UserController.php:12    [M] PublicVisibility
+
+@@ @@
+ use Spatie\Activitylog\Models\Activity;
+ class UserController
+ {
+-    public function userLogs(User $user)
++    protected function userLogs(User $user)
+     {
+         $logs = Activity::where('causer_id', $user->id)->orderBy('created_at', 'desc')->get();
+         return Inertia::render('Admin/Logs', ["logs" => $logs]);
+
+
+5) /app/app/Http/Controllers/Admin/UserController.php:19    [M] ArrayItemRemoval
+
+@@ @@
+     public function userLogs(User $user)
+     {
+         $logs = Activity::where('causer_id', $user->id)->orderBy('created_at', 'desc')->get();
+-        return Inertia::render('Admin/Logs', ["logs" => $logs]);
++        return Inertia::render('Admin/Logs', []);
+     }
+     public function index()
+     {
+
+
+6) /app/app/Http/Controllers/Admin/UserController.php:22    [M] PublicVisibility
+
+@@ @@
+         $logs = Activity::where('causer_id', $user->id)->orderBy('created_at', 'desc')->get();
+         return Inertia::render('Admin/Logs', ["logs" => $logs]);
+     }
+-    public function index()
++    protected function index()
+     {
+         activity()->causedBy(auth()->user())->log('Accessed the user list.');
+         $users = User::paginate(10);
+
+
+7) /app/app/Http/Controllers/Admin/UserController.php:24    [M] MethodCallRemoval
+
+@@ @@
+     }
+     public function index()
+     {
+-        activity()->causedBy(auth()->user())->log('Accessed the user list.');
++        
+         $users = User::paginate(10);
+         return view('admin.users.index', compact('users'));
+     }
+
+
+8) /app/app/Http/Controllers/Admin/UserController.php:27    [M] DecrementInteger
+
+@@ @@
+     public function index()
+     {
+         activity()->causedBy(auth()->user())->log('Accessed the user list.');
+-        $users = User::paginate(10);
++        $users = User::paginate(9);
+         return view('admin.users.index', compact('users'));
+     }
+     public function create()
+
+
+9) /app/app/Http/Controllers/Admin/UserController.php:27    [M] IncrementInteger
+
+@@ @@
+     public function index()
+     {
+         activity()->causedBy(auth()->user())->log('Accessed the user list.');
+-        $users = User::paginate(10);
++        $users = User::paginate(11);
+         return view('admin.users.index', compact('users'));
+     }
+     public function create()
+
+
+10) /app/app/Http/Controllers/Admin/UserController.php:28    [M] FunctionCall
+
+@@ @@
+     {
+         activity()->causedBy(auth()->user())->log('Accessed the user list.');
+         $users = User::paginate(10);
+-        return view('admin.users.index', compact('users'));
++        view('admin.users.index', compact('users'));
++        return null;
+     }
+     public function create()
+     {
+
+
+11) /app/app/Http/Controllers/Admin/UserController.php:31    [M] PublicVisibility
+
+@@ @@
+         $users = User::paginate(10);
+         return view('admin.users.index', compact('users'));
+     }
+-    public function create()
++    protected function create()
+     {
+         activity()->causedBy(auth()->user())->log('Accessed the create user page.');
+         return view('admin.users.create');
+
+
+12) /app/app/Http/Controllers/Admin/UserController.php:33    [M] MethodCallRemoval
+
+@@ @@
+     }
+     public function create()
+     {
+-        activity()->causedBy(auth()->user())->log('Accessed the create user page.');
++        
+         return view('admin.users.create');
+     }
+     public function store(Request $request)
+
+
+13) /app/app/Http/Controllers/Admin/UserController.php:36    [M] FunctionCall
+
+@@ @@
+     public function create()
+     {
+         activity()->causedBy(auth()->user())->log('Accessed the create user page.');
+-        return view('admin.users.create');
++        view('admin.users.create');
++        return null;
+     }
+     public function store(Request $request)
+     {
+
+
+14) /app/app/Http/Controllers/Admin/UserController.php:48    [M] ArrayItemRemoval
+
+@@ @@
+     public function store(Request $request)
+     {
+         $request->validate(['name' => 'required|string|max:255', 'email' => 'required|email|unique:users,email', 'password' => 'required|string|min:8|confirmed', 'role' => 'required|string|in:user,admin']);
+-        $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password), 'role' => $request->role]);
++        $user = User::create(['email' => $request->email, 'password' => Hash::make($request->password), 'role' => $request->role]);
+         activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Created a new user.');
+         return redirect()->route('admin.users.index')->with('status', 'User created successfully.');
+     }
+
+
+15) /app/app/Http/Controllers/Admin/UserController.php:49    [M] ArrayItem
+
+@@ @@
+     public function store(Request $request)
+     {
+         $request->validate(['name' => 'required|string|max:255', 'email' => 'required|email|unique:users,email', 'password' => 'required|string|min:8|confirmed', 'role' => 'required|string|in:user,admin']);
+-        $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password), 'role' => $request->role]);
++        $user = User::create(['name' > $request->name, 'email' => $request->email, 'password' => Hash::make($request->password), 'role' => $request->role]);
+         activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Created a new user.');
+         return redirect()->route('admin.users.index')->with('status', 'User created successfully.');
+     }
+
+
+16) /app/app/Http/Controllers/Admin/UserController.php:50    [M] ArrayItem
+
+@@ @@
+     public function store(Request $request)
+     {
+         $request->validate(['name' => 'required|string|max:255', 'email' => 'required|email|unique:users,email', 'password' => 'required|string|min:8|confirmed', 'role' => 'required|string|in:user,admin']);
+-        $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password), 'role' => $request->role]);
++        $user = User::create(['name' => $request->name, 'email' > $request->email, 'password' => Hash::make($request->password), 'role' => $request->role]);
+         activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Created a new user.');
+         return redirect()->route('admin.users.index')->with('status', 'User created successfully.');
+     }
+
+
+17) /app/app/Http/Controllers/Admin/UserController.php:52    [M] ArrayItem
+
+@@ @@
+     public function store(Request $request)
+     {
+         $request->validate(['name' => 'required|string|max:255', 'email' => 'required|email|unique:users,email', 'password' => 'required|string|min:8|confirmed', 'role' => 'required|string|in:user,admin']);
+-        $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password), 'role' => $request->role]);
++        $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password), 'role' > $request->role]);
+         activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Created a new user.');
+         return redirect()->route('admin.users.index')->with('status', 'User created successfully.');
+     }
+
+
+18) /app/app/Http/Controllers/Admin/UserController.php:54    [M] MethodCallRemoval
+
+@@ @@
+     {
+         $request->validate(['name' => 'required|string|max:255', 'email' => 'required|email|unique:users,email', 'password' => 'required|string|min:8|confirmed', 'role' => 'required|string|in:user,admin']);
+         $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password), 'role' => $request->role]);
+-        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Created a new user.');
++        
+         return redirect()->route('admin.users.index')->with('status', 'User created successfully.');
+     }
+     public function edit(User $user)
+
+
+19) /app/app/Http/Controllers/Admin/UserController.php:57    [M] ArrayItemRemoval
+
+@@ @@
+     {
+         $request->validate(['name' => 'required|string|max:255', 'email' => 'required|email|unique:users,email', 'password' => 'required|string|min:8|confirmed', 'role' => 'required|string|in:user,admin']);
+         $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password), 'role' => $request->role]);
+-        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Created a new user.');
++        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['email' => $user->email, 'role' => $user->role])->log('Created a new user.');
+         return redirect()->route('admin.users.index')->with('status', 'User created successfully.');
+     }
+     public function edit(User $user)
+
+
+20) /app/app/Http/Controllers/Admin/UserController.php:58    [M] ArrayItem
+
+@@ @@
+     {
+         $request->validate(['name' => 'required|string|max:255', 'email' => 'required|email|unique:users,email', 'password' => 'required|string|min:8|confirmed', 'role' => 'required|string|in:user,admin']);
+         $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password), 'role' => $request->role]);
+-        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Created a new user.');
++        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' > $user->id, 'email' => $user->email, 'role' => $user->role])->log('Created a new user.');
+         return redirect()->route('admin.users.index')->with('status', 'User created successfully.');
+     }
+     public function edit(User $user)
+
+
+21) /app/app/Http/Controllers/Admin/UserController.php:59    [M] ArrayItem
+
+@@ @@
+     {
+         $request->validate(['name' => 'required|string|max:255', 'email' => 'required|email|unique:users,email', 'password' => 'required|string|min:8|confirmed', 'role' => 'required|string|in:user,admin']);
+         $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password), 'role' => $request->role]);
+-        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Created a new user.');
++        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' > $user->email, 'role' => $user->role])->log('Created a new user.');
+         return redirect()->route('admin.users.index')->with('status', 'User created successfully.');
+     }
+     public function edit(User $user)
+
+
+22) /app/app/Http/Controllers/Admin/UserController.php:60    [M] ArrayItem
+
+@@ @@
+     {
+         $request->validate(['name' => 'required|string|max:255', 'email' => 'required|email|unique:users,email', 'password' => 'required|string|min:8|confirmed', 'role' => 'required|string|in:user,admin']);
+         $user = User::create(['name' => $request->name, 'email' => $request->email, 'password' => Hash::make($request->password), 'role' => $request->role]);
+-        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' => $user->role])->log('Created a new user.');
++        activity()->causedBy(auth()->user())->performedOn($user)->withProperties(['user_id' => $user->id, 'email' => $user->email, 'role' > $user->role])->log('Created a new user.');
+         return redirect()->route('admin.users.index')->with('status', 'User created successfully.');
+     }
+     public function edit(User $user)
+
+
+23) /app/app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Send a new email verification notification.
+      */
+-    public function store(Request $request): RedirectResponse
++    protected function store(Request $request): RedirectResponse
+     {
+         if ($request->user()->hasVerifiedEmail()) {
+             return redirect()->intended(route('dashboard', absolute: false));
+
+
+24) /app/app/Http/Controllers/Auth/EmailVerificationNotificationController.php:16    [M] IfNegation
+
+@@ @@
+      */
+     public function store(Request $request): RedirectResponse
+     {
+-        if ($request->user()->hasVerifiedEmail()) {
++        if (!$request->user()->hasVerifiedEmail()) {
+             return redirect()->intended(route('dashboard', absolute: false));
+         }
+         $request->user()->sendEmailVerificationNotification();
+
+
+25) /app/app/Http/Controllers/Auth/EmailVerificationNotificationController.php:17    [M] FalseValue
+
+@@ @@
+     public function store(Request $request): RedirectResponse
+     {
+         if ($request->user()->hasVerifiedEmail()) {
+-            return redirect()->intended(route('dashboard', absolute: false));
++            return redirect()->intended(route('dashboard', absolute: true));
+         }
+         $request->user()->sendEmailVerificationNotification();
+         return back()->with('status', 'verification-link-sent');
+     }
+ }
+
+
+26) /app/app/Http/Controllers/Auth/EmailVerificationNotificationController.php:20    [M] MethodCallRemoval
+
+@@ @@
+         if ($request->user()->hasVerifiedEmail()) {
+             return redirect()->intended(route('dashboard', absolute: false));
+         }
+-        $request->user()->sendEmailVerificationNotification();
++        
+         return back()->with('status', 'verification-link-sent');
+     }
+ }
+
+
+27) /app/app/Http/Controllers/Auth/EmailVerificationPromptController.php:19    [M] FalseValue
+
+@@ @@
+      */
+     public function __invoke(Request $request): RedirectResponse|Response
+     {
+-        return $request->user()->hasVerifiedEmail() ? redirect()->intended(route('dashboard', absolute: false)) : Inertia::render('Auth/VerifyEmail', ['status' => session('status')]);
++        return $request->user()->hasVerifiedEmail() ? redirect()->intended(route('dashboard', absolute: true)) : Inertia::render('Auth/VerifyEmail', ['status' => session('status')]);
+     }
+ }
+
+
+28) /app/app/Http/Controllers/Auth/NewPasswordController.php:65    [M] ArrayItemRemoval
+
+@@ @@
+         if ($status == Password::PASSWORD_RESET) {
+             return redirect()->route('login')->with('status', __($status));
+         }
+-        throw ValidationException::withMessages(['email' => [trans($status)]]);
++        throw ValidationException::withMessages([]);
+     }
+ }
+
+
+29) /app/app/Http/Controllers/Auth/NewPasswordController.php:65    [M] Throw_
+
+@@ @@
+         if ($status == Password::PASSWORD_RESET) {
+             return redirect()->route('login')->with('status', __($status));
+         }
+-        throw ValidationException::withMessages(['email' => [trans($status)]]);
++        ValidationException::withMessages(['email' => [trans($status)]]);
+     }
+ }
+
+
+30) /app/app/Http/Controllers/Auth/NewPasswordController.php:66    [M] ArrayItemRemoval
+
+@@ @@
+         if ($status == Password::PASSWORD_RESET) {
+             return redirect()->route('login')->with('status', __($status));
+         }
+-        throw ValidationException::withMessages(['email' => [trans($status)]]);
++        throw ValidationException::withMessages(['email' => []]);
+     }
+ }
+
+
+31) /app/app/Http/Controllers/Auth/PasswordResetLinkController.php:47    [M] ArrayItemRemoval
+
+@@ @@
+         if ($status == Password::RESET_LINK_SENT) {
+             return back()->with('status', __($status));
+         }
+-        throw ValidationException::withMessages(['email' => [trans($status)]]);
++        throw ValidationException::withMessages([]);
+     }
+ }
+
+
+32) /app/app/Http/Controllers/Auth/PasswordResetLinkController.php:47    [M] Throw_
+
+@@ @@
+         if ($status == Password::RESET_LINK_SENT) {
+             return back()->with('status', __($status));
+         }
+-        throw ValidationException::withMessages(['email' => [trans($status)]]);
++        ValidationException::withMessages(['email' => [trans($status)]]);
+     }
+ }
+
+
+33) /app/app/Http/Controllers/Auth/PasswordResetLinkController.php:48    [M] ArrayItemRemoval
+
+@@ @@
+         if ($status == Password::RESET_LINK_SENT) {
+             return back()->with('status', __($status));
+         }
+-        throw ValidationException::withMessages(['email' => [trans($status)]]);
++        throw ValidationException::withMessages(['email' => []]);
+     }
+ }
+
+
+34) /app/app/Http/Controllers/Auth/VerifyEmailController.php:18    [M] FalseValue
+
+@@ @@
+     public function __invoke(EmailVerificationRequest $request): RedirectResponse
+     {
+         if ($request->user()->hasVerifiedEmail()) {
+-            return redirect()->intended(route('dashboard', absolute: false) . '?verified=1');
++            return redirect()->intended(route('dashboard', absolute: true) . '?verified=1');
+         }
+         if ($request->user()->markEmailAsVerified()) {
+             event(new Verified($request->user()));
+
+
+35) /app/app/Http/Controllers/Auth/VerifyEmailController.php:18    [M] Concat
+
+@@ @@
+     public function __invoke(EmailVerificationRequest $request): RedirectResponse
+     {
+         if ($request->user()->hasVerifiedEmail()) {
+-            return redirect()->intended(route('dashboard', absolute: false) . '?verified=1');
++            return redirect()->intended('?verified=1' . route('dashboard', absolute: false));
+         }
+         if ($request->user()->markEmailAsVerified()) {
+             event(new Verified($request->user()));
+
+
+36) /app/app/Http/Controllers/Auth/VerifyEmailController.php:18    [M] ConcatOperandRemoval
+
+@@ @@
+     public function __invoke(EmailVerificationRequest $request): RedirectResponse
+     {
+         if ($request->user()->hasVerifiedEmail()) {
+-            return redirect()->intended(route('dashboard', absolute: false) . '?verified=1');
++            return redirect()->intended('?verified=1');
+         }
+         if ($request->user()->markEmailAsVerified()) {
+             event(new Verified($request->user()));
+
+
+37) /app/app/Http/Controllers/Auth/VerifyEmailController.php:18    [M] ConcatOperandRemoval
+
+@@ @@
+     public function __invoke(EmailVerificationRequest $request): RedirectResponse
+     {
+         if ($request->user()->hasVerifiedEmail()) {
+-            return redirect()->intended(route('dashboard', absolute: false) . '?verified=1');
++            return redirect()->intended(route('dashboard', absolute: false));
+         }
+         if ($request->user()->markEmailAsVerified()) {
+             event(new Verified($request->user()));
+
+
+38) /app/app/Http/Controllers/InviteController.php:23    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Show the form for creating a new resource.
+      */
+-    public function create()
++    protected function create()
+     {
+         //
+     }
+
+
+39) /app/app/Http/Controllers/InviteController.php:41    [M] DecrementInteger
+
+@@ @@
+             abort(404, 'Vehicle not found or unauthorized.');
+         }
+         if ($validated['email'] == $invitor->email) {
+-            abort(404, 'You cannot invite yourself.');
++            abort(403, 'You cannot invite yourself.');
+         }
+         $token = (string) Str::uuid();
+         $invite = Invite::create(['vehicle_id' => $vehicle->id, 'email' => $validated['email'], 'invitor_id' => $invitor->id, 'status' => 'pending', 'verification_token' => $token]);
+
+
+40) /app/app/Http/Controllers/InviteController.php:41    [M] IncrementInteger
+
+@@ @@
+             abort(404, 'Vehicle not found or unauthorized.');
+         }
+         if ($validated['email'] == $invitor->email) {
+-            abort(404, 'You cannot invite yourself.');
++            abort(405, 'You cannot invite yourself.');
+         }
+         $token = (string) Str::uuid();
+         $invite = Invite::create(['vehicle_id' => $vehicle->id, 'email' => $validated['email'], 'invitor_id' => $invitor->id, 'status' => 'pending', 'verification_token' => $token]);
+
+
+41) /app/app/Http/Controllers/InviteController.php:41    [M] FunctionCallRemoval
+
+@@ @@
+             abort(404, 'Vehicle not found or unauthorized.');
+         }
+         if ($validated['email'] == $invitor->email) {
+-            abort(404, 'You cannot invite yourself.');
++            
+         }
+         $token = (string) Str::uuid();
+         $invite = Invite::create(['vehicle_id' => $vehicle->id, 'email' => $validated['email'], 'invitor_id' => $invitor->id, 'status' => 'pending', 'verification_token' => $token]);
+
+
+42) /app/app/Http/Controllers/InviteController.php:67    [M] MethodCallRemoval
+
+@@ @@
+         if ($user) {
+             Mail::to($validated['email'])->send(new \App\Mail\Invite($user, $invitor, $vehicle, $token));
+         } else {
+-            Mail::to($validated['email'])->send(new InviteIfNoAccount($validated['email'], $invitor, $vehicle));
++            
+         }
+         return redirect()->back()->with('status', 'Invitation sent successfully.');
+     }
+
+
+43) /app/app/Http/Controllers/InviteController.php:76    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Display the specified resource.
+      */
+-    public function show(Invite $invite)
++    protected function show(Invite $invite)
+     {
+         //
+     }
+
+
+44) /app/app/Http/Controllers/InviteController.php:84    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Show the form for editing the specified resource.
+      */
+-    public function edit(Invite $invite)
++    protected function edit(Invite $invite)
+     {
+         //
+     }
+
+
+45) /app/app/Http/Controllers/InviteController.php:92    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Update the specified resource in storage.
+      */
+-    public function update(string $token)
++    protected function update(string $token)
+     {
+         $invite = Invite::where('verification_token', $token)->first();
+         if (!$invite) {
+
+
+46) /app/app/Http/Controllers/InviteController.php:95    [M] LogicalNot
+
+@@ @@
+     public function update(string $token)
+     {
+         $invite = Invite::where('verification_token', $token)->first();
+-        if (!$invite) {
++        if ($invite) {
+             abort(404, 'Invitation not found.');
+         }
+         $user = User::query()->where('email', $invite->email)->firstOrFail();
+
+
+47) /app/app/Http/Controllers/InviteController.php:96    [M] DecrementInteger
+
+@@ @@
+     {
+         $invite = Invite::where('verification_token', $token)->first();
+         if (!$invite) {
+-            abort(404, 'Invitation not found.');
++            abort(403, 'Invitation not found.');
+         }
+         $user = User::query()->where('email', $invite->email)->firstOrFail();
+         $vehicle = $invite->vehicle;
+
+
+48) /app/app/Http/Controllers/InviteController.php:96    [M] IncrementInteger
+
+@@ @@
+     {
+         $invite = Invite::where('verification_token', $token)->first();
+         if (!$invite) {
+-            abort(404, 'Invitation not found.');
++            abort(405, 'Invitation not found.');
+         }
+         $user = User::query()->where('email', $invite->email)->firstOrFail();
+         $vehicle = $invite->vehicle;
+
+
+49) /app/app/Http/Controllers/InviteController.php:96    [M] FunctionCallRemoval
+
+@@ @@
+     {
+         $invite = Invite::where('verification_token', $token)->first();
+         if (!$invite) {
+-            abort(404, 'Invitation not found.');
++            
+         }
+         $user = User::query()->where('email', $invite->email)->firstOrFail();
+         $vehicle = $invite->vehicle;
+
+
+50) /app/app/Http/Controllers/InviteController.php:103    [M] ArrayItemRemoval
+
+@@ @@
+         }
+         $user = User::query()->where('email', $invite->email)->firstOrFail();
+         $vehicle = $invite->vehicle;
+-        $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'active']]);
++        $vehicle->users()->syncWithoutDetaching([]);
+         activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['email' => $invite->email, 'vehicle_id' => $vehicle->id, 'user_id' => $user->id, 'role' => 'shared', 'status' => 'active'])->log('Invite updated');
+         $invite->delete();
+         return redirect()->back()->with('status', 'Invite updated successfully.');
+
+
+51) /app/app/Http/Controllers/InviteController.php:103    [M] MethodCallRemoval
+
+@@ @@
+         }
+         $user = User::query()->where('email', $invite->email)->firstOrFail();
+         $vehicle = $invite->vehicle;
+-        $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'active']]);
++        
+         activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['email' => $invite->email, 'vehicle_id' => $vehicle->id, 'user_id' => $user->id, 'role' => 'shared', 'status' => 'active'])->log('Invite updated');
+         $invite->delete();
+         return redirect()->back()->with('status', 'Invite updated successfully.');
+
+
+52) /app/app/Http/Controllers/InviteController.php:104    [M] ArrayItemRemoval
+
+@@ @@
+         }
+         $user = User::query()->where('email', $invite->email)->firstOrFail();
+         $vehicle = $invite->vehicle;
+-        $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'active']]);
++        $vehicle->users()->syncWithoutDetaching([$user->id => ['status' => 'active']]);
+         activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['email' => $invite->email, 'vehicle_id' => $vehicle->id, 'user_id' => $user->id, 'role' => 'shared', 'status' => 'active'])->log('Invite updated');
+         $invite->delete();
+         return redirect()->back()->with('status', 'Invite updated successfully.');
+
+
+53) /app/app/Http/Controllers/InviteController.php:104    [M] ArrayItem
+
+@@ @@
+         }
+         $user = User::query()->where('email', $invite->email)->firstOrFail();
+         $vehicle = $invite->vehicle;
+-        $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'active']]);
++        $vehicle->users()->syncWithoutDetaching([$user->id > ['role' => 'shared', 'status' => 'active']]);
+         activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['email' => $invite->email, 'vehicle_id' => $vehicle->id, 'user_id' => $user->id, 'role' => 'shared', 'status' => 'active'])->log('Invite updated');
+         $invite->delete();
+         return redirect()->back()->with('status', 'Invite updated successfully.');
+
+
+54) /app/app/Http/Controllers/InviteController.php:109    [M] MethodCallRemoval
+
+@@ @@
+         $user = User::query()->where('email', $invite->email)->firstOrFail();
+         $vehicle = $invite->vehicle;
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'active']]);
+-        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['email' => $invite->email, 'vehicle_id' => $vehicle->id, 'user_id' => $user->id, 'role' => 'shared', 'status' => 'active'])->log('Invite updated');
++        
+         $invite->delete();
+         return redirect()->back()->with('status', 'Invite updated successfully.');
+     }
+
+
+55) /app/app/Http/Controllers/InviteController.php:112    [M] ArrayItemRemoval
+
+@@ @@
+         $user = User::query()->where('email', $invite->email)->firstOrFail();
+         $vehicle = $invite->vehicle;
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'active']]);
+-        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['email' => $invite->email, 'vehicle_id' => $vehicle->id, 'user_id' => $user->id, 'role' => 'shared', 'status' => 'active'])->log('Invite updated');
++        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['vehicle_id' => $vehicle->id, 'user_id' => $user->id, 'role' => 'shared', 'status' => 'active'])->log('Invite updated');
+         $invite->delete();
+         return redirect()->back()->with('status', 'Invite updated successfully.');
+     }
+
+
+56) /app/app/Http/Controllers/InviteController.php:113    [M] ArrayItem
+
+@@ @@
+         $user = User::query()->where('email', $invite->email)->firstOrFail();
+         $vehicle = $invite->vehicle;
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'active']]);
+-        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['email' => $invite->email, 'vehicle_id' => $vehicle->id, 'user_id' => $user->id, 'role' => 'shared', 'status' => 'active'])->log('Invite updated');
++        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['email' > $invite->email, 'vehicle_id' => $vehicle->id, 'user_id' => $user->id, 'role' => 'shared', 'status' => 'active'])->log('Invite updated');
+         $invite->delete();
+         return redirect()->back()->with('status', 'Invite updated successfully.');
+     }
+
+
+57) /app/app/Http/Controllers/InviteController.php:114    [M] ArrayItem
+
+@@ @@
+         $user = User::query()->where('email', $invite->email)->firstOrFail();
+         $vehicle = $invite->vehicle;
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'active']]);
+-        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['email' => $invite->email, 'vehicle_id' => $vehicle->id, 'user_id' => $user->id, 'role' => 'shared', 'status' => 'active'])->log('Invite updated');
++        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['email' => $invite->email, 'vehicle_id' > $vehicle->id, 'user_id' => $user->id, 'role' => 'shared', 'status' => 'active'])->log('Invite updated');
+         $invite->delete();
+         return redirect()->back()->with('status', 'Invite updated successfully.');
+     }
+
+
+58) /app/app/Http/Controllers/InviteController.php:115    [M] ArrayItem
+
+@@ @@
+         $user = User::query()->where('email', $invite->email)->firstOrFail();
+         $vehicle = $invite->vehicle;
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'active']]);
+-        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['email' => $invite->email, 'vehicle_id' => $vehicle->id, 'user_id' => $user->id, 'role' => 'shared', 'status' => 'active'])->log('Invite updated');
++        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['email' => $invite->email, 'vehicle_id' => $vehicle->id, 'user_id' > $user->id, 'role' => 'shared', 'status' => 'active'])->log('Invite updated');
+         $invite->delete();
+         return redirect()->back()->with('status', 'Invite updated successfully.');
+     }
+
+
+59) /app/app/Http/Controllers/InviteController.php:120    [M] MethodCallRemoval
+
+@@ @@
+         $vehicle = $invite->vehicle;
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'active']]);
+         activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['email' => $invite->email, 'vehicle_id' => $vehicle->id, 'user_id' => $user->id, 'role' => 'shared', 'status' => 'active'])->log('Invite updated');
+-        $invite->delete();
++        
+         return redirect()->back()->with('status', 'Invite updated successfully.');
+     }
+     /**
+
+
+60) /app/app/Http/Controllers/InviteController.php:127    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Remove the specified resource from storage.
+      */
+-    public function destroy(Invite $invite)
++    protected function destroy(Invite $invite)
+     {
+         if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
+             abort(403);
+
+
+61) /app/app/Http/Controllers/InviteController.php:129    [M] NotIdentical
+
+@@ @@
+      */
+     public function destroy(Invite $invite)
+     {
+-        if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
++        if ($invite->invitor_id === auth()->id() && $invite->email !== auth()->user()->email) {
+             abort(403);
+         }
+         activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
+
+
+62) /app/app/Http/Controllers/InviteController.php:129    [M] NotIdentical
+
+@@ @@
+      */
+     public function destroy(Invite $invite)
+     {
+-        if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
++        if ($invite->invitor_id !== auth()->id() && $invite->email === auth()->user()->email) {
+             abort(403);
+         }
+         activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
+
+
+63) /app/app/Http/Controllers/InviteController.php:129    [M] LogicalAnd
+
+@@ @@
+      */
+     public function destroy(Invite $invite)
+     {
+-        if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
++        if ($invite->invitor_id !== auth()->id() || $invite->email !== auth()->user()->email) {
+             abort(403);
+         }
+         activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
+
+
+64) /app/app/Http/Controllers/InviteController.php:129    [M] LogicalAndAllSubExprNegation
+
+@@ @@
+      */
+     public function destroy(Invite $invite)
+     {
+-        if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
++        if (!($invite->invitor_id !== auth()->id()) && !($invite->email !== auth()->user()->email)) {
+             abort(403);
+         }
+         activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
+
+
+65) /app/app/Http/Controllers/InviteController.php:129    [M] LogicalAndNegation
+
+@@ @@
+      */
+     public function destroy(Invite $invite)
+     {
+-        if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
++        if (!($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email)) {
+             abort(403);
+         }
+         activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
+
+
+66) /app/app/Http/Controllers/InviteController.php:130    [M] DecrementInteger
+
+@@ @@
+     public function destroy(Invite $invite)
+     {
+         if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
+-            abort(403);
++            abort(402);
+         }
+         activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
+         $invite->delete();
+
+
+67) /app/app/Http/Controllers/InviteController.php:130    [M] IncrementInteger
+
+@@ @@
+     public function destroy(Invite $invite)
+     {
+         if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
+-            abort(403);
++            abort(404);
+         }
+         activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
+         $invite->delete();
+
+
+68) /app/app/Http/Controllers/InviteController.php:130    [M] FunctionCallRemoval
+
+@@ @@
+     public function destroy(Invite $invite)
+     {
+         if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
+-            abort(403);
++            
+         }
+         activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
+         $invite->delete();
+
+
+69) /app/app/Http/Controllers/InviteController.php:132    [M] MethodCallRemoval
+
+@@ @@
+         if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
+             abort(403);
+         }
+-        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
++        
+         $invite->delete();
+         return redirect()->back()->with('status', 'Invitation deleted successfully.');
+     }
+
+
+70) /app/app/Http/Controllers/InviteController.php:135    [M] ArrayItemRemoval
+
+@@ @@
+         if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
+             abort(403);
+         }
+-        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
++        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
+         $invite->delete();
+         return redirect()->back()->with('status', 'Invitation deleted successfully.');
+     }
+
+
+71) /app/app/Http/Controllers/InviteController.php:136    [M] ArrayItem
+
+@@ @@
+         if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
+             abort(403);
+         }
+-        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
++        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' > $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
+         $invite->delete();
+         return redirect()->back()->with('status', 'Invitation deleted successfully.');
+     }
+
+
+72) /app/app/Http/Controllers/InviteController.php:137    [M] ArrayItem
+
+@@ @@
+         if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
+             abort(403);
+         }
+-        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
++        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' > $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
+         $invite->delete();
+         return redirect()->back()->with('status', 'Invitation deleted successfully.');
+     }
+
+
+73) /app/app/Http/Controllers/InviteController.php:138    [M] ArrayItem
+
+@@ @@
+         if ($invite->invitor_id !== auth()->id() && $invite->email !== auth()->user()->email) {
+             abort(403);
+         }
+-        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
++        activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' > $invite->vehicle_id])->log('Deleted an invite');
+         $invite->delete();
+         return redirect()->back()->with('status', 'Invitation deleted successfully.');
+     }
+
+
+74) /app/app/Http/Controllers/InviteController.php:142    [M] MethodCallRemoval
+
+@@ @@
+             abort(403);
+         }
+         activity()->performedOn($invite)->causedBy(auth()->user())->withProperties(['invitor_id' => $invite->invitor_id, 'email' => $invite->email, 'vehicle_id' => $invite->vehicle_id])->log('Deleted an invite');
+-        $invite->delete();
++        
+         return redirect()->back()->with('status', 'Invitation deleted successfully.');
+     }
+     public function index(): Response
+
+
+75) /app/app/Http/Controllers/InviteController.php:145    [M] PublicVisibility
+
+@@ @@
+         $invite->delete();
+         return redirect()->back()->with('status', 'Invitation deleted successfully.');
+     }
+-    public function index(): Response
++    protected function index(): Response
+     {
+         $user = auth()->user();
+         $invites = Invite::query()->where("invitor_id", $user->id)->with(["invitor", "vehicle"])->get();
+
+
+76) /app/app/Http/Controllers/InviteController.php:148    [M] ArrayItemRemoval
+
+@@ @@
+     public function index(): Response
+     {
+         $user = auth()->user();
+-        $invites = Invite::query()->where("invitor_id", $user->id)->with(["invitor", "vehicle"])->get();
++        $invites = Invite::query()->where("invitor_id", $user->id)->with(["vehicle"])->get();
+         return Inertia::render('Invites', ["sentInvites" => $invites]);
+     }
+ }
+
+
+77) /app/app/Http/Controllers/InviteController.php:149    [M] ArrayItemRemoval
+
+@@ @@
+     {
+         $user = auth()->user();
+         $invites = Invite::query()->where("invitor_id", $user->id)->with(["invitor", "vehicle"])->get();
+-        return Inertia::render('Invites', ["sentInvites" => $invites]);
++        return Inertia::render('Invites', []);
+     }
+ }
+
+
+78) /app/app/Http/Controllers/ProfileController.php:20    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Display the user's profile form.
+      */
+-    public function show($username)
++    protected function show($username)
+     {
+     }
+     public function edit(Request $request): Response
+
+
+79) /app/app/Http/Controllers/SocialAuthController.php:21    [M] PublicVisibility
+
+@@ @@
+         activity()->causedBy(auth()->user())->withProperties(['action' => 'Redirecting to Facebook login'])->log('User redirected to Facebook for authentication.');
+         return Socialite::driver('facebook')->redirect();
+     }
+-    public function handleFacebookCallback()
++    protected function handleFacebookCallback()
+     {
+         try {
+             $user = Socialite::driver('facebook')->user();
+
+
+80) /app/app/Http/Controllers/SocialAuthController.php:27    [M] IfNegation
+
+@@ @@
+         try {
+             $user = Socialite::driver('facebook')->user();
+             $finduser = User::where('facebook_id', $user->id)->first();
+-            if ($finduser) {
++            if (!$finduser) {
+                 Auth::login($finduser);
+                 activity()->causedBy($finduser)->withProperties(['action' => 'Logged in via Facebook'])->log('User logged in using Facebook.');
+                 return redirect()->intended('dashboard');
+
+
+81) /app/app/Http/Controllers/SocialAuthController.php:28    [M] MethodCallRemoval
+
+@@ @@
+             $user = Socialite::driver('facebook')->user();
+             $finduser = User::where('facebook_id', $user->id)->first();
+             if ($finduser) {
+-                Auth::login($finduser);
++                
+                 activity()->causedBy($finduser)->withProperties(['action' => 'Logged in via Facebook'])->log('User logged in using Facebook.');
+                 return redirect()->intended('dashboard');
+             } else {
+
+
+82) /app/app/Http/Controllers/SocialAuthController.php:29    [M] MethodCallRemoval
+
+@@ @@
+             $finduser = User::where('facebook_id', $user->id)->first();
+             if ($finduser) {
+                 Auth::login($finduser);
+-                activity()->causedBy($finduser)->withProperties(['action' => 'Logged in via Facebook'])->log('User logged in using Facebook.');
++                
+                 return redirect()->intended('dashboard');
+             } else {
+                 $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
+
+
+83) /app/app/Http/Controllers/SocialAuthController.php:31    [M] ArrayItemRemoval
+
+@@ @@
+             $finduser = User::where('facebook_id', $user->id)->first();
+             if ($finduser) {
+                 Auth::login($finduser);
+-                activity()->causedBy($finduser)->withProperties(['action' => 'Logged in via Facebook'])->log('User logged in using Facebook.');
++                activity()->causedBy($finduser)->withProperties([])->log('User logged in using Facebook.');
+                 return redirect()->intended('dashboard');
+             } else {
+                 $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
+
+
+84) /app/app/Http/Controllers/SocialAuthController.php:35    [M] ArrayItemRemoval
+
+@@ @@
+                 activity()->causedBy($finduser)->withProperties(['action' => 'Logged in via Facebook'])->log('User logged in using Facebook.');
+                 return redirect()->intended('dashboard');
+             } else {
+-                $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
++                $newUser = User::create(['email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
+                 $newUser->email_verified_at = Carbon::now();
+                 $newUser->save();
+                 activity()->causedBy($newUser)->withProperties(['action' => 'Created a new account via Facebook', 'email' => $user->email])->log('New user account created via Facebook.');
+
+
+85) /app/app/Http/Controllers/SocialAuthController.php:36    [M] ArrayItem
+
+@@ @@
+                 activity()->causedBy($finduser)->withProperties(['action' => 'Logged in via Facebook'])->log('User logged in using Facebook.');
+                 return redirect()->intended('dashboard');
+             } else {
+-                $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
++                $newUser = User::create(['name' > $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
+                 $newUser->email_verified_at = Carbon::now();
+                 $newUser->save();
+                 activity()->causedBy($newUser)->withProperties(['action' => 'Created a new account via Facebook', 'email' => $user->email])->log('New user account created via Facebook.');
+
+
+86) /app/app/Http/Controllers/SocialAuthController.php:37    [M] ArrayItem
+
+@@ @@
+                 activity()->causedBy($finduser)->withProperties(['action' => 'Logged in via Facebook'])->log('User logged in using Facebook.');
+                 return redirect()->intended('dashboard');
+             } else {
+-                $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
++                $newUser = User::create(['name' => $user->name, 'email' > $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
+                 $newUser->email_verified_at = Carbon::now();
+                 $newUser->save();
+                 activity()->causedBy($newUser)->withProperties(['action' => 'Created a new account via Facebook', 'email' => $user->email])->log('New user account created via Facebook.');
+
+
+87) /app/app/Http/Controllers/SocialAuthController.php:38    [M] ArrayItem
+
+@@ @@
+                 activity()->causedBy($finduser)->withProperties(['action' => 'Logged in via Facebook'])->log('User logged in using Facebook.');
+                 return redirect()->intended('dashboard');
+             } else {
+-                $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
++                $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' > $user->id, 'password' => bcrypt(fake()->password(12))]);
+                 $newUser->email_verified_at = Carbon::now();
+                 $newUser->save();
+                 activity()->causedBy($newUser)->withProperties(['action' => 'Created a new account via Facebook', 'email' => $user->email])->log('New user account created via Facebook.');
+
+
+88) /app/app/Http/Controllers/SocialAuthController.php:39    [M] DecrementInteger
+
+@@ @@
+                 activity()->causedBy($finduser)->withProperties(['action' => 'Logged in via Facebook'])->log('User logged in using Facebook.');
+                 return redirect()->intended('dashboard');
+             } else {
+-                $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
++                $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(11))]);
+                 $newUser->email_verified_at = Carbon::now();
+                 $newUser->save();
+                 activity()->causedBy($newUser)->withProperties(['action' => 'Created a new account via Facebook', 'email' => $user->email])->log('New user account created via Facebook.');
+
+
+89) /app/app/Http/Controllers/SocialAuthController.php:39    [M] IncrementInteger
+
+@@ @@
+                 activity()->causedBy($finduser)->withProperties(['action' => 'Logged in via Facebook'])->log('User logged in using Facebook.');
+                 return redirect()->intended('dashboard');
+             } else {
+-                $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
++                $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(13))]);
+                 $newUser->email_verified_at = Carbon::now();
+                 $newUser->save();
+                 activity()->causedBy($newUser)->withProperties(['action' => 'Created a new account via Facebook', 'email' => $user->email])->log('New user account created via Facebook.');
+
+
+90) /app/app/Http/Controllers/SocialAuthController.php:39    [M] ArrayItem
+
+@@ @@
+                 activity()->causedBy($finduser)->withProperties(['action' => 'Logged in via Facebook'])->log('User logged in using Facebook.');
+                 return redirect()->intended('dashboard');
+             } else {
+-                $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
++                $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' > bcrypt(fake()->password(12))]);
+                 $newUser->email_verified_at = Carbon::now();
+                 $newUser->save();
+                 activity()->causedBy($newUser)->withProperties(['action' => 'Created a new account via Facebook', 'email' => $user->email])->log('New user account created via Facebook.');
+
+
+91) /app/app/Http/Controllers/SocialAuthController.php:42    [M] MethodCallRemoval
+
+@@ @@
+             } else {
+                 $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
+                 $newUser->email_verified_at = Carbon::now();
+-                $newUser->save();
++                
+                 activity()->causedBy($newUser)->withProperties(['action' => 'Created a new account via Facebook', 'email' => $user->email])->log('New user account created via Facebook.');
+                 Auth::login($newUser);
+                 return redirect()->intended('dashboard');
+
+
+92) /app/app/Http/Controllers/SocialAuthController.php:43    [M] MethodCallRemoval
+
+@@ @@
+                 $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
+                 $newUser->email_verified_at = Carbon::now();
+                 $newUser->save();
+-                activity()->causedBy($newUser)->withProperties(['action' => 'Created a new account via Facebook', 'email' => $user->email])->log('New user account created via Facebook.');
++                
+                 Auth::login($newUser);
+                 return redirect()->intended('dashboard');
+             }
+
+
+93) /app/app/Http/Controllers/SocialAuthController.php:45    [M] ArrayItemRemoval
+
+@@ @@
+                 $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
+                 $newUser->email_verified_at = Carbon::now();
+                 $newUser->save();
+-                activity()->causedBy($newUser)->withProperties(['action' => 'Created a new account via Facebook', 'email' => $user->email])->log('New user account created via Facebook.');
++                activity()->causedBy($newUser)->withProperties(['email' => $user->email])->log('New user account created via Facebook.');
+                 Auth::login($newUser);
+                 return redirect()->intended('dashboard');
+             }
+
+
+94) /app/app/Http/Controllers/SocialAuthController.php:47    [M] ArrayItem
+
+@@ @@
+                 $newUser = User::create(['name' => $user->name, 'email' => $user->email, 'facebook_id' => $user->id, 'password' => bcrypt(fake()->password(12))]);
+                 $newUser->email_verified_at = Carbon::now();
+                 $newUser->save();
+-                activity()->causedBy($newUser)->withProperties(['action' => 'Created a new account via Facebook', 'email' => $user->email])->log('New user account created via Facebook.');
++                activity()->causedBy($newUser)->withProperties(['action' => 'Created a new account via Facebook', 'email' > $user->email])->log('New user account created via Facebook.');
+                 Auth::login($newUser);
+                 return redirect()->intended('dashboard');
+             }
+
+
+95) /app/app/Http/Controllers/SocialAuthController.php:50    [M] MethodCallRemoval
+
+@@ @@
+                 $newUser->email_verified_at = Carbon::now();
+                 $newUser->save();
+                 activity()->causedBy($newUser)->withProperties(['action' => 'Created a new account via Facebook', 'email' => $user->email])->log('New user account created via Facebook.');
+-                Auth::login($newUser);
++                
+                 return redirect()->intended('dashboard');
+             }
+         } catch (\Exception $e) {
+
+
+96) /app/app/Http/Controllers/SocialAuthController.php:54    [M] MethodCallRemoval
+
+@@ @@
+                 return redirect()->intended('dashboard');
+             }
+         } catch (\Exception $e) {
+-            activity()->causedBy(auth()->user())->withProperties(['action' => 'Facebook login failed', 'error_message' => $e->getMessage()])->log('Facebook login attempt failed.');
++            
+             return redirect('/login')->withErrors(['error' => 'Logowanie przez Facebook nie powiodło się.']);
+         }
+     }
+ }
+
+
+97) /app/app/Http/Controllers/SocialAuthController.php:56    [M] ArrayItem
+
+@@ @@
+                 return redirect()->intended('dashboard');
+             }
+         } catch (\Exception $e) {
+-            activity()->causedBy(auth()->user())->withProperties(['action' => 'Facebook login failed', 'error_message' => $e->getMessage()])->log('Facebook login attempt failed.');
++            activity()->causedBy(auth()->user())->withProperties(['action' => 'Facebook login failed', 'error_message' > $e->getMessage()])->log('Facebook login attempt failed.');
+             return redirect('/login')->withErrors(['error' => 'Logowanie przez Facebook nie powiodło się.']);
+         }
+     }
+ }
+
+
+98) /app/app/Http/Controllers/SocialAuthController.php:56    [M] ArrayItemRemoval
+
+@@ @@
+                 return redirect()->intended('dashboard');
+             }
+         } catch (\Exception $e) {
+-            activity()->causedBy(auth()->user())->withProperties(['action' => 'Facebook login failed', 'error_message' => $e->getMessage()])->log('Facebook login attempt failed.');
++            activity()->causedBy(auth()->user())->withProperties(['error_message' => $e->getMessage()])->log('Facebook login attempt failed.');
+             return redirect('/login')->withErrors(['error' => 'Logowanie przez Facebook nie powiodło się.']);
+         }
+     }
+ }
+
+
+99) /app/app/Http/Controllers/SocialAuthController.php:58    [M] ArrayItemRemoval
+
+@@ @@
+             }
+         } catch (\Exception $e) {
+             activity()->causedBy(auth()->user())->withProperties(['action' => 'Facebook login failed', 'error_message' => $e->getMessage()])->log('Facebook login attempt failed.');
+-            return redirect('/login')->withErrors(['error' => 'Logowanie przez Facebook nie powiodło się.']);
++            return redirect('/login')->withErrors([]);
+         }
+     }
+ }
+
+
+100) /app/app/Http/Controllers/SpendingController.php:15    [M] PublicVisibility
+
+@@ @@
+ use Inertia\Inertia;
+ class SpendingController extends Controller
+ {
+-    public function create(Vehicle $vehicle)
++    protected function create(Vehicle $vehicle)
+     {
+         activity()->causedBy(auth()->user())->withProperties(['vehicle_id' => $vehicle->id])->log('Accessed page to create a new spending.');
+         return Inertia::render('Vehicle/AddSpending', ['vehicle' => $vehicle]);
+
+
+101) /app/app/Http/Controllers/SpendingController.php:16    [M] MethodCallRemoval
+
+@@ @@
+ {
+     public function create(Vehicle $vehicle)
+     {
+-        activity()->causedBy(auth()->user())->withProperties(['vehicle_id' => $vehicle->id])->log('Accessed page to create a new spending.');
++        
+         return Inertia::render('Vehicle/AddSpending', ['vehicle' => $vehicle]);
+     }
+     public function createSpending(CreateSpendingRequest $request, $vehicle_id): \Illuminate\Http\RedirectResponse
+
+
+102) /app/app/Http/Controllers/SpendingController.php:18    [M] ArrayItem
+
+@@ @@
+ {
+     public function create(Vehicle $vehicle)
+     {
+-        activity()->causedBy(auth()->user())->withProperties(['vehicle_id' => $vehicle->id])->log('Accessed page to create a new spending.');
++        activity()->causedBy(auth()->user())->withProperties(['vehicle_id' > $vehicle->id])->log('Accessed page to create a new spending.');
+         return Inertia::render('Vehicle/AddSpending', ['vehicle' => $vehicle]);
+     }
+     public function createSpending(CreateSpendingRequest $request, $vehicle_id): \Illuminate\Http\RedirectResponse
+
+
+103) /app/app/Http/Controllers/SpendingController.php:18    [M] ArrayItemRemoval
+
+@@ @@
+ {
+     public function create(Vehicle $vehicle)
+     {
+-        activity()->causedBy(auth()->user())->withProperties(['vehicle_id' => $vehicle->id])->log('Accessed page to create a new spending.');
++        activity()->causedBy(auth()->user())->withProperties([])->log('Accessed page to create a new spending.');
+         return Inertia::render('Vehicle/AddSpending', ['vehicle' => $vehicle]);
+     }
+     public function createSpending(CreateSpendingRequest $request, $vehicle_id): \Illuminate\Http\RedirectResponse
+
+
+104) /app/app/Http/Controllers/SpendingController.php:20    [M] ArrayItemRemoval
+
+@@ @@
+     public function create(Vehicle $vehicle)
+     {
+         activity()->causedBy(auth()->user())->withProperties(['vehicle_id' => $vehicle->id])->log('Accessed page to create a new spending.');
+-        return Inertia::render('Vehicle/AddSpending', ['vehicle' => $vehicle]);
++        return Inertia::render('Vehicle/AddSpending', []);
+     }
+     public function createSpending(CreateSpendingRequest $request, $vehicle_id): \Illuminate\Http\RedirectResponse
+     {
+
+
+105) /app/app/Http/Controllers/SpendingController.php:32    [M] DecrementInteger
+
+@@ @@
+         $user = auth()->user();
+         $vehicle = $user->vehicles()->where('vehicles.id', $vehicle_id)->wherePivot('status', 'active')->first();
+         if (!$vehicle) {
+-            abort(404, 'Vehicle not found or does not belong to the authenticated user.');
++            abort(403, 'Vehicle not found or does not belong to the authenticated user.');
+         }
+         $validated = $request->validated();
+         $validated['user_id'] = auth()->id();
+
+
+106) /app/app/Http/Controllers/SpendingController.php:32    [M] IncrementInteger
+
+@@ @@
+         $user = auth()->user();
+         $vehicle = $user->vehicles()->where('vehicles.id', $vehicle_id)->wherePivot('status', 'active')->first();
+         if (!$vehicle) {
+-            abort(404, 'Vehicle not found or does not belong to the authenticated user.');
++            abort(405, 'Vehicle not found or does not belong to the authenticated user.');
+         }
+         $validated = $request->validated();
+         $validated['user_id'] = auth()->id();
+
+
+107) /app/app/Http/Controllers/SpendingController.php:32    [M] FunctionCallRemoval
+
+@@ @@
+         $user = auth()->user();
+         $vehicle = $user->vehicles()->where('vehicles.id', $vehicle_id)->wherePivot('status', 'active')->first();
+         if (!$vehicle) {
+-            abort(404, 'Vehicle not found or does not belong to the authenticated user.');
++            
+         }
+         $validated = $request->validated();
+         $validated['user_id'] = auth()->id();
+
+
+108) /app/app/Http/Controllers/SpendingController.php:51    [M] PublicVisibility
+
+@@ @@
+         activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $vehicle->id, 'amount' => $spending->amount, 'description' => $spending->description])->log('Created a new spending.');
+         return redirect()->to("/dashboard/" . $vehicle_id)->with('status', 'Added the spending successfully.');
+     }
+-    public function edit(Spending $spending)
++    protected function edit(Spending $spending)
+     {
+         activity()->causedBy(auth()->user())->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id])->log('Accessed page to edit a spending.');
+         return Inertia::render('Vehicle/EditSpending', ['spending' => $spending]);
+
+
+109) /app/app/Http/Controllers/SpendingController.php:52    [M] MethodCallRemoval
+
+@@ @@
+     }
+     public function edit(Spending $spending)
+     {
+-        activity()->causedBy(auth()->user())->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id])->log('Accessed page to edit a spending.');
++        
+         return Inertia::render('Vehicle/EditSpending', ['spending' => $spending]);
+     }
+     public function editSpending(CreateSpendingRequest $request, Spending $spending): \Illuminate\Http\RedirectResponse
+
+
+110) /app/app/Http/Controllers/SpendingController.php:54    [M] ArrayItemRemoval
+
+@@ @@
+     }
+     public function edit(Spending $spending)
+     {
+-        activity()->causedBy(auth()->user())->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id])->log('Accessed page to edit a spending.');
++        activity()->causedBy(auth()->user())->withProperties(['vehicle_id' => $spending->vehicle_id])->log('Accessed page to edit a spending.');
+         return Inertia::render('Vehicle/EditSpending', ['spending' => $spending]);
+     }
+     public function editSpending(CreateSpendingRequest $request, Spending $spending): \Illuminate\Http\RedirectResponse
+
+
+111) /app/app/Http/Controllers/SpendingController.php:55    [M] ArrayItem
+
+@@ @@
+     }
+     public function edit(Spending $spending)
+     {
+-        activity()->causedBy(auth()->user())->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id])->log('Accessed page to edit a spending.');
++        activity()->causedBy(auth()->user())->withProperties(['spending_id' > $spending->id, 'vehicle_id' => $spending->vehicle_id])->log('Accessed page to edit a spending.');
+         return Inertia::render('Vehicle/EditSpending', ['spending' => $spending]);
+     }
+     public function editSpending(CreateSpendingRequest $request, Spending $spending): \Illuminate\Http\RedirectResponse
+
+
+112) /app/app/Http/Controllers/SpendingController.php:56    [M] ArrayItem
+
+@@ @@
+     }
+     public function edit(Spending $spending)
+     {
+-        activity()->causedBy(auth()->user())->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id])->log('Accessed page to edit a spending.');
++        activity()->causedBy(auth()->user())->withProperties(['spending_id' => $spending->id, 'vehicle_id' > $spending->vehicle_id])->log('Accessed page to edit a spending.');
+         return Inertia::render('Vehicle/EditSpending', ['spending' => $spending]);
+     }
+     public function editSpending(CreateSpendingRequest $request, Spending $spending): \Illuminate\Http\RedirectResponse
+
+
+113) /app/app/Http/Controllers/SpendingController.php:59    [M] ArrayItemRemoval
+
+@@ @@
+     public function edit(Spending $spending)
+     {
+         activity()->causedBy(auth()->user())->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id])->log('Accessed page to edit a spending.');
+-        return Inertia::render('Vehicle/EditSpending', ['spending' => $spending]);
++        return Inertia::render('Vehicle/EditSpending', []);
+     }
+     public function editSpending(CreateSpendingRequest $request, Spending $spending): \Illuminate\Http\RedirectResponse
+     {
+
+
+114) /app/app/Http/Controllers/SpendingController.php:70    [M] DecrementInteger
+
+@@ @@
+         $user = auth()->user();
+         $vehicle = $user->vehicles()->where('vehicles.id', $spending->vehicle_id)->wherePivot('status', 'active')->first();
+         if ($spending->user_id !== $user->id || !$vehicle) {
+-            abort(403, 'Spending not found or does not belong to the authenticated user.');
++            abort(402, 'Spending not found or does not belong to the authenticated user.');
+         }
+         $validated = $request->validated();
+         $spending->update($validated);
+
+
+115) /app/app/Http/Controllers/SpendingController.php:70    [M] IncrementInteger
+
+@@ @@
+         $user = auth()->user();
+         $vehicle = $user->vehicles()->where('vehicles.id', $spending->vehicle_id)->wherePivot('status', 'active')->first();
+         if ($spending->user_id !== $user->id || !$vehicle) {
+-            abort(403, 'Spending not found or does not belong to the authenticated user.');
++            abort(404, 'Spending not found or does not belong to the authenticated user.');
+         }
+         $validated = $request->validated();
+         $spending->update($validated);
+
+
+116) /app/app/Http/Controllers/SpendingController.php:70    [M] FunctionCallRemoval
+
+@@ @@
+         $user = auth()->user();
+         $vehicle = $user->vehicles()->where('vehicles.id', $spending->vehicle_id)->wherePivot('status', 'active')->first();
+         if ($spending->user_id !== $user->id || !$vehicle) {
+-            abort(403, 'Spending not found or does not belong to the authenticated user.');
++            
+         }
+         $validated = $request->validated();
+         $spending->update($validated);
+
+
+117) /app/app/Http/Controllers/SpendingController.php:94    [M] DecrementInteger
+
+@@ @@
+         $user = auth()->user();
+         $vehicle = $user->vehicles()->where('vehicles.id', $spending->vehicle_id)->wherePivot('status', 'active')->first();
+         if ($spending->user_id !== $user->id || !$vehicle) {
+-            abort(403, 'Spending not found or does not belong to the authenticated user.');
++            abort(402, 'Spending not found or does not belong to the authenticated user.');
+         }
+         $spending->delete();
+         activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id])->log('Deleted a spending.');
+
+
+118) /app/app/Http/Controllers/SpendingController.php:94    [M] IncrementInteger
+
+@@ @@
+         $user = auth()->user();
+         $vehicle = $user->vehicles()->where('vehicles.id', $spending->vehicle_id)->wherePivot('status', 'active')->first();
+         if ($spending->user_id !== $user->id || !$vehicle) {
+-            abort(403, 'Spending not found or does not belong to the authenticated user.');
++            abort(404, 'Spending not found or does not belong to the authenticated user.');
+         }
+         $spending->delete();
+         activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id])->log('Deleted a spending.');
+
+
+119) /app/app/Http/Controllers/SpendingController.php:94    [M] FunctionCallRemoval
+
+@@ @@
+         $user = auth()->user();
+         $vehicle = $user->vehicles()->where('vehicles.id', $spending->vehicle_id)->wherePivot('status', 'active')->first();
+         if ($spending->user_id !== $user->id || !$vehicle) {
+-            abort(403, 'Spending not found or does not belong to the authenticated user.');
++            
+         }
+         $spending->delete();
+         activity()->causedBy($user)->withProperties(['spending_id' => $spending->id, 'vehicle_id' => $spending->vehicle_id])->log('Deleted a spending.');
+
+
+120) /app/app/Http/Controllers/VehicleController.php:36    [M] PublicVisibility
+
+@@ @@
+         activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('Created a new vehicle.');
+         return redirect()->to("/dashboard");
+     }
+-    public function editVehicle(EditVehicleRequest $request, $id): \Illuminate\Http\RedirectResponse
++    protected function editVehicle(EditVehicleRequest $request, $id): \Illuminate\Http\RedirectResponse
+     {
+         $vehicle = Vehicle::where('id', $id)->where('owner_id', auth()->id())->first();
+         if (!$vehicle) {
+
+
+121) /app/app/Http/Controllers/VehicleController.php:42    [M] LogicalNot
+
+@@ @@
+     public function editVehicle(EditVehicleRequest $request, $id): \Illuminate\Http\RedirectResponse
+     {
+         $vehicle = Vehicle::where('id', $id)->where('owner_id', auth()->id())->first();
+-        if (!$vehicle) {
++        if ($vehicle) {
+             abort(404, 'Vehicle not found or unauthorized');
+         }
+         $validated = $request->validated();
+
+
+122) /app/app/Http/Controllers/VehicleController.php:43    [M] DecrementInteger
+
+@@ @@
+     {
+         $vehicle = Vehicle::where('id', $id)->where('owner_id', auth()->id())->first();
+         if (!$vehicle) {
+-            abort(404, 'Vehicle not found or unauthorized');
++            abort(403, 'Vehicle not found or unauthorized');
+         }
+         $validated = $request->validated();
+         $vehicle->update($validated);
+
+
+123) /app/app/Http/Controllers/VehicleController.php:43    [M] IncrementInteger
+
+@@ @@
+     {
+         $vehicle = Vehicle::where('id', $id)->where('owner_id', auth()->id())->first();
+         if (!$vehicle) {
+-            abort(404, 'Vehicle not found or unauthorized');
++            abort(405, 'Vehicle not found or unauthorized');
+         }
+         $validated = $request->validated();
+         $vehicle->update($validated);
+
+
+124) /app/app/Http/Controllers/VehicleController.php:43    [M] FunctionCallRemoval
+
+@@ @@
+     {
+         $vehicle = Vehicle::where('id', $id)->where('owner_id', auth()->id())->first();
+         if (!$vehicle) {
+-            abort(404, 'Vehicle not found or unauthorized');
++            
+         }
+         $validated = $request->validated();
+         $vehicle->update($validated);
+
+
+125) /app/app/Http/Controllers/VehicleController.php:48    [M] MethodCallRemoval
+
+@@ @@
+             abort(404, 'Vehicle not found or unauthorized');
+         }
+         $validated = $request->validated();
+-        $vehicle->update($validated);
++        
+         return redirect()->back()->with('status', 'Vehicle edited successfully.');
+     }
+     public function deleteVehicle($id): \Illuminate\Http\RedirectResponse
+
+
+126) /app/app/Http/Controllers/VehicleController.php:77    [M] DecrementInteger
+
+@@ @@
+         $owner_id = auth()->id();
+         $vehicle = Vehicle::where('id', $vehicle_id)->where('owner_id', $owner_id)->first();
+         if (!$vehicle) {
+-            abort(404, 'Vehicle not found.');
++            abort(403, 'Vehicle not found.');
+         }
+         $user = $vehicle->users->where('id', $user_id)->first();
+         if (!$user) {
+
+
+127) /app/app/Http/Controllers/VehicleController.php:77    [M] IncrementInteger
+
+@@ @@
+         $owner_id = auth()->id();
+         $vehicle = Vehicle::where('id', $vehicle_id)->where('owner_id', $owner_id)->first();
+         if (!$vehicle) {
+-            abort(404, 'Vehicle not found.');
++            abort(405, 'Vehicle not found.');
+         }
+         $user = $vehicle->users->where('id', $user_id)->first();
+         if (!$user) {
+
+
+128) /app/app/Http/Controllers/VehicleController.php:77    [M] FunctionCallRemoval
+
+@@ @@
+         $owner_id = auth()->id();
+         $vehicle = Vehicle::where('id', $vehicle_id)->where('owner_id', $owner_id)->first();
+         if (!$vehicle) {
+-            abort(404, 'Vehicle not found.');
++            
+         }
+         $user = $vehicle->users->where('id', $user_id)->first();
+         if (!$user) {
+
+
+129) /app/app/Http/Controllers/VehicleController.php:82    [M] DecrementInteger
+
+@@ @@
+         }
+         $user = $vehicle->users->where('id', $user_id)->first();
+         if (!$user) {
+-            abort(404, 'User not found.');
++            abort(403, 'User not found.');
+         }
+         if ($user_id == $owner_id) {
+             abort(404, 'Cannot delete owner of vehicle.');
+
+
+130) /app/app/Http/Controllers/VehicleController.php:82    [M] IncrementInteger
+
+@@ @@
+         }
+         $user = $vehicle->users->where('id', $user_id)->first();
+         if (!$user) {
+-            abort(404, 'User not found.');
++            abort(405, 'User not found.');
+         }
+         if ($user_id == $owner_id) {
+             abort(404, 'Cannot delete owner of vehicle.');
+
+
+131) /app/app/Http/Controllers/VehicleController.php:82    [M] FunctionCallRemoval
+
+@@ @@
+         }
+         $user = $vehicle->users->where('id', $user_id)->first();
+         if (!$user) {
+-            abort(404, 'User not found.');
++            
+         }
+         if ($user_id == $owner_id) {
+             abort(404, 'Cannot delete owner of vehicle.');
+
+
+132) /app/app/Http/Controllers/VehicleController.php:85    [M] DecrementInteger
+
+@@ @@
+             abort(404, 'User not found.');
+         }
+         if ($user_id == $owner_id) {
+-            abort(404, 'Cannot delete owner of vehicle.');
++            abort(403, 'Cannot delete owner of vehicle.');
+         }
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
+         activity()->causedBy(auth()->user())->withProperties(['vehicle_id' => $vehicle->id, 'user_id' => $user_id])->log('Removed user from vehicle.');
+
+
+133) /app/app/Http/Controllers/VehicleController.php:85    [M] IncrementInteger
+
+@@ @@
+             abort(404, 'User not found.');
+         }
+         if ($user_id == $owner_id) {
+-            abort(404, 'Cannot delete owner of vehicle.');
++            abort(405, 'Cannot delete owner of vehicle.');
+         }
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
+         activity()->causedBy(auth()->user())->withProperties(['vehicle_id' => $vehicle->id, 'user_id' => $user_id])->log('Removed user from vehicle.');
+
+
+134) /app/app/Http/Controllers/VehicleController.php:85    [M] FunctionCallRemoval
+
+@@ @@
+             abort(404, 'User not found.');
+         }
+         if ($user_id == $owner_id) {
+-            abort(404, 'Cannot delete owner of vehicle.');
++            
+         }
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
+         activity()->causedBy(auth()->user())->withProperties(['vehicle_id' => $vehicle->id, 'user_id' => $user_id])->log('Removed user from vehicle.');
+
+
+135) /app/app/Http/Controllers/VehicleController.php:100    [M] PublicVisibility
+
+@@ @@
+         activity()->causedBy(auth()->user())->withProperties(['vehicle_id' => $vehicle->id, 'user_id' => $user_id])->log('Removed user from vehicle.');
+         return redirect()->back()->with('status', 'User deleted successfully.');
+     }
+-    public function leaveVehicle(Vehicle $vehicle)
++    protected function leaveVehicle(Vehicle $vehicle)
+     {
+         $user = auth()->user();
+         if (!$vehicle->users()->where('user_id', $user->id)->exists()) {
+
+
+136) /app/app/Http/Controllers/VehicleController.php:103    [M] LogicalNot
+
+@@ @@
+     public function leaveVehicle(Vehicle $vehicle)
+     {
+         $user = auth()->user();
+-        if (!$vehicle->users()->where('user_id', $user->id)->exists()) {
++        if ($vehicle->users()->where('user_id', $user->id)->exists()) {
+             abort(403);
+         }
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
+
+
+137) /app/app/Http/Controllers/VehicleController.php:104    [M] DecrementInteger
+
+@@ @@
+     {
+         $user = auth()->user();
+         if (!$vehicle->users()->where('user_id', $user->id)->exists()) {
+-            abort(403);
++            abort(402);
+         }
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
+         activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('User left the vehicle.');
+
+
+138) /app/app/Http/Controllers/VehicleController.php:104    [M] IncrementInteger
+
+@@ @@
+     {
+         $user = auth()->user();
+         if (!$vehicle->users()->where('user_id', $user->id)->exists()) {
+-            abort(403);
++            abort(404);
+         }
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
+         activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('User left the vehicle.');
+
+
+139) /app/app/Http/Controllers/VehicleController.php:104    [M] FunctionCallRemoval
+
+@@ @@
+     {
+         $user = auth()->user();
+         if (!$vehicle->users()->where('user_id', $user->id)->exists()) {
+-            abort(403);
++            
+         }
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
+         activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('User left the vehicle.');
+
+
+140) /app/app/Http/Controllers/VehicleController.php:107    [M] ArrayItemRemoval
+
+@@ @@
+         if (!$vehicle->users()->where('user_id', $user->id)->exists()) {
+             abort(403);
+         }
+-        $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
++        $vehicle->users()->syncWithoutDetaching([]);
+         activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('User left the vehicle.');
+         return redirect()->back()->with('status', 'User deleted successfully.');
+     }
+
+
+141) /app/app/Http/Controllers/VehicleController.php:107    [M] MethodCallRemoval
+
+@@ @@
+         if (!$vehicle->users()->where('user_id', $user->id)->exists()) {
+             abort(403);
+         }
+-        $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
++        
+         activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('User left the vehicle.');
+         return redirect()->back()->with('status', 'User deleted successfully.');
+     }
+
+
+142) /app/app/Http/Controllers/VehicleController.php:108    [M] ArrayItemRemoval
+
+@@ @@
+         if (!$vehicle->users()->where('user_id', $user->id)->exists()) {
+             abort(403);
+         }
+-        $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
++        $vehicle->users()->syncWithoutDetaching([$user->id => ['status' => 'inactive']]);
+         activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('User left the vehicle.');
+         return redirect()->back()->with('status', 'User deleted successfully.');
+     }
+
+
+143) /app/app/Http/Controllers/VehicleController.php:108    [M] ArrayItem
+
+@@ @@
+         if (!$vehicle->users()->where('user_id', $user->id)->exists()) {
+             abort(403);
+         }
+-        $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
++        $vehicle->users()->syncWithoutDetaching([$user->id > ['role' => 'shared', 'status' => 'inactive']]);
+         activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('User left the vehicle.');
+         return redirect()->back()->with('status', 'User deleted successfully.');
+     }
+
+
+144) /app/app/Http/Controllers/VehicleController.php:113    [M] MethodCallRemoval
+
+@@ @@
+             abort(403);
+         }
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
+-        activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('User left the vehicle.');
++        
+         return redirect()->back()->with('status', 'User deleted successfully.');
+     }
+     public function create(User $user)
+
+
+145) /app/app/Http/Controllers/VehicleController.php:115    [M] ArrayItem
+
+@@ @@
+             abort(403);
+         }
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
+-        activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('User left the vehicle.');
++        activity()->causedBy($user)->withProperties(['vehicle_id' > $vehicle->id])->log('User left the vehicle.');
+         return redirect()->back()->with('status', 'User deleted successfully.');
+     }
+     public function create(User $user)
+
+
+146) /app/app/Http/Controllers/VehicleController.php:115    [M] ArrayItemRemoval
+
+@@ @@
+             abort(403);
+         }
+         $vehicle->users()->syncWithoutDetaching([$user->id => ['role' => 'shared', 'status' => 'inactive']]);
+-        activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('User left the vehicle.');
++        activity()->causedBy($user)->withProperties([])->log('User left the vehicle.');
+         return redirect()->back()->with('status', 'User deleted successfully.');
+     }
+     public function create(User $user)
+
+
+147) /app/app/Http/Controllers/VehicleController.php:120    [M] PublicVisibility
+
+@@ @@
+         activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('User left the vehicle.');
+         return redirect()->back()->with('status', 'User deleted successfully.');
+     }
+-    public function create(User $user)
++    protected function create(User $user)
+     {
+         return Inertia::render('Vehicle/AddVehicle', ['userid' => $user->id]);
+     }
+
+
+148) /app/app/Http/Controllers/VehicleController.php:121    [M] ArrayItem
+
+@@ @@
+     }
+     public function create(User $user)
+     {
+-        return Inertia::render('Vehicle/AddVehicle', ['userid' => $user->id]);
++        return Inertia::render('Vehicle/AddVehicle', ['userid' > $user->id]);
+     }
+     public function edit(Request $request, Vehicle $vehicle): Response
+     {
+
+
+149) /app/app/Http/Controllers/VehicleController.php:121    [M] ArrayItemRemoval
+
+@@ @@
+     }
+     public function create(User $user)
+     {
+-        return Inertia::render('Vehicle/AddVehicle', ['userid' => $user->id]);
++        return Inertia::render('Vehicle/AddVehicle', []);
+     }
+     public function edit(Request $request, Vehicle $vehicle): Response
+     {
+
+
+150) /app/app/Http/Controllers/VehicleController.php:131    [M] MethodCallRemoval
+
+@@ @@
+             abort(403);
+         }
+         $userList = $vehicle->users()->wherePivot('status', 'active')->get();
+-        activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('Accessed vehicle edit page.');
++        
+         return Inertia::render('Profile/EditVehicle', ['vehicle' => $vehicle, 'user' => $user, 'userList' => $userList]);
+     }
+ }
+
+
+151) /app/app/Http/Controllers/VehicleController.php:133    [M] ArrayItem
+
+@@ @@
+             abort(403);
+         }
+         $userList = $vehicle->users()->wherePivot('status', 'active')->get();
+-        activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('Accessed vehicle edit page.');
++        activity()->causedBy($user)->withProperties(['vehicle_id' > $vehicle->id])->log('Accessed vehicle edit page.');
+         return Inertia::render('Profile/EditVehicle', ['vehicle' => $vehicle, 'user' => $user, 'userList' => $userList]);
+     }
+ }
+
+
+152) /app/app/Http/Controllers/VehicleController.php:133    [M] ArrayItemRemoval
+
+@@ @@
+             abort(403);
+         }
+         $userList = $vehicle->users()->wherePivot('status', 'active')->get();
+-        activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('Accessed vehicle edit page.');
++        activity()->causedBy($user)->withProperties([])->log('Accessed vehicle edit page.');
+         return Inertia::render('Profile/EditVehicle', ['vehicle' => $vehicle, 'user' => $user, 'userList' => $userList]);
+     }
+ }
+
+
+153) /app/app/Http/Controllers/VehicleController.php:136    [M] ArrayItemRemoval
+
+@@ @@
+         }
+         $userList = $vehicle->users()->wherePivot('status', 'active')->get();
+         activity()->causedBy($user)->withProperties(['vehicle_id' => $vehicle->id])->log('Accessed vehicle edit page.');
+-        return Inertia::render('Profile/EditVehicle', ['vehicle' => $vehicle, 'user' => $user, 'userList' => $userList]);
++        return Inertia::render('Profile/EditVehicle', ['user' => $user, 'userList' => $userList]);
+     }
+ }
+
+
+154) /app/app/Http/Requests/Invite/StoreInviteRequest.php:35    [M] Throw_
+
+@@ @@
+     }
+     protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator): void
+     {
+-        throw new HttpResponseException(response()->json(['errors' => $validator->errors()], 422));
++        new HttpResponseException(response()->json(['errors' => $validator->errors()], 422));
+     }
+ }
+
+
+155) /app/app/Http/Requests/Invite/StoreInviteRequest.php:36    [M] ArrayItemRemoval
+
+@@ @@
+     }
+     protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator): void
+     {
+-        throw new HttpResponseException(response()->json(['errors' => $validator->errors()], 422));
++        throw new HttpResponseException(response()->json([], 422));
+     }
+ }
+
+
+156) /app/app/Http/Requests/Invite/StoreInviteRequest.php:37    [M] ArrayItem
+
+@@ @@
+     }
+     protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator): void
+     {
+-        throw new HttpResponseException(response()->json(['errors' => $validator->errors()], 422));
++        throw new HttpResponseException(response()->json(['errors' > $validator->errors()], 422));
+     }
+ }
+
+
+157) /app/app/Http/Requests/Invite/StoreInviteRequest.php:38    [M] DecrementInteger
+
+@@ @@
+     }
+     protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator): void
+     {
+-        throw new HttpResponseException(response()->json(['errors' => $validator->errors()], 422));
++        throw new HttpResponseException(response()->json(['errors' => $validator->errors()], 421));
+     }
+ }
+
+
+158) /app/app/Http/Requests/Invite/StoreInviteRequest.php:38    [M] IncrementInteger
+
+@@ @@
+     }
+     protected function failedValidation(Validator|\Illuminate\Contracts\Validation\Validator $validator): void
+     {
+-        throw new HttpResponseException(response()->json(['errors' => $validator->errors()], 422));
++        throw new HttpResponseException(response()->json(['errors' => $validator->errors()], 423));
+     }
+ }
+
+
+159) /app/app/Http/Requests/Vehicle/EditVehicleRequest.php:15    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Determine if the user is authorized to make this request.
+      */
+-    public function authorize(): bool
++    protected function authorize(): bool
+     {
+         return true;
+     }
+
+
+160) /app/app/Http/Requests/Vehicle/EditVehicleRequest.php:17    [M] TrueValue
+
+@@ @@
+      */
+     public function authorize(): bool
+     {
+-        return true;
++        return false;
+     }
+     /**
+      * Get the validation rules that apply to the request.
+
+
+161) /app/app/Mail/Invite.php:43    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Get the message content definition.
+      */
+-    public function content(): Content
++    protected function content(): Content
+     {
+         return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
+     }
+
+
+162) /app/app/Mail/Invite.php:47    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function content(): Content
+     {
+-        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
++        return new Content(view: 'mail.invite', with: ['user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
+     }
+     /**
+      * Get the attachments for the message.
+
+
+163) /app/app/Mail/Invite.php:48    [M] ArrayItem
+
+@@ @@
+      */
+     public function content(): Content
+     {
+-        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
++        return new Content(view: 'mail.invite', with: ['invitor' > $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
+     }
+     /**
+      * Get the attachments for the message.
+
+
+164) /app/app/Mail/Invite.php:49    [M] ArrayItem
+
+@@ @@
+      */
+     public function content(): Content
+     {
+-        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
++        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' > $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
+     }
+     /**
+      * Get the attachments for the message.
+
+
+165) /app/app/Mail/Invite.php:50    [M] ArrayItem
+
+@@ @@
+      */
+     public function content(): Content
+     {
+-        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
++        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' > $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
+     }
+     /**
+      * Get the attachments for the message.
+
+
+166) /app/app/Mail/Invite.php:51    [M] ArrayItem
+
+@@ @@
+      */
+     public function content(): Content
+     {
+-        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
++        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' > $this->status, 'token' => $this->token]);
+     }
+     /**
+      * Get the attachments for the message.
+
+
+167) /app/app/Mail/Invite.php:52    [M] ArrayItem
+
+@@ @@
+      */
+     public function content(): Content
+     {
+-        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
++        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' > $this->token]);
+     }
+     /**
+      * Get the attachments for the message.
+
+
+168) /app/app/Mail/Invite.php:62    [M] PublicVisibility
+
+@@ @@
+      *
+      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+      */
+-    public function attachments(): array
++    protected function attachments(): array
+     {
+         return [];
+     }
+ }
+
+
+169) /app/app/Mail/InviteIfNoAccount.php:30    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Get the message envelope.
+      */
+-    public function envelope(): Envelope
++    protected function envelope(): Envelope
+     {
+         return new Envelope(subject: 'Invite');
+     }
+
+
+170) /app/app/Mail/InviteIfNoAccount.php:40    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Get the message content definition.
+      */
+-    public function content(): Content
++    protected function content(): Content
+     {
+         return new Content(view: 'mail.inviteIfNoAccount', with: ['invitor' => $this->invitor, 'vehicle' => $this->vehicle]);
+     }
+
+
+171) /app/app/Mail/InviteIfNoAccount.php:44    [M] ArrayItemRemoval
+
+@@ @@
+      */
+     public function content(): Content
+     {
+-        return new Content(view: 'mail.inviteIfNoAccount', with: ['invitor' => $this->invitor, 'vehicle' => $this->vehicle]);
++        return new Content(view: 'mail.inviteIfNoAccount', with: ['vehicle' => $this->vehicle]);
+     }
+     /**
+      * Get the attachments for the message.
+
+
+172) /app/app/Mail/InviteIfNoAccount.php:45    [M] ArrayItem
+
+@@ @@
+      */
+     public function content(): Content
+     {
+-        return new Content(view: 'mail.inviteIfNoAccount', with: ['invitor' => $this->invitor, 'vehicle' => $this->vehicle]);
++        return new Content(view: 'mail.inviteIfNoAccount', with: ['invitor' > $this->invitor, 'vehicle' => $this->vehicle]);
+     }
+     /**
+      * Get the attachments for the message.
+
+
+173) /app/app/Mail/InviteIfNoAccount.php:46    [M] ArrayItem
+
+@@ @@
+      */
+     public function content(): Content
+     {
+-        return new Content(view: 'mail.inviteIfNoAccount', with: ['invitor' => $this->invitor, 'vehicle' => $this->vehicle]);
++        return new Content(view: 'mail.inviteIfNoAccount', with: ['invitor' => $this->invitor, 'vehicle' > $this->vehicle]);
+     }
+     /**
+      * Get the attachments for the message.
+
+
+174) /app/app/Mail/InviteIfNoAccount.php:56    [M] PublicVisibility
+
+@@ @@
+      *
+      * @return array<int, \Illuminate\Mail\Mailables\Attachment>
+      */
+-    public function attachments(): array
++    protected function attachments(): array
+     {
+         return [];
+     }
+ }
+
+
+175) /app/app/Models/Invite.php:24    [M] PublicVisibility
+
+@@ @@
+     /**
+      * Get the user who was invited.
+      */
+-    public function user()
++    protected function user()
+     {
+         return $this->belongsTo(User::class, 'invitee_id');
+     }
+
+
+176) /app/app/Models/Spending.php:28    [M] PublicVisibility
+
+@@ @@
+     protected $fillable = ['price', 'type', 'date', 'place', 'description', 'user_id', 'vehicle_id'];
+     protected $casts = ['price' => 'float', 'date' => 'datetime'];
+     // Relacja z modelem User
+-    public function user()
++    protected function user()
+     {
+         return $this->belongsTo(User::class);
+     }
+
+
+177) /app/app/Models/Spending.php:34    [M] PublicVisibility
+
+@@ @@
+         return $this->belongsTo(User::class);
+     }
+     // Relacja z modelem Vehicle
+-    public function vehicle()
++    protected function vehicle()
+     {
+         return $this->belongsTo(Vehicle::class);
+     }
+ }
+
+
+178) /app/app/Models/User.php:65    [M] PublicVisibility
+
+@@ @@
+     {
+         return $this->belongsToMany(Vehicle::class, 'user_vehicle')->withPivot('role', 'status')->withTimestamps();
+     }
+-    public function spendings(): HasMany
++    protected function spendings(): HasMany
+     {
+         return $this->hasMany(Spending::class);
+     }
+
+
+179) /app/app/Models/User.php:70    [M] PublicVisibility
+
+@@ @@
+     {
+         return $this->hasMany(Spending::class);
+     }
+-    public function vehicle(): HasMany
++    protected function vehicle(): HasMany
+     {
+         return $this->hasMany(Vehicle::class, 'owner_id');
+     }
