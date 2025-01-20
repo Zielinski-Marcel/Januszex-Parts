@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Spatie\Activitylog\Models\Activity;
 
 class DashboardController extends Controller
 {
@@ -18,6 +19,17 @@ class DashboardController extends Controller
         return Inertia::render(
             'Admin/Dashboard',
             ["admin" => $admin, "users" => $users]
+        );
+    }
+
+    public function logs(){
+        $logs = Activity::all();
+        activity()
+            ->causedBy(auth()->user())
+            ->log('Accessed the admin dashboard logs.');
+        return Inertia::render(
+            'Admin/Logs',
+            ["logs" => $logs]
         );
     }
 }
