@@ -71,7 +71,7 @@ class UserControllerTest extends TestCase
         $response->assertRedirect('/admin');
 
         // Sprawdzamy, czy w wiadomości sesji znajduje się odpowiedni komunikat
-        $response->assertSessionHas('success', 'User updated successfully.');
+        $response->assertSessionHas('status', 'User updated successfully.');
 
         // Sprawdzamy, czy została zapisana aktywność w logach
         $this->assertDatabaseHas('activity_log', [
@@ -146,7 +146,7 @@ class UserControllerTest extends TestCase
         $response->assertRedirect('/admin');
 
         // Sprawdzamy, czy w wiadomości sesji znajduje się odpowiedni komunikat
-        $response->assertSessionHas('success', 'User deleted successfully.');
+        $response->assertSessionHas('status', 'User deleted successfully.');
 
         // Sprawdzamy, czy została zapisana aktywność w logach
         $this->assertDatabaseHas('activity_log', [

@@ -43,7 +43,7 @@ class CreatePaymentTest extends DuskTestCase
             $this->browse(function (Browser $browser) use ($user, $vehicle, $screenshotsDir) {
                 // Zaloguj się
                 $browser->visit('http://web-CCH/login')
-                    ->pause(3000)
+                    ->pause(6000)
                     ->screenshot($screenshotsDir . '/login_page')
                     ->assertPathIs('/login')
                     ->type('email', 'test@example.com')
@@ -53,7 +53,7 @@ class CreatePaymentTest extends DuskTestCase
                     ->assertPathIs('/login')
                     ->waitFor('.inline-flex.items-center', 10)
                     ->click('.inline-flex.items-center')
-                    ->pause(2000)
+                    ->pause(3000)
                     ->screenshot($screenshotsDir . '/dashboard_page')
                     ->assertPathIs('/dashboard');
 
@@ -90,13 +90,13 @@ class CreatePaymentTest extends DuskTestCase
                 $browser->visit('/dashboard')
                     ->waitForText($vehicle->brand . ' ' . $vehicle->model, 10) // Czekamy na tekst pojazdu
                     ->clickLink($vehicle->brand . ' ' . $vehicle->model) // Klikamy na link pojazdu
-                    ->pause(2000)
+                    ->pause(3000)
                     ->assertPathIs('/dashboard/' . ($vehicle->id+1)) // Używamy dynamicznego ID pojazdu
                     ->screenshot($screenshotsDir . '/vehicle_details');
 
                 // Kliknij w przycisk "Add new payment"
                 $browser->click('button.w-full.bg-primary.text-white.py-2.px-6.rounded-lg.flex.items-center.justify-center')
-                    ->pause(2000)
+                    ->pause(3000)
                     ->screenshot($screenshotsDir . '/create_payment_page')
                     ->assertPathIs('/create/spending/' . ($vehicle->id+1));
                 // Wypełnij formularz płatności ręcznie
@@ -113,14 +113,14 @@ class CreatePaymentTest extends DuskTestCase
                     ->assertPathIs('/create/spending/' . ($vehicle->id+1));
                 // Kliknij przycisk "Add payment"
                 $browser->click('button[type="submit"]')
-                    ->pause(2000)
+                    ->pause(3000)
                     ->screenshot($screenshotsDir . '/payment_added_page')
                     ->assertPathIs('/dashboard/' . ($vehicle->id+1));
             });
             // Sprawdź, czy nowa płatność została dodana
             $this->browse(function (Browser $browser) use ($vehicle, $screenshotsDir) {
                 $browser->visit('/dashboard/' . ($vehicle->id+1))
-                    ->pause(2000)
+                    ->pause(3000)
                     ->screenshot($screenshotsDir . '/vehicle_payment_details');
             });
         }
