@@ -3,8 +3,9 @@ import { Link } from "@inertiajs/react";
 
 const Sidebar = ({ cars, selectedCarId}) => {
     const [showingSidebar, setShowingSidebar] = useState(false);
-
+console.log(selectedCarId)
     return (
+
         <div className={showingSidebar ? "border-r border-gray-200 self-stretch" : "sm:border-r sm:border-gray-200 self-stretch"}>
             <div className="sm:hidden pt-5">
                 <button
@@ -44,23 +45,29 @@ const Sidebar = ({ cars, selectedCarId}) => {
                     <h1 className="text-2xl font-bold text-[#2ECC71]">List of your vehicles:</h1>
                 </div>
                 <div className="space-y-2">
+                    <Link href={`/dashboard`}>
+                        <button
+                            className={`w-full flex items-center px-5  py-3 rounded-lg text-left bg-gray-50 border-2 border-primary ${
+                                selectedCarId === undefined ? 'bg-gray-100 border-3 border-secondary' : ''
+                            }`}
+                        >
+                            All Payments
+                        </button>
+                    </Link>
                     {cars.map((car) => (
+                        <div className="space-y-2">
                         <Link key={car.id} href={`/dashboard/${car.id}`}>
                             <button
-                                className={`w-full flex items-center p-3 rounded-lg text-left ${
-                                    selectedCarId === car.id ? 'bg-gray-100 shadow-sm' : ''
+                                className={`w-full flex items-center px-5  py-3 rounded-lg text-left bg-gray-50 border-2 border-primary ${
+                                    selectedCarId === car.id ? 'bg-gray-100 border-3 border-secondary' : ''
                                 }`}
                             >
-                                <img
-                                    src="/Car.png?height=24&width=24"
-                                    alt=""
-                                    className="w-6 h-6 mr-2"
-                                />
                                 {car.brand} {car.model}
                             </button>
                         </Link>
+                        </div>
                     ))}
-                    <Link href={`/create/vehicle`} className="w-full flex items-center p-3 text-gray-500 rounded-lg">
+                    <Link href={`/create/vehicle`} className="w-full flex items-center pt-2 pl-1 text-gray-500 rounded-lg">
                         <div className="w-6 h-6 mr-2 flex items-center justify-center bg-[#2ECC71] text-white rounded-full text-sm">
                             +
                         </div>

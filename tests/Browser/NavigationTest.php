@@ -19,10 +19,6 @@ class NavigationTest extends DuskTestCase
         // Katalog na zrzuty ekranu
         $screenshotsDir = base_path('tests/Browser/screenshots/NavigationTestScreenshot');
 
-        // Upewnij się, że katalog istnieje
-        if (!File::exists($screenshotsDir)) {
-            File::makeDirectory($screenshotsDir, 0755, true);
-        }
 
         $this->browse(function (Browser $browser) use ($screenshotsDir) {
             $browser->visit('http://web-CCH/login')

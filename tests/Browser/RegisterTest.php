@@ -18,10 +18,7 @@ class RegisterTest extends DuskTestCase
         // Katalog na zrzuty ekranu
         $screenshotsDir = base_path('tests/Browser/screenshots/RegisterTestScreenShots');
 
-        // Upewnij się, że katalog istnieje
-        if (!File::exists($screenshotsDir)) {
-            File::makeDirectory($screenshotsDir, 0755, true);
-        }
+
         $this->artisan('migrate:refresh');
         // Wykonaj test rejestracji
         $this->browse(function (Browser $browser) use ($screenshotsDir) {

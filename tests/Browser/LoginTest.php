@@ -40,10 +40,6 @@ class LoginTest extends DuskTestCase
         // Katalog na zrzuty ekranu
         $screenshotsDir = base_path('tests/Browser/screenshots/LoginTestScreenShots');
 
-        // Upewnij się, że katalog istnieje
-        if (!File::exists($screenshotsDir)) {
-            File::makeDirectory($screenshotsDir, 0755, true);
-        }
 
         // Utwórz użytkownika testowego
         $this->artisan('migrate:refresh');
