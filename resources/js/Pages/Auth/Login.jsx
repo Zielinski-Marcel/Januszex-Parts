@@ -84,6 +84,7 @@ export default function Login({ status, canResetPassword }) {
 
                         <button
                             type="button"
+                            onClick={() => window.location.href = route('auth.facebook')}
                             className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors duration-200"
                         >
                             Sign in with Facebook

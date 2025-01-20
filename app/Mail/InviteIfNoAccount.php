@@ -40,7 +40,7 @@ class InviteIfNoAccount extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.inviteIfNoAccount',
+            view: 'mail.inviteIfNoAccount',
             with:[
                 'invitor'=>$this->invitor,
                 'vehicle' => $this->vehicle,

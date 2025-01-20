@@ -9,13 +9,13 @@ use Spatie\Activitylog\Models\Activity;
 
 class UserController
 {
-    public function userLogs($user)
+    public function userLogs(User $user)
     {
         $logs = Activity::where('causer_id', $user->id)
             ->orderBy('created_at', 'desc')
             ->get();
         return Inertia::render(
-            'Admin/Logs/UserLogs',
+            'Admin/Logs',
             ["logs" => $logs]
         );
     }
