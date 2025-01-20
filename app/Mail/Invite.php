@@ -43,7 +43,7 @@ class Invite extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'mail.invite',
+            view: 'mail.invite',
             with:[
                 'invitor'=>$this->invitor,
                 'user'=>$this->user,

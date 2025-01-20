@@ -52,7 +52,7 @@ const Sidebar = ({ cars, selectedCarId}) => {
                                 }`}
                             >
                                 <img
-                                    src="/placeholder.svg?height=24&width=24"
+                                    src="/Car.png?height=24&width=24"
                                     alt=""
                                     className="w-6 h-6 mr-2"
                                 />

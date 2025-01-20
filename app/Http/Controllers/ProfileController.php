@@ -19,17 +19,7 @@ class ProfileController extends Controller
      */
     public function show($username)
     {
-        $user = User::where('name', $username)->first();
 
-        if (!$user) {
-            return response()->json(['message' => 'Użytkownik nie został znaleziony.'], 404);
-        }
-        activity()
-            ->causedBy(auth()->user())
-            ->performedOn($user)
-            ->withProperties(['action' => 'Viewed profile'])
-            ->log('User viewed a profile');
-        return view('user', ['user' => $user]);
     }
 
 

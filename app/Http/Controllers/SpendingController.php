@@ -11,44 +11,6 @@ use Inertia\Inertia;
 
 class SpendingController extends Controller
 {
-    public function getSpendings($vehicle_id): JsonResponse{
-        $user = auth()->user();
-        $vehicle = $user->vehicles()
-            ->where('vehicles.id', $vehicle_id)
-            ->wherePivot('status', 'active')
-            ->first();
-        if (!$vehicle) {
-            return response()->json(['message' => 'Vehicle not found or does not belong to the authenticated user.'], 404);
-        }
-        activity()
-            ->causedBy($user)
-            ->withProperties(['vehicle_id' => $vehicle->id])
-            ->log('Viewed all spendings for vehicle.');
-        $spendings = $vehicle->spendings;
-        return response()->json(['spending'=>$spendings]);
-    }
-    public function getSpending($id,$vehicle_id): JsonResponse{
-        $user = auth()->user();
-        $vehicle = $user->vehicles()
-            ->where('vehicles.id', $vehicle_id)
-            ->wherePivot('status', 'active')
-            ->first();
-        if (!$vehicle) {
-            return response()->json(['message' => 'Vehicle not found or does not belong to the authenticated user.'], 404);
-        }
-        $spending = $vehicle->spendings->firstWhere('id', $id);
-        if (!$spending) {
-            return response()->json(['message' => 'Spending not found or does not belong to the authenticated user.'], 404);
-        }
-        activity()
-            ->causedBy($user)
-            ->withProperties([
-                'spending_id' => $spending->id,
-                'vehicle_id' => $vehicle->id
-            ])
-            ->log('Viewed a specific spending.');
-        return response()->json(['spending'=>$spending]);
-    }
 
     public function create(Vehicle $vehicle){
         activity()

@@ -7,6 +7,7 @@ import Show from "@/Components/Show.jsx";
 import DangerButton from "@/Components/DangerButton.jsx";
 import MessageBox from "@/Components/MessageBox.jsx";
 import InviteMessageBox from "@/Components/InviteMessageBox.jsx";
+import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
 export default function EditVehicle({users, admin}) {
     const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
@@ -32,12 +33,17 @@ export default function EditVehicle({users, admin}) {
     };
     return (
         <AuthenticatedLayout>
-            <Head title="Manage Vehicle"/>
+            <Head title="Admin Panel - Users"/>
             <div className="py-12">
                 <div className="mx-auto max-w-3xl space-y-6 sm:px-6 lg:px-8">
                     <div className="bg-white p-4 shadow sm:rounded-lg sm:p-8 space-y-4">
                         <div>
                             <div className="flex flex-col gap-4">
+                                <Link href={`/admin/logs`}>
+                                    <PrimaryButton className="bg-primary hover:bg-secondary w-full text-center flex justify-center py-4">
+                                        Check All Logs
+                                    </PrimaryButton>
+                                </Link>
                                 <h2 className="text-lg font-medium text-gray-900">List of Users</h2>
                                 {users.map(user => (
                                     <div className="space-y-4">
@@ -59,6 +65,9 @@ export default function EditVehicle({users, admin}) {
 
                                                     </div>
                                                     <div className="flex gap-4">
+                                                        <Link href={`/admin/logs/${user.id}`}>
+                                                            <button className="text-primary">Logs</button>
+                                                        </Link>
                                                         <Link href={`/admin/users/${user.id}/edit`}>
                                                             <button className="text-blue-500">Edit</button>
                                                         </Link>
