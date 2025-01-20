@@ -67,8 +67,6 @@ export default function Dashboard({vehicles, vehicle, userid, spendings, coowner
     };
 
     const totalSpent = sortedSpendings.reduce((total, spending) => total + spending.price, 0);
-    const uniqueUsers = new Set(sortedSpendings.map(spending => spending.user.name)).size;
-    const timeFrame = sortedSpendings.length > 0 ? `${new Date(sortedSpendings[0].date).toLocaleDateString()} - ${new Date(sortedSpendings[sortedSpendings.length - 1].date).toLocaleDateString()}` : "No spendings";
 
     return (
         <AuthenticatedLayout>
