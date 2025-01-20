@@ -13,6 +13,8 @@ export default function Dashboard({vehicles, vehicle, userid, spendings, coowner
     const [spendingSelectedCoowner, setSpendingSelectedCoowner] = useState(Object.fromEntries(Object.keys(coowners).map(key=>[key, true])));
     const [spendingSelectedType, setSpendingSelectedType] = useState(Object.fromEntries(Object.keys(spendingsTypes).map(key=>[key, true])));
     const [sortBy, setSortBy] = useState("oldDate");
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
 
     const deleteForm = useForm();
 
@@ -39,7 +41,14 @@ export default function Dashboard({vehicles, vehicle, userid, spendings, coowner
         return spendingSelectedType[spending.type];
     }
 
-    const sortedSpendings = useMemo(()=>spendings.filter(filterByCoowner).filter(filterByTypes).toSorted(sort),[spendingSelectedCoowner, spendings, coowners, spendingSelectedType, spendingsTypes, sort]);
+    function filterByDate(spending) {
+        const spendingDate = new Date(spending.date);
+        if (startDate && spendingDate < new Date(startDate)) return false;
+        if (endDate && spendingDate > new Date(endDate)) return false;
+        return true;
+    }
+
+    const sortedSpendings = useMemo(()=>spendings.filter(filterByCoowner).filter(filterByTypes).filter(filterByDate).toSorted(sort),[spendingSelectedCoowner, spendings, coowners, spendingSelectedType, spendingsTypes, startDate, endDate, sort]);
 
     const confirmSpendingDeletion = (id) => () => {
         setConfirmingSpendingDeletion(true);
@@ -57,6 +66,8 @@ export default function Dashboard({vehicles, vehicle, userid, spendings, coowner
         setConfirmingSpendingDeletion(false);
     };
 
+    const totalSpent = sortedSpendings.reduce((total, spending) => total + spending.price, 0);
+
     return (
         <AuthenticatedLayout>
             <Head title="Car Expenses" />
@@ -65,73 +76,95 @@ export default function Dashboard({vehicles, vehicle, userid, spendings, coowner
 
                                 <Sidebar cars={vehicles} selectedCarId={vehicle?.id} userid={userid} />
 
-                                <div className="p-4 w-full">
-                                    <Show when={vehicle!==null}>
-                                        <div className="flex mb-4 gap-2">
-                                            <Link href={`/create/spending/${vehicle?.id}`}>
-                                                <button
-                                                    className="w-full bg-primary text-white py-2 px-6 rounded-lg flex items-center justify-center">
-                                                    <span className="mr-2">+</span>
-                                                    Add new payment
-                                                </button>
-                                            </Link>
-                                            <div className="flex flex-1"/>
-                                            <SortPanel
-                                                sortBy={sortBy}
-                                                setSortBy={setSortBy}
-                                            />
-                                            <FilterPanel
-                                                coowners={Object.keys(coowners)}
-                                                spendingsTypes={Object.keys(spendingsTypes)}
-                                                setSpendingSelectedCoowner={setSpendingSelectedCoowner}
-                                                spendingSelectedCoowner={spendingSelectedCoowner}
-                                                spendingSelectedType={spendingSelectedType}
-                                                setSpendingSelectedType={setSpendingSelectedType}
-                                            />
-                                        </div>
-                                    </Show>
-                                    <div className="space-y-4">
-
-                                        {sortedSpendings.map((expense) => (
-                                            <div key={expense.id}
-                                                 className="bg-white rounded-lg border border-gray-100 min-w-full">
-                                            <div className="p-4">
-                                                <div className="flex items-start justify-between mb-2">
-                                                        <div className="flex-1">
-                                                            <div className="flex items-center gap-4 mb-1">
-                                                                <span className="font-medium">{expense.user.name}&nbsp;({expense.vehicle.brand}&nbsp;{expense.vehicle.model})</span>
-                                                                <span className="text-gray-500">{expense.price} PLN</span>
-                                                            </div>
-                                                            <p className="text-sm leading-relaxed">
-                                                                {expense.type}
-                                                            </p>
-                                                            <p className="text-sm text-gray-500 leading-relaxed">
-                                                                {expense.description}
-                                                            </p>
-
-                                                        </div>
-                                                        <Show when={expense.user_id === userid}>
-                                                            <div className="flex gap-4">
-                                                                <Link href={`/edit/spending/${expense.id}`}>
-                                                                <button className="text-blue-500">Edit</button>
-                                                                </Link>
-                                                                <button className="text-red-500" onClick={confirmSpendingDeletion(expense.id)}>Delete</button>
-                                                            </div>
-                                                        </Show>
-                                                    </div>
-                                                    <div className="flex justify-between items-end">
-                                                        <span className="text-gray-500 text-sm">{new Date(expense.date).toLocaleDateString()}</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
+                        <div className="p-4 w-full">
+                            <Show when={vehicle !== null}>
+                                <div className="flex mb-4 gap-2">
+                                    <Link href={`/create/spending/${vehicle?.id}`}>
+                                        <button
+                                            className="w-full bg-primary text-white py-2 px-6 rounded-lg flex items-center justify-center">
+                                            <span className="mr-2">+</span>
+                                            Add new payment
+                                        </button>
+                                    </Link>
+                                    <div className="flex flex-1"/>
+                                    <SortPanel
+                                        sortBy={sortBy}
+                                        setSortBy={setSortBy}
+                                    />
+                                    <FilterPanel
+                                        coowners={Object.keys(coowners)}
+                                        spendingsTypes={Object.keys(spendingsTypes)}
+                                        setSpendingSelectedCoowner={setSpendingSelectedCoowner}
+                                        spendingSelectedCoowner={spendingSelectedCoowner}
+                                        spendingSelectedType={spendingSelectedType}
+                                        setSpendingSelectedType={setSpendingSelectedType}
+                                        startDate={startDate}
+                                        setStartDate={setStartDate}
+                                        endDate={endDate}
+                                        setEndDate={setEndDate}
+                                    />
                                 </div>
+                            </Show>
+                            <div className="space-y-4">
+                                <div className="bg-gray-100 rounded-t-lg p-4">
+                                    <h2 className="text-lg font-medium">Summary</h2>
+                                    <p>Total Spent: {totalSpent} PLN</p>
+                                    <p>Users: {Array.from(new Set(sortedSpendings.map(spending => spending.user.name))).join(", ")}</p>
+                                    <p>Time Frame: {
+                                        sortedSpendings.length > 0
+                                            ? (() => {
+                                                const dates = sortedSpendings.map(spending => new Date(spending.date));
+                                                const startDate = new Date(Math.min(...dates));
+                                                const endDate = new Date(Math.max(...dates));
+                                                return `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`;
+                                            })()
+                                            : "No spendings"
+                                    }</p>
+                                </div>
+                                {sortedSpendings.map((expense) => (
+                                    <div key={expense.id}
+                                         className="bg-white rounded-lg border border-gray-100 min-w-full">
+                                        <div className="p-4">
+                                            <div className="flex items-start justify-between mb-2">
+                                                <div className="flex-1">
+                                                    <div className="flex items-center gap-4 mb-1">
+                                                        <span
+                                                            className="font-medium">{expense.user.name}&nbsp;({expense.vehicle.brand}&nbsp;{expense.vehicle.model})</span>
+                                                        <span className="text-gray-500">{expense.price} PLN</span>
+                                                    </div>
+                                                    <p className="text-sm leading-relaxed">
+                                                        {expense.type}
+                                                    </p>
+                                                    <p className="text-sm text-gray-500 leading-relaxed">
+                                                        {expense.description}
+                                                    </p>
+                                                </div>
+                                                <Show when={expense.user_id === userid}>
+                                                    <div className="flex gap-4">
+                                                        <Link href={`/edit/spending/${expense.id}`}>
+                                                            <button className="text-blue-500">Edit</button>
+                                                        </Link>
+                                                        <button className="text-red-500"
+                                                                onClick={confirmSpendingDeletion(expense.id)}>Delete
+                                                        </button>
+                                                    </div>
+                                                </Show>
+                                            </div>
+                                            <div className="flex justify-between items-end">
+                                                <span
+                                                    className="text-gray-500 text-sm">{new Date(expense.date).toLocaleDateString()}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
                             </div>
+                        </div>
                     </div>
+                </div>
 
-
-            <MessageBox show={confirmingSpendingDeletion} onAccept={deleteSpending} onClose={closeModal} isProcessing={deleteForm.processing} acceptButtonText="Delete Spending" title={`Are you sure you want to delete your spending?`}>
+            <MessageBox show={confirmingSpendingDeletion} onAccept={deleteSpending} onClose={closeModal}
+                        isProcessing={deleteForm.processing} acceptButtonText="Delete Spending"
+                        title={`Are you sure you want to delete your spending?`}>
                 Once your spending is deleted, all of its resources and
                 data will be permanently deleted.
             </MessageBox>
