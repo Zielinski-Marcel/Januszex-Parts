@@ -55,10 +55,10 @@ export default function EditVehicle({users, admin}) {
                                                             <span className="font-medium">
                                                                 {user.name}
                                                             </span>
-                                                            <span className="text-gray-500">
+                                                        </div>
+                                                        <span className="text-gray-500">
                                                                 {user.email}
                                                             </span>
-                                                        </div>
                                                         <p className="text-sm text-gray-500 leading-relaxed">
                                                             Vehicles: {user.vehicles_count}
                                                         </p>
@@ -66,7 +66,7 @@ export default function EditVehicle({users, admin}) {
                                                     </div>
                                                     <div className="flex gap-4">
                                                         <Link href={`/admin/logs/${user.id}`}>
-                                                            <button className="text-primary">Logs</button>
+                                                        <button className="text-primary">Logs</button>
                                                         </Link>
                                                         <Link href={`/admin/users/${user.id}/edit`}>
                                                             <button className="text-blue-500">Edit</button>
