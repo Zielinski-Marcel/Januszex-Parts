@@ -12,7 +12,7 @@ export default function Dashboard({vehicles, vehicle, userid, spendings, coowner
     const [spendingId, setSpendingId] = useState();
     const [spendingSelectedCoowner, setSpendingSelectedCoowner] = useState(Object.fromEntries(Object.keys(coowners).map(key=>[key, true])));
     const [spendingSelectedType, setSpendingSelectedType] = useState(Object.fromEntries(Object.keys(spendingsTypes).map(key=>[key, true])));
-    const [sortBy, setSortBy] = useState("newDate");
+    const [sortBy, setSortBy] = useState("oldDate");
 
     const deleteForm = useForm();
 

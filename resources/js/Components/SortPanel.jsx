@@ -22,10 +22,10 @@ export default function SortPanel({sortBy, setSortBy}) {
                          className="absolute top-12 right-0 bg-white border-2 p-2 border-primary text-black rounded-md min-h-30 min-w-60 py-4 cursor-default">
                         <h2 className="text-base font-medium text-gray-900 mb-2 cursor-default">Filter Types of Spendings</h2>
                         <select className="cursor-pointer border border-primary" value={sortBy} onChange={event => setSortBy(event.target.value)}>
-                            <option className="cursor-pointer" value="newDate">Sort by the earliest date</option>
                             <option className="cursor-pointer" value="oldDate">Sort by the latest date</option>
-                            <option className="cursor-pointer" value="priceLow">Sort by the lowest price</option>
+                            <option className="cursor-pointer" value="newDate">Sort by the earliest date</option>
                             <option className="cursor-pointer" value="priceHigh">Sort by the highest price</option>
+                            <option className="cursor-pointer" value="priceLow">Sort by the lowest price</option>
                             <option className="cursor-pointer" value="type">Sort by type</option>
                         </select>
                     </div>
