@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use App\Models\User; // Import modelu User
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 use Illuminate\Support\Facades\File;
 
@@ -12,11 +13,7 @@ class LoginTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
-    /**
-     * Tworzy użytkownika w bazie danych testowej.
-     *
-     * @return User
-     */
+    #[Test]
     protected function createTestUser(): User
     {
         // Dodaj flush() lub po prostu uruchom zapisanie do bazy, żeby upewnić się, że migracje zostały zastosowane

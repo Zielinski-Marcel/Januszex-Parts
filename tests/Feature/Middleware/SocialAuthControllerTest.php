@@ -1,12 +1,10 @@
 <?php
-namespace Tests\Feature\Controllers;
+namespace Feature\Middleware;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Laravel\Socialite\Facades\Socialite;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Mockery;
 
 class SocialAuthControllerTest extends TestCase
 {

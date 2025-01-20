@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 use Illuminate\Support\Facades\File;
 
@@ -12,11 +13,7 @@ class NavigationTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
-    /**
-     * Testowanie nawigacji po różnych stronach.
-     *
-     * @return void
-     */
+    #[Test]
     public function testNavigation()
     {
         // Katalog na zrzuty ekranu

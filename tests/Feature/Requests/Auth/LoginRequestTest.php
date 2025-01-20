@@ -1,9 +1,6 @@
 <?php
-namespace Tests\Feature\Controllers\Requests;
+namespace Feature\Requests\Auth;
 use App\Models\User;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Session;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 

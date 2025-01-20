@@ -4,17 +4,15 @@ namespace Tests\Browser;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 use Illuminate\Support\Facades\File;
 
 class RegisterTest extends DuskTestCase
 {
     use DatabaseMigrations;
-    /**
-     * Testowanie rejestracji.
-     *
-     * @return void
-     */
+
+    #[Test]
     public function testRegister()
     {
         // Katalog na zrzuty ekranu

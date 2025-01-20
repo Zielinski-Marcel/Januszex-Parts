@@ -1,9 +1,8 @@
 <?php
-namespace Tests\Feature\Http\Requests\Invite;
+namespace Feature\Requests\Invite;
 
-use App\Models\User;
-use App\Models\Vehicle;
 use App\Http\Requests\Invite\StoreInviteRequest;
+use App\Models\Vehicle;
 use Illuminate\Support\Facades\Validator;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;

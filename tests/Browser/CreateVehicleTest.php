@@ -5,6 +5,7 @@ use App\Models\User;
 use App\Models\Vehicle; // Dodajemy model Vehicle
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\DuskTestCase;
 use Illuminate\Support\Facades\File;
 
@@ -12,11 +13,7 @@ class CreateVehicleTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
-    /**
-     * Testowanie procesu dodawania pojazdu i nawigacji.
-     *
-     * @return void
-     */
+    #[Test]
     public function testAddVehicleAndNavigate()
     {
         // Katalog na zrzuty ekranu

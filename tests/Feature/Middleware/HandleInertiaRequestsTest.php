@@ -1,13 +1,12 @@
 <?php
 
-namespace Tests\Unit\Middleware;
+namespace Feature\Middleware;
 
 use App\Http\Middleware\HandleInertiaRequests;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class HandleInertiaRequestsTest extends TestCase
 {

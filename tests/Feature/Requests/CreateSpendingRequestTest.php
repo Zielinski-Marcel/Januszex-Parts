@@ -1,5 +1,5 @@
 <?php
-namespace Tests\Feature\Http\Requests;
+namespace Feature\Requests;
 
 use App\Http\Requests\CreateSpendingRequest;
 use Illuminate\Support\Facades\Validator;

@@ -1,17 +1,17 @@
 <?php
 
-namespace Tests\Feature\Controllers\Vehicle;
+namespace Feature\Requests;
 
-use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Validator;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ProfileUpdateRequestTest extends TestCase
 {
     use RefreshDatabase;
-    /** @test */
+    #[Test]
     public function it_validates_correct_data()
     {
         $user = User::factory()->create(); // Tworzymy przykładowego użytkownika
@@ -35,7 +35,7 @@ class ProfileUpdateRequestTest extends TestCase
         $this->assertFalse($validator->fails());
     }
 
-    /** @test */
+    #[Test]
     public function it_requires_name_and_email()
     {
         $user = User::factory()->create();
@@ -56,7 +56,7 @@ class ProfileUpdateRequestTest extends TestCase
         $this->assertTrue($validator->fails());
     }
 
-    /** @test */
+    #[Test]
     public function it_requires_unique_email_except_current_user()
     {
         // Tworzymy dwóch użytkowników z różnymi emailami
@@ -80,7 +80,7 @@ class ProfileUpdateRequestTest extends TestCase
         $this->assertTrue($validator->fails());
     }
 
-    /** @test */
+    #[Test]
     public function it_allows_current_email_to_be_unchanged()
     {
         // Tworzymy użytkownika z emailem
