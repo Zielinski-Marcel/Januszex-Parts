@@ -4,7 +4,7 @@ import Show from "@/Components/Show.jsx";
 import Checkbox from "@/Components/Checkbox.jsx";
 import {useDetectClickOutside} from "react-detect-click-outside";
 
-export default function FilterPanel({coowners, spendingsTypes, spendingSelectedCoowner, setSpendingSelectedCoowner, spendingSelectedType, startDate, setStartDate, endDate, setEndDate}) {
+export default function FilterPanel({coowners, spendingsTypes, spendingSelectedCoowner, setSpendingSelectedCoowner, setSpendingSelectedType, spendingSelectedType, startDate, setStartDate, endDate, setEndDate}) {
     const [showFilterPanel, setFilterPanel] = useState(false);
 
     function handleCheckedCoowner(isChecked, coowner){
