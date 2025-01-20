@@ -15,25 +15,6 @@ use Inertia\Response;
 
 class VehicleController extends Controller
 {
-    public function getVehicle($id): JsonResponse{
-        $user = auth()->user();
-        $vehicle = $user->vehicles()
-            ->where('vehicles.id', $id)
-            ->wherePivot('status', 'active')
-            ->first();
-        if (!$vehicle) {
-            return response()->json(['message' => 'Vehicle not found or does not belong to the authenticated user.'], 404);
-        }
-        return response()->json(['vehicle'=>$vehicle]);
-    }
-    public function getVehicles(): JsonResponse{
-        $user = auth()->user();
-
-        $vehicles = $user->vehicles()->wherePivot('status', 'active');
-        return response()->json([
-            'vehicles' => $vehicles
-        ], 200);
-    }
     public function createVehicle(CreateVehicleRequest $request): \Illuminate\Http\RedirectResponse
     {
         $user = auth()->user();
