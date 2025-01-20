@@ -7,6 +7,7 @@ use App\Models\Invite;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use App\Mail\Invite as InviteMail;
 use App\Mail\InviteIfNoAccount;
@@ -14,7 +15,7 @@ use App\Mail\InviteIfNoAccount;
 class InviteControllerTest extends TestCase
 {
     use RefreshDatabase;
-
+    #[Test]
     public function test_store_invite_for_user_with_account()
     {
         // Użytkownik wysyłający zaproszenie
@@ -60,7 +61,7 @@ class InviteControllerTest extends TestCase
         // Sprawdzamy, czy użytkownik został przekierowany
         $response->assertRedirect()->with('status', 'Invitation sent successfully.');
     }
-
+    #[Test]
     public function test_store_invite_for_unauthorized_vehicle()
     {
         // Użytkownik wysyłający zaproszenie

@@ -6,6 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use App\Models\Vehicle;
 use Inertia\Testing\AssertableInertia;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class VehicleControllerTest extends TestCase
@@ -14,11 +15,7 @@ class VehicleControllerTest extends TestCase
 
     // Używamy tego, aby każda metoda testowa miała świeżą bazę danych
 
-    /**
-     * Test
-     *
-     * @return void
-     */
+    #[Test]
     public function test_get_vehicle_success()
     {
         // Tworzymy użytkownika
@@ -50,11 +47,7 @@ class VehicleControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * Test
-     *
-     * @return void
-     */
+    #[Test]
     public function test_get_vehicle_not_found()
     {
         // Tworzymy użytkownika
@@ -82,11 +75,7 @@ class VehicleControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * Test
-     *
-     * @return void
-     */
+    #[Test]
     public function test_get_vehicle_not_active()
     {
         // Tworzymy użytkownika
@@ -113,11 +102,7 @@ class VehicleControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * Test
-     *
-     * @return void
-     */
+    #[Test]
     public function test_get_vehicles_no_active_vehicles()
     {
         // Tworzymy użytkownika
@@ -144,11 +129,7 @@ class VehicleControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * Test
-     *
-     * @return void
-     */
+    #[Test]
     public function test_get_vehicles_other_user_vehicle()
     {
         // Tworzymy dwóch użytkowników
@@ -173,11 +154,7 @@ class VehicleControllerTest extends TestCase
         ]);
     }
 
-    /**
-     * Test
-     *
-     * @return void
-     */
+    #[Test]
     public function test_create_vehicle_success()
     {
         // Tworzymy użytkownika
@@ -221,11 +198,7 @@ class VehicleControllerTest extends TestCase
         $response->assertRedirect('/dashboard');
     }
 
-    /**
-     * Test
-     *
-     * @return void
-     */
+    #[Test]
     public function test_create_vehicle_unauthenticated()
     {
         // Tworzymy dane do wysłania
@@ -245,11 +218,7 @@ class VehicleControllerTest extends TestCase
         $response->assertStatus(401);
     }
 
-    /**
-     * Test
-     *
-     * @return void
-     */
+    #[Test]
     public function test_delete_vehicle_success()
     {
         // Przygotowanie danych testowych
@@ -274,11 +243,7 @@ class VehicleControllerTest extends TestCase
         $response->assertSessionHas('status', 'Vehicle deleted successfully.');
     }
 
-    /**
-     * Test
-     *
-     * @return void
-     */
+    #[Test]
     public function test_delete_vehicle_not_owner()
     {
         // Przygotowanie danych testowych
@@ -303,11 +268,7 @@ class VehicleControllerTest extends TestCase
         $response->assertStatus(404);
     }
 
-    /**
-     * Test
-     *
-     * @return void
-     */
+    #[Test]
     public function test_delete_vehicle_not_found()
     {
         // Przygotowanie danych testowych
@@ -323,11 +284,7 @@ class VehicleControllerTest extends TestCase
         $response->assertStatus(404);
     }
 
-    /**
-     * Test
-     *
-     * @return void
-     */
+    #[Test]
     public function test_remove_user_from_vehicle_success()
     {
         // Tworzymy dwóch użytkowników i pojazd
@@ -360,7 +317,7 @@ class VehicleControllerTest extends TestCase
         $response->assertRedirect();
         $response->assertSessionHas('status', 'User deleted successfully.');
     }
-
+    #[Test]
     public function test_user_is_not_owner_of_vehicle_should_receive_403()
     {
         // Tworzymy dwóch użytkowników

@@ -5,6 +5,7 @@ namespace Tests\Unit\Middleware;
 use App\Http\Middleware\HandleInertiaRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -12,11 +13,7 @@ class HandleInertiaRequestsTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Testowanie metody 'version' - sprawdzenie, czy zwraca wersję jako string.
-     *
-     * @return void
-     */
+    #[Test]
     public function testVersionMethodReturnsCorrectVersion()
     {
         // Tworzymy żądanie
@@ -32,11 +29,7 @@ class HandleInertiaRequestsTest extends TestCase
         $this->assertIsString($version);
     }
 
-    /**
-     * Testowanie, czy domyślny widok to 'app'.
-     *
-     * @return void
-     */
+    #[Test]
     public function testRootViewIsApp()
     {
         // Tworzymy symulowane żądanie

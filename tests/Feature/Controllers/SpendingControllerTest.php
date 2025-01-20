@@ -8,12 +8,13 @@ use App\Models\Spending;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class SpendingControllerTest extends TestCase
 {
     use RefreshDatabase;
-
+    #[Test]
     public function test_create_spending()
     {
         // Tworzymy użytkownika i pojazd
@@ -44,6 +45,7 @@ class SpendingControllerTest extends TestCase
             'user_id' => $user->id
         ]);
     }
+    #[Test]
     public function test_get_spendings()
     {
         // Tworzymy użytkownika i pojazd
@@ -75,6 +77,7 @@ class SpendingControllerTest extends TestCase
         $response->assertJsonFragment(['price' => $spending2->price]);
         $response->assertJsonCount(2, 'spending');
     }
+    #[Test]
     public function test_get_spending()
     {
         // Tworzymy użytkownika i pojazd
@@ -100,6 +103,7 @@ class SpendingControllerTest extends TestCase
         $response->assertStatus(200);
         $response->assertJsonFragment(['id' => $spending->id]);
     }
+    #[Test]
     public function test_edit_spending()
     {
         // Tworzymy użytkownika i pojazd
@@ -135,6 +139,7 @@ class SpendingControllerTest extends TestCase
             'description' => 'Car maintenance'
         ]);
     }
+    #[Test]
     public function test_delete_spending()
     {
         // Tworzymy użytkownika i pojazd

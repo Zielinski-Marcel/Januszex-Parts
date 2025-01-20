@@ -5,12 +5,14 @@ use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Inertia\Testing\AssertableInertia;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class DashboardControllerTest extends TestCase
 {
     use RefreshDatabase;
 
+    #[Test]
     public function test_show_dashboard_for_authenticated_user_without_vehicle()
     {
         // Tworzymy użytkownika
@@ -31,7 +33,7 @@ class DashboardControllerTest extends TestCase
             ->where('userid', $user->id) // ID użytkownika powinno być przekazane
         );
     }
-
+    #[Test]
     public function test_show_dashboard_for_authenticated_user_with_vehicle()
     {
         // Tworzymy użytkownika i pojazd

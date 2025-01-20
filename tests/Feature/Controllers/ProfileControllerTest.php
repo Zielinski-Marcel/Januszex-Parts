@@ -6,17 +6,14 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Testing\Fluent\AssertableJson;
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
 class ProfileControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    /**
-     * Test sprawdzający poprawność wyświetlania profilu użytkownika.
-     *
-     * @return void
-     */
+    #[Test]
     public function test_show_profile()
     {
         // Tworzymy użytkownika
@@ -32,11 +29,7 @@ class ProfileControllerTest extends TestCase
         $response->assertViewHas('user', $user);
     }
 
-    /**
-     * Test sprawdzający, czy użytkownik nie jest znaleziony, jeśli nie istnieje.
-     *
-     * @return void
-     */
+    #[Test]
     public function test_show_profile_not_found()
     {
         // Wysyłamy zapytanie GET do nieistniejącego użytkownika
@@ -49,11 +42,7 @@ class ProfileControllerTest extends TestCase
         $response->assertJson(['message' => 'Użytkownik nie został znaleziony.']);
     }
 
-    /**
-     * Test sprawdzający poprawność wyświetlania formularza edycji profilu.
-     *
-     * @return void
-     */
+    #[Test]
     public function test_edit_profile()
     {
         // Tworzymy użytkownika
@@ -76,11 +65,7 @@ class ProfileControllerTest extends TestCase
         );
     }
 
-    /**
-     * Test aktualizacji profilu użytkownika.
-     *
-     * @return void
-     */
+    #[Test]
     public function test_update_profile()
     {
         // Tworzymy użytkownika
@@ -105,11 +90,7 @@ class ProfileControllerTest extends TestCase
         $this->assertDatabaseHas('users', $updatedData);
     }
 
-    /**
-     * Test usunięcia konta użytkownika.
-     *
-     * @return void
-     */
+    #[Test]
     public function test_destroy_profile()
     {
         // Tworzymy użytkownika
