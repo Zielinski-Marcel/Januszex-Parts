@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('IsUserAdmin')->group(function () {
     Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin');
+    Route::get('/admin/logs', [AdminDashboardController::class, 'logs'])->name('logs');
 
     Route::get('/admin/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users');
     Route::get('/admin/users/create', [\App\Http\Controllers\Admin\UserController::class, 'create'])->name('admin.users.create');
@@ -32,6 +33,8 @@ Route::middleware('IsUserAdmin')->group(function () {
     Route::get('/admin/users/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('admin.users.edit');
     Route::patch('/admin/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/admin/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/admin/logs/{user}', [\App\Http\Controllers\Admin\UserController::class, 'userLogs'])->name('admin.users.logs');
+
 });
 
 Route::get('/user/{id}', [UserController::class, 'getUser'])->name('getUser');

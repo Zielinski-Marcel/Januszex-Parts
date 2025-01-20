@@ -8,6 +8,16 @@ use Inertia\Inertia;
 
 class UserController
 {
+    public function userLogs($user)
+    {
+        $logs = Activity::where('causer_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return Inertia::render(
+            'Admin/Logs/UserLogs',
+            ["logs" => $logs]
+        );
+    }
     public function index()
     {
         activity()
