@@ -109,7 +109,16 @@ export default function Dashboard({vehicles, vehicle, userid, spendings, coowner
                                 <div className="bg-gray-100 rounded-t-lg p-4">
                                     <h2 className="text-lg font-medium">Summary</h2>
                                     <p>Total Spent: {totalSpent} PLN</p>
-                                    <p>Users: {Array.from(new Set(sortedSpendings.map(spending => spending.user.name))).join(", ")}</p>
+                                    <p>Users: {
+                                        Array.from(
+                                            sortedSpendings.reduce((acc, spending) => {
+                                                acc.set(spending.user.name, (acc.get(spending.user.name) || 0) + spending.price);
+                                                return acc;
+                                            }, new Map())
+                                        )
+                                            .map(([name, totalSpent]) => `${name} (${totalSpent} PLN)`)
+                                            .join(", ")
+                                    }</p>
                                     <p>Time Frame: {
                                         sortedSpendings.length > 0
                                             ? (() => {
