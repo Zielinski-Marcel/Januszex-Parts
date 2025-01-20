@@ -69,18 +69,13 @@ services:
             timeout: 5s
             retries: 5
 
-    pgadmin:
-        image: dpage/pgadmin4
-        container_name: pgadmin-CCH
+    selenium-chrome:
+        image: selenium/standalone-chrome:latest
+        container_name: selenium-chrome
         ports:
-            - ${PGADMIN_PORT}:80
+            - "4444:4444" # Selenium Grid Port
         networks:
             - projekt-pipssii_app-net
-        environment:
-            PGADMIN_DEFAULT_EMAIL: ${PGADMIN_EMAIL}
-            PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_PASSWORD}
-        volumes:
-            - pgadmin_data:/var/lib/pgadmin
 
     mailpit:
         image: axllent/mailpit:v1.20.5

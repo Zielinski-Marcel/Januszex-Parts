@@ -26,13 +26,13 @@ export default function Edit({ mustVerifyEmail, ownedVehicles, sharedVehicles, s
                             <UpdatePasswordForm/>
                         </div>
 
-                        <Show when={ownedVehicles.length > 0}>
+                        <Show when={ownedVehicles?.length > 0}>
                             <div className="bg-white rounded-lg border border-gray-100 p-4">
                                 <DeleteVehicleForm vehicles={ownedVehicles}/>
                             </div>
                         </Show>
 
-                        <Show when={sharedVehicles.length > 0}>
+                        <Show when={sharedVehicles?.length > 0}>
                             <div className="bg-white rounded-lg border border-gray-100 p-4">
                                 <LeaveVehicleForm vehicles={sharedVehicles}/>
                             </div>
