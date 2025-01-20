@@ -28,7 +28,10 @@ migrate:
 test:
 	@docker-compose exec -it app php artisan test
 
-testall: dusk test testfront
+infection:
+	@docker-compose exec -it app vendor/bin/infection
+
+testall: dusk test testfront infection
 
 
 check-if-env-file-exist:

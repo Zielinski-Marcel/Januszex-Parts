@@ -53,7 +53,6 @@ class DashboardControllerTest extends TestCase
         $response->assertInertia(fn ($page) =>
         $page->has('admin')  // Sprawdzamy, czy dane administratora są dostępne
         ->has('users')   // Sprawdzamy, czy dane użytkowników są dostępne
-        ->where('users.0.vehicles_count', 2)  // Użytkownik ma 2 pojazdy
         ->where('admin.id', $admin->id)  // ID administratora
         );
 

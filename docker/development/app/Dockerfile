@@ -30,6 +30,8 @@ RUN pecl install redis-6.1.0
 RUN docker-php-ext-install zip pdo_pgsql
 RUN docker-php-ext-configure zip
 RUN docker-php-ext-enable redis
+RUN pecl install pcov && docker-php-ext-enable pcov
+
 
 COPY ./docker/development/app/dev.sh /dev.sh
 RUN chmod +x /dev.sh
