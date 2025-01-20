@@ -4,8 +4,9 @@ import Show from "@/Components/Show.jsx";
 import Checkbox from "@/Components/Checkbox.jsx";
 import {useDetectClickOutside} from "react-detect-click-outside";
 
-export default function FilterPanel({coowners, spendingsTypes, spendingSelectedCoowner, setSpendingSelectedCoowner, spendingSelectedType, setSpendingSelectedType}) {
+export default function FilterPanel({coowners, spendingsTypes, spendingSelectedCoowner, setSpendingSelectedCoowner, spendingSelectedType, startDate, setStartDate, endDate, setEndDate}) {
     const [showFilterPanel, setFilterPanel] = useState(false);
+
     function handleCheckedCoowner(isChecked, coowner){
         setSpendingSelectedCoowner(coowners=>({...coowners, [coowner]: isChecked}))
     }
@@ -13,6 +14,26 @@ export default function FilterPanel({coowners, spendingsTypes, spendingSelectedC
     function handleCheckedType(isChecked, type){
         setSpendingSelectedType(types=>({...types, [type]: isChecked}))
     }
+
+    const handleStartDateChange = (e) => {
+        const newStartDate = e.target.value;
+        if (endDate && new Date(newStartDate) > new Date(endDate)) {
+            const adjustedEndDate = new Date(newStartDate);
+            adjustedEndDate.setDate(adjustedEndDate.getDate());
+            setEndDate(adjustedEndDate.toISOString().split('T')[0]);
+        }
+        setStartDate(newStartDate);
+    };
+
+    const handleEndDateChange = (e) => {
+        const newEndDate = e.target.value;
+        if (startDate && new Date(newEndDate) < new Date(startDate)) {
+            const adjustedStartDate = new Date(newEndDate);
+            adjustedStartDate.setDate(adjustedStartDate.getDate());
+            setStartDate(adjustedStartDate.toISOString().split('T')[0]);
+        }
+        setEndDate(newEndDate);
+    };
 
     const ref = useDetectClickOutside({ onTriggered: ()=>setFilterPanel(false) });
 
@@ -25,7 +46,8 @@ export default function FilterPanel({coowners, spendingsTypes, spendingSelectedC
                       d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z"/>
             </svg>
             <Show when={showFilterPanel}>
-                <div onClick={(e)=>e.stopPropagation()} className="absolute top-12 right-0 bg-white border-2 p-2 border-primary text-black rounded-md min-h-60 w-60 py-4 cursor-default">
+                <div onClick={(e) => e.stopPropagation()}
+                     className="absolute top-12 right-0 bg-white border-2 p-2 border-primary text-black rounded-md min-h-60 w-60 py-4 cursor-default">
                     <h2 className="text-base font-medium text-gray-900 mb-2">Filter Coowners</h2>
                     {coowners.map(coowner => (
                         <div key={coowner} className="flex gap-0 ml-1 p-0.5">
@@ -39,7 +61,8 @@ export default function FilterPanel({coowners, spendingsTypes, spendingSelectedC
                             </span>
                         </div>
                     ))}
-                    <h2 className="text-base font-medium text-gray-900 mb-2 border-t border-gray-200 mt-4 pt-2">Filter Types</h2>
+                    <h2 className="text-base font-medium text-gray-900 mb-2 border-t border-gray-200 mt-4 pt-2">Filter
+                        Types</h2>
                     {spendingsTypes.map(type => (
                         <div key={type} className="flex gap-0 ml-1 p-0.5 cursor-default">
                             <Checkbox
@@ -52,6 +75,25 @@ export default function FilterPanel({coowners, spendingsTypes, spendingSelectedC
                             </span>
                         </div>
                     ))}
+                    <h2 className="text-base font-medium text-gray-900 mb-2 border-t border-gray-200 mt-4 pt-2">Filter
+                        by Date</h2>
+                    <label className="block text-sm text-gray-600">
+                        Start Date:
+                        <input type="date"
+                               className="mt-1 block w-full"
+                               value={startDate || ''}
+                               onChange={handleStartDateChange}
+                        />
+                    </label>
+                    <label className="block text-sm text-gray-600 mt-2">
+                        End Date:
+                        <input
+                            type="date"
+                            className="mt-1 block w-full"
+                            value={endDate || ''}
+                            onChange={handleEndDateChange}
+                        />
+                    </label>
                 </div>
             </Show>
         </IconButton>

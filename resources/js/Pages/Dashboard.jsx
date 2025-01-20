@@ -13,6 +13,8 @@ export default function Dashboard({vehicles, vehicle, userid, spendings, coowner
     const [spendingSelectedCoowner, setSpendingSelectedCoowner] = useState(Object.fromEntries(Object.keys(coowners).map(key=>[key, true])));
     const [spendingSelectedType, setSpendingSelectedType] = useState(Object.fromEntries(Object.keys(spendingsTypes).map(key=>[key, true])));
     const [sortBy, setSortBy] = useState("oldDate");
+    const [startDate, setStartDate] = useState(null);
+    const [endDate, setEndDate] = useState(null);
 
     const deleteForm = useForm();
 
@@ -39,7 +41,14 @@ export default function Dashboard({vehicles, vehicle, userid, spendings, coowner
         return spendingSelectedType[spending.type];
     }
 
-    const sortedSpendings = useMemo(()=>spendings.filter(filterByCoowner).filter(filterByTypes).toSorted(sort),[spendingSelectedCoowner, spendings, coowners, spendingSelectedType, spendingsTypes, sort]);
+    function filterByDate(spending) {
+        const spendingDate = new Date(spending.date);
+        if (startDate && spendingDate < new Date(startDate)) return false;
+        if (endDate && spendingDate > new Date(endDate)) return false;
+        return true;
+    }
+
+    const sortedSpendings = useMemo(()=>spendings.filter(filterByCoowner).filter(filterByTypes).filter(filterByDate).toSorted(sort),[spendingSelectedCoowner, spendings, coowners, spendingSelectedType, spendingsTypes, startDate, endDate, sort]);
 
     const confirmSpendingDeletion = (id) => () => {
         setConfirmingSpendingDeletion(true);
@@ -87,6 +96,10 @@ export default function Dashboard({vehicles, vehicle, userid, spendings, coowner
                                                 spendingSelectedCoowner={spendingSelectedCoowner}
                                                 spendingSelectedType={spendingSelectedType}
                                                 setSpendingSelectedType={setSpendingSelectedType}
+                                                startDate={startDate}
+                                                setStartDate={setStartDate}
+                                                endDate={endDate}
+                                                setEndDate={setEndDate}
                                             />
                                         </div>
                                     </Show>
@@ -129,7 +142,6 @@ export default function Dashboard({vehicles, vehicle, userid, spendings, coowner
                                 </div>
                             </div>
                     </div>
-
 
             <MessageBox show={confirmingSpendingDeletion} onAccept={deleteSpending} onClose={closeModal} isProcessing={deleteForm.processing} acceptButtonText="Delete Spending" title={`Are you sure you want to delete your spending?`}>
                 Once your spending is deleted, all of its resources and
