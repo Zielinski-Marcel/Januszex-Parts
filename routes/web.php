@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware('IsUserAdmin')->group(function () {
     Route::get('/admin', [AdminDashboardController::class, 'index'])->name('admin');
+    Route::get('/admin/logs', [AdminDashboardController::class, 'logs'])->name('logs');
 
     Route::get('/admin/users', [\App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.users');
     Route::get('/admin/users/create', [\App\Http\Controllers\Admin\UserController::class, 'create'])->name('admin.users.create');
@@ -32,6 +33,8 @@ Route::middleware('IsUserAdmin')->group(function () {
     Route::get('/admin/users/{user}/edit', [\App\Http\Controllers\Admin\UserController::class, 'edit'])->name('admin.users.edit');
     Route::patch('/admin/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'update'])->name('admin.users.update');
     Route::delete('/admin/users/{user}', [\App\Http\Controllers\Admin\UserController::class, 'destroy'])->name('admin.users.destroy');
+    Route::get('/admin/logs/{user}', [\App\Http\Controllers\Admin\UserController::class, 'userLogs'])->name('admin.users.logs');
+
 });
 
 Route::get('/user/{id}', [UserController::class, 'getUser'])->name('getUser');
@@ -52,7 +55,7 @@ Route::get('/getuser/vehicles', [\App\Http\Controllers\VehicleController::class,
 Route::get('/create/vehicle', [\App\Http\Controllers\VehicleController::class, 'create'])->middleware('auth.basic');
 Route::get('/edit/vehicle/{vehicle}', [\App\Http\Controllers\VehicleController::class, 'edit'])->middleware('auth.basic');
 Route::post('/create/vehicle', [\App\Http\Controllers\VehicleController::class, 'createVehicle'])->name('createVehicle')->middleware('auth.basic');
-Route::post('/edit/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'editVehicle'])->name('editVehicle')->middleware('auth.basic');
+Route::patch('/edit/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'editVehicle'])->name('editVehicle')->middleware('auth.basic');
 Route::delete('/deleteuser/vehicle/{id}', [\App\Http\Controllers\VehicleController::class, 'deleteVehicle'])->name('deleteVehicle')->middleware('auth.basic');
 Route::delete('/leave/vehicle/{vehicle_id}/{user_id}', [\App\Http\Controllers\VehicleController::class, 'removeUserFromVehicle'])->name('removeUserFromVehicle')->middleware('auth.basic');
 Route::delete('/leave/vehicle/{vehicle}', [\App\Http\Controllers\VehicleController::class, 'leaveVehicle'])->name('leaveVehicle')->middleware('auth.basic');

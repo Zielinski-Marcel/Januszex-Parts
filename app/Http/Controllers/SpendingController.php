@@ -83,7 +83,7 @@ class SpendingController extends Controller
                 'description' => $spending->description
             ])
             ->log('Created a new spending.');
-        return redirect()->to("/dashboard/" . $vehicle_id);
+        return redirect()->to("/dashboard/" . $vehicle_id)->with('status', 'Added the spending successfully.');
     }
 
     public function edit(Spending $spending){
@@ -119,7 +119,7 @@ class SpendingController extends Controller
                 'description' => $spending->description
             ])
             ->log('Updated a spending.');
-        return redirect()->to("/dashboard/" . $spending->vehicle_id);
+        return redirect()->to("/dashboard/" . $spending->vehicle_id)->with('status', 'Edited the spending successfully.');
     }
     public function deleteSpending(Spending $spending): \Illuminate\Http\RedirectResponse
     {
