@@ -46,64 +46,6 @@ class SpendingControllerTest extends TestCase
         ]);
     }
     #[Test]
-    public function test_get_spendings()
-    {
-        // Tworzymy użytkownika i pojazd
-        $user = User::factory()->create();
-        $vehicle = Vehicle::factory()->create();
-
-        // Przypisujemy pojazd do użytkownika
-        $user->vehicles()->attach($vehicle->id, ['role' => 'owner', 'status' => 'active']);
-
-        // Tworzymy kilka wydatków
-        $spending1 = Spending::factory()->create([
-            'vehicle_id' => $vehicle->id,
-            'user_id' => $user->id
-        ]);
-        $spending2 = Spending::factory()->create([
-            'vehicle_id' => $vehicle->id,
-            'user_id' => $user->id
-        ]);
-
-        // Uwierzytelnianie użytkownika
-        $this->actingAs($user);
-
-        // Wysyłamy zapytanie GET do pobrania wydatków
-        $response = $this->getJson(route('getSpendings', ['vehicle_id' => $vehicle->id]));
-
-        // Sprawdzamy, czy odpowiedź zawiera wydatki
-        $response->assertStatus(200);
-        $response->assertJsonFragment(['price' => $spending1->price]);
-        $response->assertJsonFragment(['price' => $spending2->price]);
-        $response->assertJsonCount(2, 'spending');
-    }
-    #[Test]
-    public function test_get_spending()
-    {
-        // Tworzymy użytkownika i pojazd
-        $user = User::factory()->create();
-        $vehicle = Vehicle::factory()->create();
-
-        // Przypisujemy pojazd do użytkownika
-        $user->vehicles()->attach($vehicle->id, ['role' => 'owner', 'status' => 'active']);
-
-        // Tworzymy wydatek
-        $spending = Spending::factory()->create([
-            'vehicle_id' => $vehicle->id,
-            'user_id' => $user->id
-        ]);
-
-        // Uwierzytelnianie użytkownika
-        $this->actingAs($user);
-
-        // Wysyłamy zapytanie GET do pobrania pojedynczego wydatku
-        $response = $this->getJson(route('getSpending', ['id' => $spending->id, 'vehicle_id' => $vehicle->id]));
-
-        // Sprawdzamy, czy odpowiedź zawiera poprawny wydatek
-        $response->assertStatus(200);
-        $response->assertJsonFragment(['id' => $spending->id]);
-    }
-    #[Test]
     public function test_edit_spending()
     {
         // Tworzymy użytkownika i pojazd

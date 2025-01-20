@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -35,8 +36,10 @@ class SocialAuthController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                     'facebook_id'=> $user->id,
-                    'password' => bcrypt(str_random(12))
+                    'password' => bcrypt(fake()->password(12)),
                 ]);
+                $newUser->email_verified_at=Carbon::now();
+                $newUser->save();
                 activity()
                     ->causedBy($newUser)
                     ->withProperties([
@@ -55,6 +58,5 @@ class SocialAuthController extends Controller
             return redirect('/login')->withErrors(['error' => 'Logowanie przez Facebook nie powiodło się.']);
         }
     }
-
 
 }

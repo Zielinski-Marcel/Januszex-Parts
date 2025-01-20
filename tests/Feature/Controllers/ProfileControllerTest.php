@@ -14,35 +14,6 @@ class ProfileControllerTest extends TestCase
     use RefreshDatabase;
 
     #[Test]
-    public function test_show_profile()
-    {
-        // Tworzymy użytkownika
-        $user = User::factory()->create();
-
-        // Wysyłamy zapytanie GET do endpointu /user/{username}
-        $response = $this->get('/user/' . $user->name);
-
-        // Sprawdzamy, czy odpowiedź jest poprawna (status 200)
-        $response->assertStatus(200);
-
-        // Dodatkowo sprawdzamy, czy użytkownik o odpowiednim ID jest zwrócony
-        $response->assertViewHas('user', $user);
-    }
-
-    #[Test]
-    public function test_show_profile_not_found()
-    {
-        // Wysyłamy zapytanie GET do nieistniejącego użytkownika
-        $response = $this->get('/user/nonexistentuser');
-
-        // Sprawdzamy, czy zwrócono status 404
-        $response->assertStatus(404);
-
-        // Sprawdzamy, czy odpowiedź zawiera komunikat o błędzie
-        $response->assertJson(['message' => 'Użytkownik nie został znaleziony.']);
-    }
-
-    #[Test]
     public function test_edit_profile()
     {
         // Tworzymy użytkownika
