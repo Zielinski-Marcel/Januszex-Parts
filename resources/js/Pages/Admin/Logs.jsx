@@ -3,7 +3,6 @@ import { Link } from "@inertiajs/react";
 import React from "react";
 
 export default function Logs({ logs }) {
-    // Helper function to format date
     const formatDate = (dateString) => {
         const options = {
             year: 'numeric',
@@ -15,8 +14,6 @@ export default function Logs({ logs }) {
         };
         return new Intl.DateTimeFormat('en-US', options).format(new Date(dateString));
     };
-
-    // Sort logs by updated_at descending, then reverse for newest first
     const sortedLogs = [...logs].sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
 
     return (
