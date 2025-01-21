@@ -34,10 +34,8 @@ class ProfileController extends Controller
             ->log('User entered profile edit page');
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'vehicles' => [
-                'owned' => $ownedVehicles,
-                'shared' => $sharedVehicles,
-            ],
+            'ownedVehicles' => $ownedVehicles,
+            'sharedVehicles' => $sharedVehicles,
             'status' => session('status'),
         ]);
     }
