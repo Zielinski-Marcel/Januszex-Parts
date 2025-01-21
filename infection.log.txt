@@ -1802,47 +1802,34 @@ Escaped mutants:
  }
 
 
-139) /app/app/Mail/Invite.php:33    [M] PublicVisibility
+139) /app/app/Models/Spending.php:28    [M] PublicVisibility
 
 @@ @@
-     /**
-      * Get the message envelope.
-      */
--    public function envelope(): Envelope
-+    protected function envelope(): Envelope
+     protected $fillable = ['price', 'type', 'date', 'place', 'description', 'user_id', 'vehicle_id'];
+     protected $casts = ['price' => 'float', 'date' => 'datetime'];
+     // Relacja z modelem User
+-    public function user()
++    protected function user()
      {
-         return new Envelope(subject: 'Invite');
+         return $this->belongsTo(User::class);
      }
 
 
-140) /app/app/Models/Invite.php:32    [M] PublicVisibility
+140) /app/app/Models/Spending.php:34    [M] PublicVisibility
 
 @@ @@
-     /**
-      * Get the vehicle associated with the invite.
-      */
+         return $this->belongsTo(User::class);
+     }
+     // Relacja z modelem Vehicle
 -    public function vehicle()
 +    protected function vehicle()
      {
          return $this->belongsTo(Vehicle::class);
      }
-
-
-141) /app/app/Models/Invite.php:40    [M] PublicVisibility
-
-@@ @@
-     /**
-      * Get the user who sent the invite.
-      */
--    public function invitor()
-+    protected function invitor()
-     {
-         return $this->belongsTo(User::class, 'invitor_id');
-     }
  }
 
 
-142) /app/app/Models/User.php:51    [M] ArrayItemRemoval
+141) /app/app/Models/User.php:51    [M] ArrayItemRemoval
 
 @@ @@
       */
@@ -1855,7 +1842,33 @@ Escaped mutants:
      {
 
 
-143) /app/app/Models/User.php:78    [M] DecrementInteger
+142) /app/app/Models/User.php:65    [M] PublicVisibility
+
+@@ @@
+     {
+         return $this->belongsToMany(Vehicle::class, 'user_vehicle')->withPivot('role', 'status')->withTimestamps();
+     }
+-    public function spendings(): HasMany
++    protected function spendings(): HasMany
+     {
+         return $this->hasMany(Spending::class);
+     }
+
+
+143) /app/app/Models/User.php:70    [M] PublicVisibility
+
+@@ @@
+     {
+         return $this->hasMany(Spending::class);
+     }
+-    public function vehicle(): HasMany
++    protected function vehicle(): HasMany
+     {
+         return $this->hasMany(Vehicle::class, 'owner_id');
+     }
+
+
+144) /app/app/Models/User.php:78    [M] DecrementInteger
 
 @@ @@
      public function lastSpendings()
@@ -1868,7 +1881,7 @@ Escaped mutants:
          });
 
 
-144) /app/app/Models/User.php:78    [M] IncrementInteger
+145) /app/app/Models/User.php:78    [M] IncrementInteger
 
 @@ @@
      public function lastSpendings()
@@ -1881,7 +1894,7 @@ Escaped mutants:
          });
 
 
-145) /app/app/Models/User.php:78    [M] ArrayItemRemoval
+146) /app/app/Models/User.php:78    [M] ArrayItemRemoval
 
 @@ @@
      public function lastSpendings()
@@ -1892,19 +1905,6 @@ Escaped mutants:
          $spendings = $spendings->sortBy(function (Spending $spending) {
              return $spending->updated_at->timestamp;
          });
-
-
-146) /app/app/Models/User.php:86    [M] MethodCallRemoval
-
-@@ @@
-     }
-     public function sendEmailVerificationNotification()
-     {
--        $this->notify(new VerifyAccountNotification());
-+        
-     }
-     public function getInvites()
-     {
 
 
 147) /app/app/Models/User.php:89    [M] ArrayItemRemoval
@@ -1919,20 +1919,7 @@ Escaped mutants:
  }
 
 
-148) /app/app/Notifications/VerifyAccountNotification.php:24    [M] ArrayItemRemoval
-
-@@ @@
-     }
-     public function via(object $notifiable): array
-     {
--        return ["mail"];
-+        return [];
-     }
-     public function toMail(object $notifiable): MailMessage
-     {
-
-
-149) /app/app/Notifications/VerifyAccountNotification.php:36    [M] PublicVisibility
+148) /app/app/Notifications/VerifyAccountNotification.php:36    [M] PublicVisibility
 
 @@ @@
      {
@@ -1946,7 +1933,7 @@ Escaped mutants:
  }
 
 
-150) /app/app/Notifications/VerifyAccountNotification.php:39    [M] DecrementInteger
+149) /app/app/Notifications/VerifyAccountNotification.php:39    [M] DecrementInteger
 
 @@ @@
      }
@@ -1958,7 +1945,7 @@ Escaped mutants:
  }
 
 
-151) /app/app/Notifications/VerifyAccountNotification.php:39    [M] IncrementInteger
+150) /app/app/Notifications/VerifyAccountNotification.php:39    [M] IncrementInteger
 
 @@ @@
      }
@@ -1970,7 +1957,7 @@ Escaped mutants:
  }
 
 
-152) /app/app/Notifications/VerifyAccountNotification.php:41    [M] ArrayItem
+151) /app/app/Notifications/VerifyAccountNotification.php:41    [M] ArrayItem
 
 @@ @@
      }
@@ -1982,7 +1969,7 @@ Escaped mutants:
  }
 
 
-153) /app/app/Notifications/VerifyAccountNotification.php:42    [M] ArrayItem
+152) /app/app/Notifications/VerifyAccountNotification.php:42    [M] ArrayItem
 
 @@ @@
      }
@@ -1994,7 +1981,7 @@ Escaped mutants:
  }
 
 
-154) /app/app/Providers/AppServiceProvider.php:23    [M] DecrementInteger
+153) /app/app/Providers/AppServiceProvider.php:23    [M] DecrementInteger
 
 @@ @@
       */
@@ -2006,7 +1993,7 @@ Escaped mutants:
  }
 
 
-155) /app/app/Providers/AppServiceProvider.php:23    [M] IncrementInteger
+154) /app/app/Providers/AppServiceProvider.php:23    [M] IncrementInteger
 
 @@ @@
       */
@@ -2018,7 +2005,7 @@ Escaped mutants:
  }
 
 
-156) /app/app/Providers/AppServiceProvider.php:23    [M] MethodCallRemoval
+155) /app/app/Providers/AppServiceProvider.php:23    [M] MethodCallRemoval
 
 @@ @@
       */
@@ -4111,98 +4098,7 @@ Not Covered mutants:
       * Get the validation rules that apply to the request.
 
 
-161) /app/app/Mail/Invite.php:43    [M] PublicVisibility
-
-@@ @@
-     /**
-      * Get the message content definition.
-      */
--    public function content(): Content
-+    protected function content(): Content
-     {
-         return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
-     }
-
-
-162) /app/app/Mail/Invite.php:47    [M] ArrayItemRemoval
-
-@@ @@
-      */
-     public function content(): Content
-     {
--        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
-+        return new Content(view: 'mail.invite', with: ['user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
-     }
-     /**
-      * Get the attachments for the message.
-
-
-163) /app/app/Mail/Invite.php:48    [M] ArrayItem
-
-@@ @@
-      */
-     public function content(): Content
-     {
--        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
-+        return new Content(view: 'mail.invite', with: ['invitor' > $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
-     }
-     /**
-      * Get the attachments for the message.
-
-
-164) /app/app/Mail/Invite.php:49    [M] ArrayItem
-
-@@ @@
-      */
-     public function content(): Content
-     {
--        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
-+        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' > $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
-     }
-     /**
-      * Get the attachments for the message.
-
-
-165) /app/app/Mail/Invite.php:50    [M] ArrayItem
-
-@@ @@
-      */
-     public function content(): Content
-     {
--        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
-+        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' > $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
-     }
-     /**
-      * Get the attachments for the message.
-
-
-166) /app/app/Mail/Invite.php:51    [M] ArrayItem
-
-@@ @@
-      */
-     public function content(): Content
-     {
--        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
-+        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' > $this->status, 'token' => $this->token]);
-     }
-     /**
-      * Get the attachments for the message.
-
-
-167) /app/app/Mail/Invite.php:52    [M] ArrayItem
-
-@@ @@
-      */
-     public function content(): Content
-     {
--        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' => $this->token]);
-+        return new Content(view: 'mail.invite', with: ['invitor' => $this->invitor, 'user' => $this->user, 'vehicle' => $this->vehicle, 'status' => $this->status, 'token' > $this->token]);
-     }
-     /**
-      * Get the attachments for the message.
-
-
-168) /app/app/Mail/Invite.php:62    [M] PublicVisibility
+161) /app/app/Mail/Invite.php:62    [M] PublicVisibility
 
 @@ @@
       *
@@ -4216,72 +4112,7 @@ Not Covered mutants:
  }
 
 
-169) /app/app/Mail/InviteIfNoAccount.php:30    [M] PublicVisibility
-
-@@ @@
-     /**
-      * Get the message envelope.
-      */
--    public function envelope(): Envelope
-+    protected function envelope(): Envelope
-     {
-         return new Envelope(subject: 'Invite');
-     }
-
-
-170) /app/app/Mail/InviteIfNoAccount.php:40    [M] PublicVisibility
-
-@@ @@
-     /**
-      * Get the message content definition.
-      */
--    public function content(): Content
-+    protected function content(): Content
-     {
-         return new Content(view: 'mail.inviteIfNoAccount', with: ['invitor' => $this->invitor, 'vehicle' => $this->vehicle]);
-     }
-
-
-171) /app/app/Mail/InviteIfNoAccount.php:44    [M] ArrayItemRemoval
-
-@@ @@
-      */
-     public function content(): Content
-     {
--        return new Content(view: 'mail.inviteIfNoAccount', with: ['invitor' => $this->invitor, 'vehicle' => $this->vehicle]);
-+        return new Content(view: 'mail.inviteIfNoAccount', with: ['vehicle' => $this->vehicle]);
-     }
-     /**
-      * Get the attachments for the message.
-
-
-172) /app/app/Mail/InviteIfNoAccount.php:45    [M] ArrayItem
-
-@@ @@
-      */
-     public function content(): Content
-     {
--        return new Content(view: 'mail.inviteIfNoAccount', with: ['invitor' => $this->invitor, 'vehicle' => $this->vehicle]);
-+        return new Content(view: 'mail.inviteIfNoAccount', with: ['invitor' > $this->invitor, 'vehicle' => $this->vehicle]);
-     }
-     /**
-      * Get the attachments for the message.
-
-
-173) /app/app/Mail/InviteIfNoAccount.php:46    [M] ArrayItem
-
-@@ @@
-      */
-     public function content(): Content
-     {
--        return new Content(view: 'mail.inviteIfNoAccount', with: ['invitor' => $this->invitor, 'vehicle' => $this->vehicle]);
-+        return new Content(view: 'mail.inviteIfNoAccount', with: ['invitor' => $this->invitor, 'vehicle' > $this->vehicle]);
-     }
-     /**
-      * Get the attachments for the message.
-
-
-174) /app/app/Mail/InviteIfNoAccount.php:56    [M] PublicVisibility
+162) /app/app/Mail/InviteIfNoAccount.php:56    [M] PublicVisibility
 
 @@ @@
       *
@@ -4295,7 +4126,7 @@ Not Covered mutants:
  }
 
 
-175) /app/app/Models/Invite.php:24    [M] PublicVisibility
+163) /app/app/Models/Invite.php:24    [M] PublicVisibility
 
 @@ @@
      /**
@@ -4305,57 +4136,4 @@ Not Covered mutants:
 +    protected function user()
      {
          return $this->belongsTo(User::class, 'invitee_id');
-     }
-
-
-176) /app/app/Models/Spending.php:28    [M] PublicVisibility
-
-@@ @@
-     protected $fillable = ['price', 'type', 'date', 'place', 'description', 'user_id', 'vehicle_id'];
-     protected $casts = ['price' => 'float', 'date' => 'datetime'];
-     // Relacja z modelem User
--    public function user()
-+    protected function user()
-     {
-         return $this->belongsTo(User::class);
-     }
-
-
-177) /app/app/Models/Spending.php:34    [M] PublicVisibility
-
-@@ @@
-         return $this->belongsTo(User::class);
-     }
-     // Relacja z modelem Vehicle
--    public function vehicle()
-+    protected function vehicle()
-     {
-         return $this->belongsTo(Vehicle::class);
-     }
- }
-
-
-178) /app/app/Models/User.php:65    [M] PublicVisibility
-
-@@ @@
-     {
-         return $this->belongsToMany(Vehicle::class, 'user_vehicle')->withPivot('role', 'status')->withTimestamps();
-     }
--    public function spendings(): HasMany
-+    protected function spendings(): HasMany
-     {
-         return $this->hasMany(Spending::class);
-     }
-
-
-179) /app/app/Models/User.php:70    [M] PublicVisibility
-
-@@ @@
-     {
-         return $this->hasMany(Spending::class);
-     }
--    public function vehicle(): HasMany
-+    protected function vehicle(): HasMany
-     {
-         return $this->hasMany(Vehicle::class, 'owner_id');
      }
