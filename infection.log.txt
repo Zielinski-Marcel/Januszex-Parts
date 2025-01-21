@@ -841,7 +841,7 @@ Escaped mutants:
          $sharedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'shared')->get();
 -        activity()->causedBy($user)->withProperties(['action' => 'Editing profile'])->log('User entered profile edit page');
 +        
-         return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
+         return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'ownedVehicles' => $ownedVehicles, 'sharedVehicles' => $sharedVehicles, 'status' => session('status')]);
      }
      /**
 
@@ -854,7 +854,7 @@ Escaped mutants:
          $sharedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'shared')->get();
 -        activity()->causedBy($user)->withProperties(['action' => 'Editing profile'])->log('User entered profile edit page');
 +        activity()->causedBy($user)->withProperties([])->log('User entered profile edit page');
-         return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
+         return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'ownedVehicles' => $ownedVehicles, 'sharedVehicles' => $sharedVehicles, 'status' => session('status')]);
      }
      /**
 
@@ -865,8 +865,8 @@ Escaped mutants:
          $ownedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'owner')->get();
          $sharedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'shared')->get();
          activity()->causedBy($user)->withProperties(['action' => 'Editing profile'])->log('User entered profile edit page');
--        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
-+        return Inertia::render('Profile/Edit', ['vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
+-        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'ownedVehicles' => $ownedVehicles, 'sharedVehicles' => $sharedVehicles, 'status' => session('status')]);
++        return Inertia::render('Profile/Edit', ['ownedVehicles' => $ownedVehicles, 'sharedVehicles' => $sharedVehicles, 'status' => session('status')]);
      }
      /**
       * Update the user's profile information.
@@ -878,8 +878,8 @@ Escaped mutants:
          $ownedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'owner')->get();
          $sharedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'shared')->get();
          activity()->causedBy($user)->withProperties(['action' => 'Editing profile'])->log('User entered profile edit page');
--        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
-+        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => true, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
+-        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'ownedVehicles' => $ownedVehicles, 'sharedVehicles' => $sharedVehicles, 'status' => session('status')]);
++        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => true, 'ownedVehicles' => $ownedVehicles, 'sharedVehicles' => $sharedVehicles, 'status' => session('status')]);
      }
      /**
       * Update the user's profile information.
@@ -891,27 +891,27 @@ Escaped mutants:
          $ownedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'owner')->get();
          $sharedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'shared')->get();
          activity()->causedBy($user)->withProperties(['action' => 'Editing profile'])->log('User entered profile edit page');
--        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
-+        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => false, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
+-        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'ownedVehicles' => $ownedVehicles, 'sharedVehicles' => $sharedVehicles, 'status' => session('status')]);
++        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => false, 'ownedVehicles' => $ownedVehicles, 'sharedVehicles' => $sharedVehicles, 'status' => session('status')]);
      }
      /**
       * Update the user's profile information.
 
 
-69) /app/app/Http/Controllers/ProfileController.php:41    [M] ArrayItem
+69) /app/app/Http/Controllers/ProfileController.php:39    [M] ArrayItem
 
 @@ @@
          $ownedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'owner')->get();
          $sharedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'shared')->get();
          activity()->causedBy($user)->withProperties(['action' => 'Editing profile'])->log('User entered profile edit page');
--        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' => session('status')]);
-+        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'vehicles' => ['owned' => $ownedVehicles, 'shared' => $sharedVehicles], 'status' > session('status')]);
+-        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'ownedVehicles' => $ownedVehicles, 'sharedVehicles' => $sharedVehicles, 'status' => session('status')]);
++        return Inertia::render('Profile/Edit', ['mustVerifyEmail' => $request->user() instanceof MustVerifyEmail, 'ownedVehicles' => $ownedVehicles, 'sharedVehicles' => $sharedVehicles, 'status' > session('status')]);
      }
      /**
       * Update the user's profile information.
 
 
-70) /app/app/Http/Controllers/ProfileController.php:57    [M] MethodCallRemoval
+70) /app/app/Http/Controllers/ProfileController.php:55    [M] MethodCallRemoval
 
 @@ @@
              $request->user()->email_verified_at = null;
@@ -924,7 +924,7 @@ Escaped mutants:
      /**
 
 
-71) /app/app/Http/Controllers/ProfileController.php:59    [M] ArrayItemRemoval
+71) /app/app/Http/Controllers/ProfileController.php:57    [M] ArrayItemRemoval
 
 @@ @@
              $request->user()->email_verified_at = null;
@@ -937,7 +937,7 @@ Escaped mutants:
      /**
 
 
-72) /app/app/Http/Controllers/ProfileController.php:60    [M] ArrayItem
+72) /app/app/Http/Controllers/ProfileController.php:58    [M] ArrayItem
 
 @@ @@
              $request->user()->email_verified_at = null;
@@ -950,7 +950,7 @@ Escaped mutants:
      /**
 
 
-73) /app/app/Http/Controllers/ProfileController.php:72    [M] ArrayItemRemoval
+73) /app/app/Http/Controllers/ProfileController.php:70    [M] ArrayItemRemoval
 
 @@ @@
       */
@@ -963,7 +963,7 @@ Escaped mutants:
          Auth::logout();
 
 
-74) /app/app/Http/Controllers/ProfileController.php:76    [M] MethodCallRemoval
+74) /app/app/Http/Controllers/ProfileController.php:74    [M] MethodCallRemoval
 
 @@ @@
      {
@@ -976,7 +976,7 @@ Escaped mutants:
          $request->session()->invalidate();
 
 
-75) /app/app/Http/Controllers/ProfileController.php:78    [M] ArrayItemRemoval
+75) /app/app/Http/Controllers/ProfileController.php:76    [M] ArrayItemRemoval
 
 @@ @@
      {
@@ -989,7 +989,7 @@ Escaped mutants:
          $request->session()->invalidate();
 
 
-76) /app/app/Http/Controllers/ProfileController.php:84    [M] MethodCallRemoval
+76) /app/app/Http/Controllers/ProfileController.php:82    [M] MethodCallRemoval
 
 @@ @@
          activity()->causedBy($user)->withProperties(['action' => 'Deleted account'])->log('User deleted their account');
@@ -1003,7 +1003,7 @@ Escaped mutants:
  }
 
 
-77) /app/app/Http/Controllers/ProfileController.php:85    [M] MethodCallRemoval
+77) /app/app/Http/Controllers/ProfileController.php:83    [M] MethodCallRemoval
 
 @@ @@
          Auth::logout();
@@ -2001,18 +2001,6 @@ Escaped mutants:
      {
 -        Vite::prefetch(concurrency: 3);
 +        Vite::prefetch(concurrency: 4);
-     }
- }
-
-
-155) /app/app/Providers/AppServiceProvider.php:23    [M] MethodCallRemoval
-
-@@ @@
-      */
-     public function boot(): void
-     {
--        Vite::prefetch(concurrency: 3);
-+        
      }
  }
 
