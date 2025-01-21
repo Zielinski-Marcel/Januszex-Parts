@@ -31,8 +31,8 @@ class ProfileControllerTest extends TestCase
         // Sprawdzamy, czy odpowiedź zawiera dane użytkownika
         $response->assertInertia(fn ($inertia) => $inertia
             ->component('Profile/Edit')
-            ->has('vehicles.owned')
-            ->has('vehicles.shared')
+            ->has('ownedVehicles')
+            ->has('sharedVehicles')
         );
     }
 
