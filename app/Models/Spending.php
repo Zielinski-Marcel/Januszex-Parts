@@ -24,13 +24,11 @@ class Spending extends Model
         'date' => 'datetime',
     ];
 
-    // Relacja z modelem User
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // Relacja z modelem Vehicle
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class);
