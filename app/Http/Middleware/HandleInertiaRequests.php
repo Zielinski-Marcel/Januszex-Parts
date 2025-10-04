@@ -35,8 +35,6 @@ class HandleInertiaRequests extends Middleware
             "flash" => $this->getFlashData($request),
             'auth' => [
                 'user' => $request->user(),
-                'invites' => $request->user()?->getInvites(),
-
             ],
         ];
     }

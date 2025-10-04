@@ -5,8 +5,8 @@ use App\Http\Controllers\InviteController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SocialAuthController;
-use App\Http\Controllers\SpendingController;
-use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -37,23 +37,25 @@ Route::middleware('IsUserAdmin')->group(function () {
 
 });
 
+
+
 Route::middleware('auth')->group(function () {
-    Route::get('/create/spending/{vehicle}', [SpendingController::class, 'create']);
-    Route::post('/create/spending/{vehicle_id}', [SpendingController::class, 'createSpending'])->name('createSpending');
-    Route::get('/edit/spending/{spending}/', [SpendingController::class, 'edit']);
-    Route::put('/edit/spending/{spending}', [SpendingController::class, 'editSpending'])->name('editSpending');
-    Route::delete('/deleteuser/spending/{spending}', [SpendingController::class, 'deleteSpending'])->name('deleteSpending');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+    Route::get('/orders/{order}/edit', [OrderController::class, 'edit'])->name('orders.edit');
+    Route::put('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
+    Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/create/vehicle', [VehicleController::class, 'create']);
-    Route::get('/edit/vehicle/{vehicle}', [VehicleController::class, 'edit']);
-    Route::post('/create/vehicle', [VehicleController::class, 'createVehicle'])->name('createVehicle');
-    Route::patch('/edit/vehicle/{id}', [VehicleController::class, 'editVehicle'])->name('editVehicle');
-    Route::delete('/deleteuser/vehicle/{id}', [VehicleController::class, 'deleteVehicle'])->name('deleteVehicle');
-    Route::delete('/leave/vehicle/{vehicle_id}/{user_id}', [VehicleController::class, 'removeUserFromVehicle'])->name('removeUserFromVehicle');
-    Route::delete('/leave/vehicle/{vehicle}', [VehicleController::class, 'leaveVehicle'])->name('leaveVehicle');
+    Route::get('/create/product', [ProductController::class, 'create']);
+    Route::get('/edit/product/{product}', [ProductController::class, 'edit']);
+    Route::post('/create/product', [ProductController::class, 'store'])->name('createProduct');
+    Route::patch('/edit/product/{product}', [ProductController::class, 'update'])->name('editProduct');
+    Route::delete('/delete/product/{product}', [ProductController::class, 'destroy'])->name('deleteProduct');
 });
+
 
 Route::middleware('auth')->group(function () {
     Route::post('/invite', [InviteController::class, 'store'])->name('store');

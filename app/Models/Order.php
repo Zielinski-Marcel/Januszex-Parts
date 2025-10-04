@@ -5,18 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Spending extends Model
+class Order extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'price',
-        'type',
         'date',
-        'place',
-        'description',
         'user_id',
-        'vehicle_id',
+        'status',
     ];
 
     protected $casts = [
@@ -28,9 +25,10 @@ class Spending extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function vehicle()
+    public function products()
     {
-        return $this->belongsTo(Vehicle::class);
+        return $this->belongsToMany(Product::class, 'order_product')
+            ->withPivot('quantity')
+            ->withTimestamps();
     }
 }

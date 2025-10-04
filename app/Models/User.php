@@ -27,7 +27,6 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         'name',
         'email',
         'password',
-        'facebook_id',
         'is_admin'
     ];
 
@@ -54,39 +53,13 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
         ];
     }
 
-
-    public function vehicles()
+    public function orders(): HasMany
     {
-        return $this->belongsToMany(Vehicle::class, 'user_vehicle')
-            ->withPivot('role', 'status')
-            ->withTimestamps();
+        return $this->hasMany(Order::class);
     }
 
-    public function spendings(): HasMany
-    {
-        return $this->hasMany(Spending::class);
-    }
-
-    public function vehicle(): HasMany
-    {
-        return $this->hasMany(Vehicle::class,'owner_id');
-    }
-
-    public function lastSpendings()
-    {
-        $vehicles = $this->vehicles()->select('vehicles.id')->get()->pluck('id');
-        $spendings = Spending::query()->whereIn('vehicle_id', $vehicles)->orderBy('updated_at')->limit(10)->with(["user", "vehicle"])->get();
-        $spendings = $spendings->sortBy(function (Spending $spending) {
-            return $spending->updated_at->timestamp;
-        });
-
-        return $spendings;
-    }
     public function sendEmailVerificationNotification(){
         $this->notify(new VerifyAccountNotification());
-    }
-    public function getInvites(){
-        return Invite::query()->where("email", $this->email)->with(["invitor","vehicle"])->get();
     }
 
 

@@ -26,16 +26,12 @@ class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         $user = $request->user();
-        $ownedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'owner')->get();
-        $sharedVehicles = $user->vehicles()->wherePivot('status', 'active')->wherePivot('role', 'shared')->get();
         activity()
             ->causedBy($user)
             ->withProperties(['action' => 'Editing profile'])
             ->log('User entered profile edit page');
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'ownedVehicles' => $ownedVehicles,
-            'sharedVehicles' => $sharedVehicles,
             'status' => session('status'),
         ]);
     }
