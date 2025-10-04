@@ -1,10 +1,8 @@
 <?php
 
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\InviteController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SocialAuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -37,8 +35,6 @@ Route::middleware('IsUserAdmin')->group(function () {
 
 });
 
-
-
 Route::middleware('auth')->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
@@ -55,18 +51,5 @@ Route::middleware('auth')->group(function () {
     Route::patch('/edit/product/{product}', [ProductController::class, 'update'])->name('editProduct');
     Route::delete('/delete/product/{product}', [ProductController::class, 'destroy'])->name('deleteProduct');
 });
-
-
-Route::middleware('auth')->group(function () {
-    Route::post('/invite', [InviteController::class, 'store'])->name('store');
-    Route::post('/invite/{verification_token}', [InviteController::class, 'update']);
-    Route::get('/invites', [InviteController::class, 'index']);
-    Route::delete('/invite/{invite}', [InviteController::class, 'destroy']);
-});
-
-Route::get('/login/redirect',[SocialAuthController::class, 'redirectToFacebook'])->name('auth.facebook');
-Route::get('/login/facebook/callback', [SocialAuthController::class, 'handleFacebookCallback']);
-
-
 
 require __DIR__.'/auth.php';
